@@ -1,0 +1,18 @@
+<div class="cart-container">
+  <h2>Warenkorb</h2>
+
+  <div *ngIf="cartItems.length === 0">Der Warenkorb ist leer.</div>
+
+  <ul>
+    <li *ngFor="let item of cartItems">
+      {{ item.name }} – {{ item.price | currency:'EUR' }}
+    </li>
+  </ul>
+
+  <div class="total">
+    Gesamt: <strong>{{ total | currency:'EUR' }}</strong>
+  </div>
+
+  <button (click)="clearCart()">Warenkorb leeren</button>
+</div>
+
