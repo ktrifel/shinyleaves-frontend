@@ -1,18 +1,15 @@
-<div class="cart-container">
-  <h2>Warenkorb</h2>
+<h2>Warenkorb</h2>
 
-  <div *ngIf="cartItems.length === 0">Der Warenkorb ist leer.</div>
+<div *ngIf="cartItems.length === 0">Der Warenkorb ist leer.</div>
 
-  <ul>
-    <li *ngFor="let item of cartItems">
-      {{ item.name }} – {{ item.price | currency:'EUR' }}
-    </li>
-  </ul>
+<ul>
+  <li *ngFor="let item of cartItems">
+    {{ item.name }} – {{ item.price | currency:'EUR' }}
+  </li>
+</ul>
 
-  <div class="total">
-    Gesamt: <strong>{{ total | currency:'EUR' }}</strong>
-  </div>
+<p *ngIf="cartItems.length > 0">
+  Gesamt: <strong>{{ total | currency:'EUR' }}</strong>
+</p>
 
-  <button (click)="clearCart()">Warenkorb leeren</button>
-</div>
-
+<button (click)="clearCart()" *ngIf="cartItems.length > 0">Warenkorb leeren</button>

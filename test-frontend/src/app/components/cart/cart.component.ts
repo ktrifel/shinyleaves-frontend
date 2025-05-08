@@ -9,5 +9,12 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent {
-  // ...
+  cartItems = JSON.parse(localStorage.getItem('cart') ?? '[]');
+  total = this.cartItems.reduce((sum: number, item: any) => sum + item.price, 0);
+
+  clearCart() {
+    this.cartItems = [];
+    this.total = 0;
+    localStorage.removeItem('cart');
+  }
 }
