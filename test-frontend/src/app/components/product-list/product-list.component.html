@@ -1,7 +1,17 @@
-<h2>Produkte</h2>
+<h2 class="page-title">Produkte</h2>
 
-<div class="product-card" *ngFor="let product of products">
-  <h3>{{ product.name }}</h3>
-  <p>{{ product.price | currency:'EUR' }}</p>
-  <button (click)="addToCart(product)">Zum Warenkorb</button>
+<div class="product-grid">
+  <mat-card class="product-card" *ngFor="let product of products">
+    <mat-card-title>{{ product.name }}</mat-card-title>
+    <mat-card-content>
+      <p><strong>Wirkung:</strong> {{ product.wirkung }}</p>
+      <p><strong>Aroma:</strong> {{ product.aroma }}</p>
+      <p><strong>THC:</strong> {{ product.thc }} | <strong>CBD:</strong> {{ product.cbd }}</p>
+      <p><strong>Menge:</strong> {{ product.menge }}</p>
+      <p><strong>Preis:</strong> {{ product.preis | currency:'EUR' }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="addToCart(product)">In den Warenkorb</button>
+    </mat-card-actions>
+  </mat-card>
 </div>

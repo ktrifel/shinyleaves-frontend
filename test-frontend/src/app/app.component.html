@@ -1,5 +1,31 @@
-<app-header></app-header>
+<mat-sidenav-container class="app-container">
+  <mat-sidenav #drawer mode="side" class="app-sidenav">
+    <mat-nav-list>
+      <mat-list-item routerLink="/">Startseite</mat-list-item>
+      <mat-list-item routerLink="/products">Produkte</mat-list-item>
+      <mat-list-item routerLink="/cart">Warenkorb</mat-list-item>
+      <mat-list-item routerLink="/account">Konto</mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
 
-<router-outlet></router-outlet>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button mat-icon-button (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>shinyleaves</span>
+      <span class="spacer"></span>
+      <button mat-icon-button routerLink="/cart">
+        <mat-icon>shopping_cart</mat-icon>
+      </button>
+      <button mat-icon-button routerLink="/account">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </mat-toolbar>
 
-<app-footer></app-footer>
+    <!-- ✅ Neuer, zentrierter Seiteninhalt -->
+    <div class="page-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

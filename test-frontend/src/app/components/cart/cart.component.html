@@ -1,15 +1,27 @@
-<h2>Warenkorb</h2>
+<h2 class="cart-title">🛒 Warenkorb</h2>
 
-<div *ngIf="cartItems.length === 0">Der Warenkorb ist leer.</div>
+<div *ngIf="cartItems.length === 0" class="empty-cart">
+  Dein Warenkorb ist leer.
+</div>
 
-<ul>
-  <li *ngFor="let item of cartItems">
-    {{ item.name }} – {{ item.price | currency:'EUR' }}
-  </li>
-</ul>
+<div *ngFor="let item of cartItems" class="cart-card">
+  <div class="cart-info">
+    <h3>{{ item.name }}</h3>
+    <p><strong>Menge:</strong>
+      <input type="number" [(ngModel)]="item.quantity" min="1" (change)="updateCart()" />
+    </p>
+    <p><strong>Einzelpreis:</strong> {{ item.price | currency:'EUR' }}</p>
+    <p><strong>Gesamt:</strong> {{ item.price * item.quantity | currency:'EUR' }}</p>
+  </div>
+  <button mat-icon-button color="warn" (click)="removeItem(item)">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
 
-<p *ngIf="cartItems.length > 0">
-  Gesamt: <strong>{{ total | currency:'EUR' }}</strong>
-</p>
-
-<button (click)="clearCart()" *ngIf="cartItems.length > 0">Warenkorb leeren</button>
+<div class="cart-footer" *ngIf="cartItems.length > 0">
+  <p class="total-line">Gesamtsumme: {{ totalPrice() | currency:'EUR' }}</p>
+  <div class="cart-actions">
+    <button mat-button (click)="clearCart()" class="clear-btn">🗑 Warenkorb leeren</button>
+    <button mat-raised-button color="primary" class="checkout-btn">Zur Kasse</button>
+  </div>
+</div>
