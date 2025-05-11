@@ -1,31 +1,34 @@
-<mat-sidenav-container class="app-container">
-  <mat-sidenav #drawer mode="side" class="app-sidenav">
-    <mat-nav-list>
-      <mat-list-item routerLink="/">Startseite</mat-list-item>
-      <mat-list-item routerLink="/products">Produkte</mat-list-item>
-      <mat-list-item routerLink="/cart">Warenkorb</mat-list-item>
-      <mat-list-item routerLink="/account">Konto</mat-list-item>
-    </mat-nav-list>
+<!-- src/app/app.component.html -->
+<mat-sidenav-container class="app-shell">
+
+  <!-- Side‑Nav  (optional) -->
+  <mat-sidenav #drawer mode="side">
+    <!--  dein Menü -->
   </mat-sidenav>
 
+  <!-- Haupt­inhalt -->
   <mat-sidenav-content>
+
+    <!-- Feste Top‑Toolbar -->
     <mat-toolbar color="primary">
       <button mat-icon-button (click)="drawer.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-      <span>shinyleaves</span>
+
+      <span class="brand">shinyleaves</span>
       <span class="spacer"></span>
-      <button mat-icon-button routerLink="/cart">
-        <mat-icon>shopping_cart</mat-icon>
-      </button>
-      <button mat-icon-button routerLink="/account">
-        <mat-icon>account_circle</mat-icon>
-      </button>
+
+      <a mat-icon-button [routerLink]="['/cart']"><mat-icon>shopping_cart</mat-icon></a>
+      <a mat-icon-button [routerLink]="['/account']"><mat-icon>account_circle</mat-icon></a>
     </mat-toolbar>
 
-    <!-- ✅ Neuer, zentrierter Seiteninhalt -->
-    <div class="page-wrapper">
+    <!-- Dynamischer Content -->
+    <main>
       <router-outlet></router-outlet>
-    </div>
+    </main>
+
+    <!-- Optionaler Footer -->
+    <footer>© shinyleaves</footer>
+
   </mat-sidenav-content>
 </mat-sidenav-container>

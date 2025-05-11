@@ -1,18 +1,18 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, ViewChild } from '@angular/core';
+import { RouterModule }         from '@angular/router';
 
-// Angular Material Standalone-Imports
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatButtonModule } from '@angular/material/button';
+/* ─ Angular‑Material Feature‑Pakete ─ */
+import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
+import { MatToolbarModule }             from '@angular/material/toolbar';
+import { MatIconModule }                from '@angular/material/icon';
+import { MatListModule }                from '@angular/material/list';
+import { MatButtonModule }              from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  /* Hier müssen alle Material‑Module stehen, die das Template benutzt */
   imports: [
     RouterModule,
     MatSidenavModule,
@@ -22,4 +22,6 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule
   ]
 })
-export class AppComponent {}
+export class AppComponent {
+  @ViewChild('drawer') drawer!: MatSidenav;
+}

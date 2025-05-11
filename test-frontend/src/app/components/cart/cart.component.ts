@@ -1,39 +1,68 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+/* ───────────────────────────────────
+   src/app/components/cart/cart.component.ts
+─────────────────────────────────── */
+import { Component, inject } from '@angular/core';
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { Router }            from '@angular/router';
+import { AuthService }       from '../../core/auth.service';
+
+/** Ein Posten im Warenkorb */
+interface CartItem {
+  id:       number;
+  name:     string;
+  price:    number;   // € pro Stück
+  quantity: number;
+}
 
 @Component({
-  selector: 'app-cart',
+  selector:   'app-cart',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule],
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.css'],
+  styleUrls:  ['./cart.component.css'],
+  imports:    [CommonModule, CurrencyPipe]   // NgIf, NgFor, currency‑Pipe
 })
 export class CartComponent {
-  cartItems: any[] = [];
 
-  ngOnInit() {
-    const stored = localStorage.getItem('cart');
-    this.cartItems = stored ? JSON.parse(stored) : [];
+  private readonly router = inject(Router);
+  private readonly auth   = inject(AuthService);
+
+  /** Aktueller Warenkorb (aus LocalStorage) */
+  cartItems: CartItem[] =
+    JSON.parse(localStorage.getItem('cart') ?? '[]');
+
+  /** Gesamtsumme in € */
+  get totalPrice(): number {
+    return this.cartItems
+             .reduce((sum, i) => sum + i.price * i.quantity, 0);
   }
 
-  updateCart() {
+  /* ────────── Helfer ────────── */
+  private save(): void {
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
   }
 
-  removeItem(item: any) {
-    this.cartItems = this.cartItems.filter(i => i !== item);
-    this.updateCart();
+  /* ────────── Aktionen ────────── */
+  increase(i: CartItem): void { i.quantity++;          this.save(); }
+  decrease(i: CartItem): void {
+    i.quantity > 1 ? i.quantity-- : this.remove(i);
+    this.save();
   }
-
-  clearCart() {
-    this.cartItems = [];
-    localStorage.removeItem('cart');
+  remove(i: CartItem): void {
+    this.cartItems = this.cartItems.filter(x => x !== i);
+    this.save();
   }
+  clear(): void { this.cartItems = []; this.save(); }
 
-  totalPrice(): number {
-    return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  /** Weiter → Checkout (nur wenn nicht leer) */
+  goCheckout(): void {
+    if (!this.cartItems.length) { return; }
+
+    if (this.auth.isLogged()) {
+      this.router.navigate(['/checkout']);
+    } else {
+      this.router.navigate(
+        ['/login'], { queryParams: { redirect: 'checkout' } }
+      );
+    }
   }
 }
