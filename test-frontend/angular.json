@@ -47,19 +47,17 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "target": "test-frontend:build",
-            "proxyConfig": "proxy.conf.json"
+            "buildTarget": "test-frontend:build"
           },
           "configurations": {
             "production": {
-              "target": "test-frontend:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "target": "test-frontend:build"
+            "buildTarget": "test-frontend:build"
           }
         },
         "test": {
@@ -84,8 +82,7 @@
           "options": {
             "tsConfig": [
               "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
+              "tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
