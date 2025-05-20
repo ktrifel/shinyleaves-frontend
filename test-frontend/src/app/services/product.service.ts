@@ -1,28 +1,17 @@
-import { Injectable } from '@angular/core';
-import { Product } from '../models/product';
+// src/app/services/product.service.ts
+import { Injectable }   from '@angular/core';
+import { HttpClient }   from '@angular/common/http';
+import { Observable }   from 'rxjs';
+import { Product }      from '../models/product';
+import { environment }  from '../../environments/environment';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ProductService {
-  private products: Product[] = [
-    {
-      id: 1,
-      name: 'Shiny Plant 1',
-      description: 'Eine glänzende Zimmerpflanze.',
-      price: 19.99,
-      image: 'assets/plant1.jpg'
-    },
-    {
-      id: 2,
-      name: 'Shiny Plant 2',
-      description: 'Noch eine schöne Pflanze.',
-      price: 24.99,
-      image: 'assets/plant2.jpg'
-    },
-  ];
+  private readonly apiUrl = `${environment.apiUrl}/products`;
 
-  getProducts(): Product[] {
-    return this.products;
+  constructor(private readonly http: HttpClient) {}
+
+  getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.apiUrl);
   }
 }
