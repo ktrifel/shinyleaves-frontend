@@ -4,7 +4,7 @@
 <div class="product-grid">
   <mat-card class="product-card" *ngFor="let product of products">
     <img mat-card-image
-         [src]="'assets/images/products/' + product.slug + '.jpg'"
+         [src]="'assets/images/' + product.slug + '.png'"
          alt="{{ product.name }}"
          (error)="onImgError($event)">
 

@@ -36,6 +36,6 @@ export class ProductListComponent implements OnInit {
   }
   onImgError(event: Event) {
     const target = event.target as HTMLImageElement;
-    target.src = 'assets/images/products/placeholder.jpg';  // Zeigt Ersatzbild an
+    target.src = 'assets/images/placeholder.jpg';  // Zeigt Ersatzbild an
   }
 }
