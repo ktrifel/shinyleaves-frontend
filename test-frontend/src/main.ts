@@ -1,19 +1,15 @@
 // src/main.ts
-import { enableProdMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter, withEnabledBlockingInitialNavigation } from '@angular/router';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { AppComponent } from './app/app.component';
-import { routes } from './app/app.routes';
-import { environment } from './environments/environment';
+import { provideRouter }        from '@angular/router';
+import { provideHttpClient }    from '@angular/common/http';
 
-if (environment.production) {
-  enableProdMode();
-}
+import { AppComponent }         from './app/app.component';
+import { routes }               from './app/app.routes';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideHttpClient(withInterceptorsFromDi()),
-    provideRouter(routes, withEnabledBlockingInitialNavigation())
+    provideRouter(routes),
+    provideHttpClient(),    // ← hier registrieren wir den HttpClient
   ]
-});
+})
+.catch(err => console.error(err));

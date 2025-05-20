@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
+// src/app/components/product-list/product-list.component.ts
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule }               from '@angular/common';
+import { MatCardModule }              from '@angular/material/card';
+import { MatButtonModule }            from '@angular/material/button';
+
+import { Product }                    from '../../models/product';
+import { ProductService }             from '../../services/product.service';
 
 @Component({
   selector: 'app-product-list',
@@ -10,41 +14,21 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent {
-  products = [
-    {
-      name: 'Shiny Blüte',
-      aroma: 'Zitrus',
-      wirkung: 'Entspannend',
-      thc: '4%',
-      cbd: '12%',
-      preis: 9.99,
-      menge: '10g'
-    },
-    {
-      name: 'Hanföl Classic',
-      aroma: 'Neutral',
-      wirkung: 'Beruhigend',
-      thc: '0.3%',
-      cbd: '18%',
-      preis: 12.49,
-      menge: '30ml'
-    },
-    {
-      name: 'Wachs Stark',
-      aroma: 'Waldig',
-      wirkung: 'Fokussierend',
-      thc: '6%',
-      cbd: '10%',
-      preis: 14.95,
-      menge: '5g'
-    }
-  ];
+export class ProductListComponent implements OnInit {
+  private readonly productService = inject(ProductService);
 
-  addToCart(product: any) {
-    const cart = JSON.parse(localStorage.getItem('cart') ?? '[]');
-    cart.push(product);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert(`${product.name} wurde dem Warenkorb hinzugefügt.`);
+  /** hier landen die vom Backend geladenen Produkte */
+  products: Product[] = [];
+
+  ngOnInit(): void {
+    this.productService.getProducts()
+      .subscribe({
+        next: prods => this.products = prods,
+        error: err => console.error('Fehler beim Laden der Produkte', err)
+      });
+  }
+
+  addToCart(product: Product) {
+    // dein bestehender Warenkorb-Code…
   }
 }
