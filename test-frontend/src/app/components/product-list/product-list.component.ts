@@ -28,7 +28,10 @@ export class ProductListComponent implements OnInit {
       });
   }
 
-  addToCart(product: Product) {
-    // dein bestehender Warenkorb-Code…
+  addToCart(product: any) {
+    const cart = JSON.parse(localStorage.getItem('cart') ?? '[]');
+    cart.push(product);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert(`${product.name} wurde dem Warenkorb hinzugefügt.`);
   }
 }
