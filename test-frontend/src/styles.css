@@ -24,7 +24,7 @@ mat-sidenav-content {
 }
 
 /* Haupt­bereich wächst, Header / Footer bleiben fix */
-main        { flex: 1 0 auto; padding: 16px; }
+/* merged main selector to avoid duplication; using padding: 24px from above */
 header,footer{ padding: 8px 16px; }
 
 /* Optional: ein breiterer Z‑Index für Overlay‑Dialogs etc. */
