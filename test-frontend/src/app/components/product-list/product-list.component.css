@@ -86,3 +86,9 @@ button{
 button:hover{
   background:#ab1a34;
 }
+.product-card img {
+  width: 100%;
+  height: 200px;         /* Einheitliche Höhe */
+  object-fit: cover;     /* Zuschneiden, um Proportionen zu erhalten */
+  border-radius: 4px;    /* Optional: leicht abgerundete Ecken */
+}
