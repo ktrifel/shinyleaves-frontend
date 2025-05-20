@@ -34,4 +34,8 @@ export class ProductListComponent implements OnInit {
     localStorage.setItem('cart', JSON.stringify(cart));
     alert(`${product.name} wurde dem Warenkorb hinzugefügt.`);
   }
+  onImgError(event: Event) {
+    const target = event.target as HTMLImageElement;
+    target.src = 'assets/images/products/placeholder.jpg';  // Zeigt Ersatzbild an
+  }
 }
