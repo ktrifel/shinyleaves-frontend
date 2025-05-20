@@ -1,29 +1,27 @@
+// src/main.ts
+import { enableProdMode }                    from '@angular/core';
+import { bootstrapApplication }              from '@angular/platform-browser';
+import { provideRouter }                     from '@angular/router';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-// Removed duplicate import of AppComponent
-import { provideRouter } from '@angular/router';
-import { routes } from './app/app.routes';
+import { AppComponent }      from './app/app.component';
+import { routes }            from './app/app.routes';        // <-- hier deine routes
+import { environment }       from './environments/environment';
 
-bootstrapApplication(AppComponent, {
-  providers: [provideRouter(routes)]
-});
+if (environment.production) {
+  enableProdMode();
+}
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideHttpClient(withInterceptors([jwtInterceptor])),
-    // ...
-  ]
-});
-import { bootstrapApplication } from '@angular/platform-browser';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+    // HTTP-Client registrieren
+    provideHttpClient(withInterceptorsFromDi()),
 
-import { AppComponent } from './app/app.component';
-import { appConfig } from './app/app.config';      // ✅  importieren
-import { jwtInterceptor } from './app/core/jwt.interceptor';
+    // Router mit deinen "routes"
+    provideRouter(routes),
 
-bootstrapApplication(AppComponent, {
-  ...appConfig,                                    // ✅  Router‑Provider bleibt erhalten
-  providers: [
-    ...appConfig.providers,
-    provideHttpClient(withInterceptors([jwtInterceptor]))
+    // falls du BrowserAnimations brauchst:
+    // importProvidersFrom(BrowserAnimationsModule),
   ]
-}).catch(err => console.error(err));
+})
+.catch(err => console.error('Bootstrap-Error:', err));
