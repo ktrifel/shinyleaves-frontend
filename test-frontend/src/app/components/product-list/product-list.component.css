@@ -1,88 +1,103 @@
 /*  src/app/components/product-list/product-list.component.css  */
 
 /* ———————————————————————————————————————————
-   Grund‑Layout
+   Grund-Layout
    • nimmt die komplette Breite ein
-   • füllt – abzüglich Werkzeugleiste – die ganze Höhe
+   • füllt – abzüglich Werkzeugleiste – die ganze Höhe
    ——————————————————————————————————————————— */
-:host{
-  display:block;
-  min-height:calc(100vh - 64px); /* 64 px = Material‑Toolbar‑Höhe  */
-  box-sizing:border-box;
-  padding:0 2rem 4rem;
-  background:#111;
-  color:#f5f5f0;
-  overflow-x:hidden;            /* verhindert horizontales Scrollen */
+:host {
+  display: block;
+  min-height: calc(100vh - 64px); /* 64 px = Material-Toolbar-Höhe */
+  box-sizing: border-box;
+  padding: 0 2rem 4rem;
+  background: #111;
+  color: #f5f5f0;
+  overflow-x: hidden;             /* verhindert horizontales Scrollen */
 }
 
 /* ———————————————————————————————————————————
    Überschrift
    ——————————————————————————————————————————— */
-.page-title{
-  margin:2.5rem 0 1.75rem;
-  text-align:center;
-  font-size:2rem;
-  font-weight:700;
-  color:#2E7D32;               /* dein Grün */
+.page-title {
+  margin: 2.5rem 0 1.75rem;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2E7D32;                 /* dein Grün */
 }
 
 /* ———————————————————————————————————————————
-   Responsive Gitter‑Layout
-   • beliebig viele Spalten, min 280 px
+   Responsive Gitter-Layout
+   • beliebig viele Spalten, min 280 px
    • zentriert, mit Abständen
    ——————————————————————————————————————————— */
-.product-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-  gap:24px;
-  max-width:1400px;
-  margin:0 auto;               /* zentriert */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;                 /* zentriert */
 }
 
 /* ———————————————————————————————————————————
-   Produkt‑Karte
+   Produkt-Karte
    ——————————————————————————————————————————— */
-.product-card{
-  background:#222;
-  color:#fff;
-  border-radius:12px;
-  padding:16px;
-  transition:transform .15s ease, box-shadow .15s ease;
+.product-card {
+  background: #222;
+  color: #fff;
+  border-radius: 12px;
+  padding: 0;                     /* Padding weichen wir auf Bild + Content aus */
+  overflow: hidden;
+  transition: transform .15s ease, box-shadow .15s ease;
 }
-.product-card:hover{
-  transform:scale(1.03);
-  box-shadow:0 6px 30px rgba(0,0,0,.55);
+
+.product-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, .55);
+}
+
+/* — Bild oben in der Karte — */
+.product-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
 }
 
 /* Titel */
-mat-card-title{
-  font-size:1.25rem;
-  font-weight:700;
-  margin-bottom:.25rem;
+mat-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 1rem;
 }
 
 /* Inhalte */
-mat-card-content p{
-  margin:.2rem 0;
-  font-size:.95rem;
+mat-card-content {
+  padding: 0 1rem 1rem;
+}
+
+mat-card-content p {
+  margin: .2rem 0;
+  font-size: .95rem;
 }
 
 /* Buttonleiste */
-mat-card-actions{
-  margin-top:1rem;
-  display:flex;
-  justify-content:center;
+mat-card-actions {
+  margin: 0 0 1rem;
+  display: flex;
+  justify-content: center;
 }
 
-/* Warenkorb‑Button */
-button{
-  background:#8e0721;
-  color:#fff;
-  padding:.55rem 1.2rem;
-  border-radius:22px;
-  font-weight:700;
-  text-transform:none;
+/* Warenkorb-Button */
+button {
+  background: #8e0721;
+  color: #fff;
+  padding: .55rem 1.2rem;
+  border-radius: 22px;
+  font-weight: 700;
+  text-transform: none;
 }
-button:hover{
-  background:#ab1a34;
+
+button:hover {
+  background: #ab1a34;
 }
