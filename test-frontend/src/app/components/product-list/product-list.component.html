@@ -3,6 +3,11 @@
 
 <div class="product-grid">
   <mat-card class="product-card" *ngFor="let product of products">
+    <img mat-card-image
+         [src]="'assets/images/' + product.slug + '.png'"
+         alt="{{ product.name }}"
+         (error)="onImgError($event)">
+
     <mat-card-title>{{ product.name }}</mat-card-title>
     <mat-card-content>
       <p><strong>ID (p_id):</strong> {{ product.p_id }}</p>
@@ -17,3 +22,4 @@
     </mat-card-actions>
   </mat-card>
 </div>
+
