@@ -1,22 +1,12 @@
-<h2 class="title">Anmelden</h2>
+<div class="login-container">
+  <h2>Login</h2>
+  <form>
+    <label for="username">Benutzername:</label>
+    <input type="text" id="username" name="username" />
 
-<form [formGroup]="form" (ngSubmit)="login()"> class="auth-form">
-  <mat-form-field appearance="fill">
-    <mat-label>E-Mail</mat-label>
-    <input matInput formControlName="email" type="email" />
-  </mat-form-field>
+    <label for="password">Passwort:</label>
+    <input type="password" id="password" name="password" />
 
-  <mat-form-field appearance="fill">
-    <mat-label>Passwort</mat-label>
-    <input matInput formControlName="password" type="password" />
-  </mat-form-field>
-
-  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-    Login
-  </button>
-</form>
-
-<p class="switch">
-  Noch kein Konto?
-  <a routerLink="/register">Registrieren</a>
-</p>
+    <button type="submit">Einloggen</button>
+  </form>
+</div>
