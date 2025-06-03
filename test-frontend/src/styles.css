@@ -48,10 +48,16 @@ mat-toolbar {
 
 /* Branding links */
 .brand {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #333333;
+  text-decoration: none;
+  cursor: pointer;
 }
+
+/*.brand:hover {
+  text-decoration: underline;
+}*/
 
 /* Platzhalter, um Icons nach rechts zu schieben */
 .spacer {
