@@ -1,33 +1,48 @@
 <h2>Dein Warenkorb</h2>
 
 <section *ngIf="cartItems.length; else empty">
-  <table>
+  <table class="cart-table">
     <thead>
       <tr>
-        <th>Produkt</th><th>Menge</th><th>Einzel­preis</th><th>Gesamt</th><th></th>
+        <th>Bild</th>
+        <th>Produkt</th>
+        <th>Menge</th>
+        <th>Einzel­preis (netto)</th>
+        <th>Gesamt (netto)</th>
+        <th></th>
       </tr>
     </thead>
-
     <tbody>
       <tr *ngFor="let i of cartItems">
-        <td>{{ i.name }}</td>
-
+        <td>
+          <img [src]="i.image || 'assets/images/' + i.slug + '.png'"
+               alt="{{i.name}}"
+               style="width:80px; height:80px; object-fit:contain; background:white; border-radius:6px;">
+        </td>
+        <td>
+          <div><strong>{{ i.name }}</strong></div>
+          <div *ngIf="i.slug">Slug: {{i.slug}}</div>
+          <div *ngIf="i.w_id">W_ID: {{i.w_id}}</div>
+        </td>
         <td>
           <button (click)="decrease(i)">‑</button>
           {{ i.quantity }}
           <button (click)="increase(i)">+</button>
         </td>
-
-        <td>{{ i.price           | currency:'EUR' }}</td>
-        <td>{{ i.price*i.quantity| currency:'EUR' }}</td>
+        <td>{{ i.price | currency:'EUR' }}</td>
+        <td>{{ (i.price * i.quantity) | currency:'EUR' }}</td>
         <td><button (click)="remove(i)">✕</button></td>
       </tr>
     </tbody>
   </table>
 
   <div class="total">
-    <strong>Gesamtsumme:</strong>
-    {{ totalPrice | currency:'EUR' }}
+    <strong>Gesamtsumme (inkl. MwSt.):</strong>
+    {{ totalPriceInclVat | currency:'EUR' }}
+    <br>
+    <span style="font-size:0.95em; color:#888;">
+      Enthaltene MwSt. (19%): {{ vatAmount | currency:'EUR' }}
+    </span>
   </div>
 
   <nav class="actions">

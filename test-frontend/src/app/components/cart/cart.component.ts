@@ -10,8 +10,11 @@ import { AuthService }       from '../../core/auth.service';
 interface CartItem {
   id:       number;
   name:     string;
-  price:    number;   // € pro Stück
+  price:    number;   // € pro Stück (netto)
   quantity: number;
+  image?:   string;   // Bild-URL
+  slug?:    string;
+  w_id?:    string;
 }
 
 @Component({
@@ -19,7 +22,7 @@ interface CartItem {
   standalone: true,
   templateUrl: './cart.component.html',
   styleUrls:  ['./cart.component.css'],
-  imports:    [CommonModule, CurrencyPipe]   // NgIf, NgFor, currency‑Pipe
+  imports:    [CommonModule, CurrencyPipe]
 })
 export class CartComponent {
 
@@ -30,10 +33,19 @@ export class CartComponent {
   cartItems: CartItem[] =
     JSON.parse(localStorage.getItem('cart') ?? '[]');
 
-  /** Gesamtsumme in € */
+  /** Gesamtsumme netto */
   get totalPrice(): number {
-    return this.cartItems
-             .reduce((sum, i) => sum + i.price * i.quantity, 0);
+    return this.cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  }
+
+  /** Gesamtsumme inkl. 19% MwSt. */
+  get totalPriceInclVat(): number {
+    return this.totalPrice * 1.19;
+  }
+
+  /** Enthaltene MwSt. */
+  get vatAmount(): number {
+    return this.totalPrice * 0.19;
   }
 
   /* ────────── Helfer ────────── */
@@ -42,7 +54,7 @@ export class CartComponent {
   }
 
   /* ────────── Aktionen ────────── */
-  increase(i: CartItem): void { i.quantity++;          this.save(); }
+  increase(i: CartItem): void { i.quantity++; this.save(); }
   decrease(i: CartItem): void {
     i.quantity > 1 ? i.quantity-- : this.remove(i);
     this.save();
