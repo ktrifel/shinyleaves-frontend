@@ -36,12 +36,12 @@
    • beliebig viele Spalten, min 280 px
    • zentriert, mit Abständen
    ——————————————————————————————————————————— */
-.product-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-  gap:24px;
-  max-width:1400px;
-  margin:0 auto;               /* zentriert */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1400px;
+  margin: 2.5rem auto 0 auto;
 }
 
 /* ———————————————————————————————————————————
