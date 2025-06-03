@@ -64,13 +64,14 @@ mat-card-title{
   font-size:1.25rem;
   font-weight:700;
   margin-bottom:.25rem;
+  color: #2E4F38;
 }
 
 /* Inhalte */
 mat-card-content {
-  background-color: rgba(200, 200, 200, 0.1); /* sehr transparenter hellgrauer Hintergrund */
+  background-color: rgba(200, 200, 200, 0.3); /* sehr transparenter hellgrauer Hintergrund */
   padding: 0.5rem 0.75rem;
-  border-radius: 8px;
+  border-radius: 12px;
   backdrop-filter: blur(2px);
 } 
 
