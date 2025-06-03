@@ -62,15 +62,17 @@
 /* Titel */
 mat-card-title{
   font-size:1.25rem;
+  font-family: 'Roboto', sans-serif;
   font-weight:700;
   margin-bottom:.25rem;
-  color: #2E4F38;
+  color: #508a62;
 }
 
 /* Inhalte */
 mat-card-content {
   background-color: rgba(200, 200, 200, 0.3); /* sehr transparenter hellgrauer Hintergrund */
   padding: 0.5rem 0.75rem;
+  font-family: 'Roboto', sans-serif;
   border-radius: 12px;
   backdrop-filter: blur(2px);
 } 
@@ -89,6 +91,7 @@ button {
   padding: .55rem 1.2rem;
   border-radius: 22px;
   font-weight: 700;
+  font-family: 'Roboto', sans-serif;
   text-transform: none;
   border: 2px solid #508a62; /* <- grüne Umrandung */
 }

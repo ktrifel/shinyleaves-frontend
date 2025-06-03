@@ -55,6 +55,7 @@ mat-toolbar {
   color: white; /* fix: weiße Schrift auf dunklem Hintergrund */
   text-decoration: none;
   cursor: pointer;
+  font-family: 'Roboto', sans-serif;
 }
 
 /* Abstandhalter für Icons */
@@ -88,6 +89,7 @@ footer {
   width: 100%;
   background-color: #2E4F38;
   color: white;
+  font-family: 'Roboto', sans-serif;
   padding: 8px 0;
   text-align: center;
   z-index: 100;

@@ -2,6 +2,7 @@
 .impressum-title {
   font-size: 2.2rem;
   font-weight: 700;
+  font-family: 'Roboto', sans-serif;
   text-align: center;
   margin-top: 2.5rem;
   margin-bottom: 1.5rem;
@@ -11,6 +12,7 @@
 /* Firmen-Infos optisch hervorheben */
 .company-info {
   line-height: 1.8;
+  font-family: 'Roboto', sans-serif;
   font-size: 1.1rem;
   color: #333;
 }
@@ -19,6 +21,7 @@
 .email-link {
   color: #2E4F38;
   font-weight: 600;
+  font-family: 'Roboto', sans-serif;
   text-decoration: none;
 }
 
