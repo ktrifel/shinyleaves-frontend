@@ -70,7 +70,7 @@ mat-card-title{
 
 /* Inhalte */
 mat-card-content {
-  background-color: rgba(200, 200, 200, 0.3); /* sehr transparenter hellgrauer Hintergrund */
+  background-color: rgba(200, 200, 200, 0.2); /* sehr transparenter hellgrauer Hintergrund */
   padding: 0.5rem 0.75rem;
   font-family: 'Roboto', sans-serif;
   border-radius: 12px;
