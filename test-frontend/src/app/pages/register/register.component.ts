@@ -22,11 +22,12 @@ export class RegisterComponent {
   private router = inject(Router);
 
   form = this.fb.nonNullable.group({
-    name:     ['', Validators.required],
-    address:  ['', Validators.required],
-    email:    ['', [Validators.required, Validators.email]],
+    name: ['', Validators.required],
+    address: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required]
   });
+
 
   register(): void {
     if (this.form.invalid) return;
@@ -34,5 +35,9 @@ export class RegisterComponent {
     const userData = this.form.getRawValue();
     console.log('Registrierung erfolgreich:', userData);
     this.router.navigateByUrl('/login');
+  }
+
+  goToLogin(): void {
+    this.router.navigate(['/login']);
   }
 }
