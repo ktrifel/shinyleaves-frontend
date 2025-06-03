@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-impressum',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, MatIconModule],
   templateUrl: './impressum.component.html',
-  styleUrl: './impressum.component.css'
+  styleUrls: ['./impressum.component.css']
 })
-export class ImpressumComponent {
-
-}
+export class ImpressumComponent {}
