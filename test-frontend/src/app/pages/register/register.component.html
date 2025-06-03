@@ -1,1 +1,32 @@
-<p>register works!</p>
+
+<h2 class="title">Registrieren</h2>
+
+<form [formGroup]="form" (ngSubmit)="register()" class="register-form">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Adresse</mat-label>
+    <input matInput formControlName="address" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>E-Mail</mat-label>
+    <input matInput type="email" formControlName="email" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Passwort</mat-label>
+    <input matInput type="password" formControlName="password" />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+    Registrieren
+  </button>
+
+  <button mat-button (click)="goToLogin()">Zurück zum Login</button>
+
+</form>
