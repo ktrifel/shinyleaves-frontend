@@ -1,6 +1,6 @@
 <h2 class="title">Anmelden</h2>
 
-<form [formGroup]="form" (ngSubmit)="login()"> class="auth-form">
+<form [formGroup]="form" (ngSubmit)="login()" class="auth-form">
   <mat-form-field appearance="fill">
     <mat-label>E-Mail</mat-label>
     <input matInput formControlName="email" type="email" />

@@ -107,3 +107,75 @@ button:hover{
   border-radius: 4px;
   background-color: white;/* Optional: leicht abgerundete Ecken */
 }
+
+/* Bestätigungs-Animation für Warenkorb-Button */
+@keyframes addToCartSuccess {
+  0% { 
+    transform: scale(1); 
+    background-color: #8e0721; 
+  }
+  25% { 
+    transform: scale(0.95); 
+    background-color: #4CAF50; 
+  }
+  75% { 
+    transform: scale(1.05); 
+    background-color: #4CAF50; 
+  }
+  100% { 
+    transform: scale(1); 
+    background-color: #8e0721; 
+  }
+}
+
+/* Success State für Button */
+button.success-state {
+  background-color: #4CAF50 !important;
+  color: white !important;
+  transform: scale(0.98);
+  transition: all 0.3s ease !important;
+}
+
+/* Material Button Override - Forciert grünen Hintergrund */
+::ng-deep .mat-mdc-raised-button.success-state {
+  background-color: #4CAF50 !important;
+  background: #4CAF50 !important;
+  color: white !important;
+}
+
+::ng-deep .mat-mdc-raised-button.success-state .mdc-button__label {
+  color: white !important;
+}
+
+::ng-deep .mat-mdc-raised-button.success-state .mat-mdc-button-persistent-ripple {
+  background-color: #4CAF50 !important;
+}
+
+/* Fallback für alle Button-Typen */
+::ng-deep button[style*="4CAF50"] {
+  background-color: #4CAF50 !important;
+  background: #4CAF50 !important;
+  border-color: #4CAF50 !important;
+}
+
+/* Standard Button Styling */
+button {
+  background: #8e0721;
+  color: #fff;
+  padding: 0.55rem 1.2rem;
+  border-radius: 22px;
+  font-weight: 700;
+  text-transform: none;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover:not([disabled]) {
+  background: #ab1a34;
+}
+
+button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.9;
+}
