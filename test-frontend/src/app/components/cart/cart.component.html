@@ -1,39 +1,81 @@
-<h2>Dein Warenkorb</h2>
+<h2>WARENKORB</h2>
 
 <section *ngIf="cartItems.length; else empty">
-  <table>
-    <thead>
-      <tr>
-        <th>Produkt</th><th>Menge</th><th>Einzel­preis</th><th>Gesamt</th><th></th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let i of cartItems">
-        <td>{{ i.name }}</td>
-
-        <td>
-          <button (click)="decrease(i)">‑</button>
-          {{ i.quantity }}
-          <button (click)="increase(i)">+</button>
-        </td>
-
-        <td>{{ i.price           | currency:'EUR' }}</td>
-        <td>{{ i.price*i.quantity| currency:'EUR' }}</td>
-        <td><button (click)="remove(i)">✕</button></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="total">
-    <strong>Gesamtsumme:</strong>
-    {{ totalPrice | currency:'EUR' }}
+  
+  <!-- Produktliste -->
+  <div class="cart-items">
+    <div class="cart-item" *ngFor="let i of cartItems">
+      <div class="item-image">
+        <img [src]="i.image || 'assets/images/' + i.slug + '.png'"
+             alt="{{i.name}}"
+             (error)="onImgError($event)">
+      </div>
+      
+      <div class="item-details">
+        <div class="item-header">
+          <span class="item-number">Pos. {{ cartItems.indexOf(i) + 1 }}</span>
+          <button class="remove-btn" (click)="remove(i)">✕</button>
+        </div>
+        
+        <h3 class="item-name">{{ i.name }}</h3>
+        <div class="item-id">Art-Nr: {{ i.id }}</div>
+        <div class="item-price">{{ i.price | currency:'EUR' }}</div>
+        <div class="item-status">Auf Lager</div>
+        
+        <div class="quantity-controls">
+          <label>Anzahl</label>
+          <div class="quantity-input">
+            <button (click)="decrease(i)">-</button>
+            <input type="number" 
+                   [(ngModel)]="i.quantity" 
+                   min="1" 
+                   max="999"
+                   (blur)="onQuantityChange(i)"
+                   (keyup.enter)="onQuantityChange(i)">
+            <button (click)="increase(i)">+</button>
+          </div>
+        </div>
+        
+        <div class="item-total">{{ (i.price * i.quantity) | currency:'EUR' }}</div>
+        <button class="wishlist-btn">Auf die Merkliste verschieben</button>
+      </div>
+    </div>
   </div>
 
-  <nav class="actions">
-    <button (click)="clear()">Warenkorb leeren</button>
-    <button (click)="goCheckout()">Zur Kasse</button>
-  </nav>
+  <!-- Zusammenfassung Sidebar -->
+  <div class="cart-summary">
+    <h3>Zwischensumme</h3>
+    <div class="summary-line">
+      <span>{{ totalPrice | currency:'EUR' }}</span>
+    </div>
+    
+    <div class="shipping-info">
+      <div class="shipping-line">
+        <span>zzgl. Versandkosten</span>
+        <span>{{ 7.99 | currency:'EUR' }}</span>
+      </div>
+      <div class="shipping-options">
+        <select>
+          <option>oder Abholung möglich (€ 0,00)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="total-section">
+      <h3>Gesamtsumme</h3>
+      <div class="total-price">{{ (totalPrice + 7.99) | currency:'EUR' }}</div>
+      <div class="vat-info">Enthaltene MwSt. 19%: {{ vatAmount | currency:'EUR' }}</div>
+    </div>
+
+    <div class="checkout-actions">
+      <button class="continue-shopping" (click)="continueShopping()">Weiter einkaufen</button>
+      <button class="continue-shopping" 
+              (click)="clearCart($event)"
+              #clearButton>Warenkorb leeren</button>
+      <button class="checkout-btn" (click)="goCheckout()">Zur Kasse</button>
+    </div>
+  </div>
+
 </section>
 
 <ng-template #empty>

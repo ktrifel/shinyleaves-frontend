@@ -3,17 +3,27 @@
 
 <div class="product-grid">
   <mat-card class="product-card" *ngFor="let product of products">
+    <img mat-card-image
+         [src]="'assets/images/' + product.slug + '.png'"
+         alt="{{ product.name }}"
+         (error)="onImgError($event)">
+
     <mat-card-title>{{ product.name }}</mat-card-title>
     <mat-card-content>
-      <p><strong>ID (p_id):</strong> {{ product.p_id }}</p>
-      <p><strong>Preis:</strong>     {{ product.price   | currency:'EUR' }}</p>
-      <p><strong>Slug:</strong>      {{ product.slug    }}</p>
-      <p><strong>W_ID:</strong>      {{ product.w_id    }}</p>
+      <p><strong>Preis:</strong> {{ product.price | currency:'EUR' }}</p>
+      <p><strong>Genetik:</strong> {{ product.genetic }}</p>
+      <p><strong>THC:</strong> {{ product.thc }}%</p>
+      <p><strong>CBD:</strong> {{ product.cbd }}%</p>
+      <p><strong>Effekt:</strong> {{ product.effect }}</p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="addToCart(product)">
+      <button mat-raised-button 
+              color="primary" 
+              (click)="addToCart(product, $event)"
+              type="button">
         In den Warenkorb
       </button>
     </mat-card-actions>
   </mat-card>
 </div>
+

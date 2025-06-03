@@ -1,20 +1,17 @@
 /* ------------- Global Basics ------------- */
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
- /* src/styles.css – nur relevanter Zusatz */
-html, body            { height: 100%; margin: 0; }
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: rgba(162, 190, 167, 0.17); /* leicht transparenter Hintergrund */
+  backdrop-filter: blur(10px); /* Weichzeichnung */
+  font-family: 'Segoe UI', sans-serif;
+}
 
-mat-sidenav-container { height: 100vh; }      /* Voll­schirm */
-mat-sidenav-content   { display: flex; flex-direction: column; height: 100%; }
-
-main                  { flex: 1 0 auto; padding: 24px; }
-footer                { text-align: center; padding: 8px 0; }
-
-.spacer               { flex: 1 1 auto; }     /* schiebt Icons nach rechts */
-
-
-/* ------------- Layout‑Helfer ------------- */
-/* App‑Root & Angular‑Material Container sollen die volle Höhe einnehmen */
+/* ------------- Layout Container ------------- */
 app-root,
 mat-sidenav-container,
 mat-sidenav-content {
@@ -23,9 +20,72 @@ mat-sidenav-content {
   height: 100%;
 }
 
-/* Haupt­bereich wächst, Header / Footer bleiben fix */
-/* merged main selector to avoid duplication; using padding: 24px from above */
-header,footer{ padding: 8px 16px; }
+mat-sidenav-container {
+  height: 100vh;
+}
 
-/* Optional: ein breiterer Z‑Index für Overlay‑Dialogs etc. */
-.cdk-overlay-container, .cdk-overlay-pane { z-index: 1000; }
+mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ------------- Header (mat-toolbar) ------------- */
+mat-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 56px;
+  background-color: #2E4F38;   /* dunkles Grün */
+  color: #333333;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);  /* leichte Schatten-Absetzung */
+}
+
+/* Branding links */
+.brand {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333333;
+}
+
+/* Platzhalter, um Icons nach rechts zu schieben */
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Icons (Cart, Account) weiß färben */
+mat-icon {
+  color: white;
+}
+
+/* ------------- Hauptbereich (main) ------------- */
+main {
+  flex: 1 0 auto;
+  padding-top: 56px;     /* Platz für fixierten Header */
+  padding-bottom: 40px;  /* Platz für fixierten Footer */
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* ------------- Footer ------------- */
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #2E4F38;
+  color: white;
+  padding: 8px 0;
+  text-align: center;
+  z-index: 100;
+}
+
+/* ------------- Sonstiges (z.B. Overlay) ------------- */
+.cdk-overlay-container,
+.cdk-overlay-pane {
+  z-index: 1000;
+}
