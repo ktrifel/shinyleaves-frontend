@@ -49,7 +49,7 @@
    ——————————————————————————————————————————— */
 .product-card{
   background:#ffffff;
-  color:#ffffff;
+  color:#333333;
   border-radius:12px;
   padding:16px;
   transition:transform .15s ease, box-shadow .15s ease;
@@ -82,14 +82,14 @@ mat-card-actions{
 /* Warenkorb Button */
 button{
   background:#8e0721;
-  color:#fff;
+  color:#333333;
   padding:.55rem 1.2rem;
   border-radius:22px;
   font-weight:700;
   text-transform:none;
 }
 button:hover{
-  background:#ab1a34;
+  background:rgb(80, 138, 98, 1);
 }
 .product-card img {
   width: 100%;
