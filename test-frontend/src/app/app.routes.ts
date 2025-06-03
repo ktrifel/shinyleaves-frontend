@@ -2,7 +2,6 @@ import { Routes, provideRouter } from '@angular/router';
 import { AuthGuard } from './core/auth.guard';
 import { ApplicationConfig } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { ImpressumComponent } from './pages/impressum/impressum.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
@@ -33,7 +32,6 @@ export const routes: Routes = [
       .then(m => m.ImpressumComponent)
   },
 
-  
   { path: '**', redirectTo: '/products' }
 ];
 

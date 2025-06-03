@@ -5,30 +5,25 @@
    • nimmt die komplette Breite ein
    • füllt – abzüglich Werkzeugleiste – die ganze Höhe
    ——————————————————————————————————————————— */
-:host {
-  display: block;
-  min-height: calc(100vh - 64px); /* 64 px = Toolbar-Höhe */
-  box-sizing: border-box;
-  padding: 0 2rem 4rem;
-  color: #333333;
-  overflow-x: hidden;
+:host{
+  display:block;
+  min-height:calc(100vh - 64px); /* 64 px = Material Toolbar Höhe  */
+  box-sizing:border-box;
+  padding:0 2rem 4rem;
+  color:#333333;
+  overflow-x:hidden;            /* verhindert horizontales Scrollen */
 }
 
 /* ———————————————————————————————————————————
    Überschrift
    ——————————————————————————————————————————— */
-.page-title {
-  position: sticky;
-  top: 56px; /* exakt unterhalb der mat-toolbar */
-  z-index: 99;
-  margin: 0;
-  padding: 1.5rem 0 0.5rem 0;
-  text-align: center;
-  font-size: 4rem;
-  font-weight: 700;
+.page-title{
+  margin:2.5rem 0 1.75rem;
+  text-align:center;
+  font-size:2.5rem;
+  font-weight:700;
   font-family: 'Roboto', sans-serif;
-  color: #508a62;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  color:rgb(80, 138, 98, 1);               /* dein Grün */
 }
 
 /* ———————————————————————————————————————————
@@ -36,20 +31,20 @@
    • beliebig viele Spalten, min 280 px
    • zentriert, mit Abständen
    ——————————————————————————————————————————— */
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
-  max-width: 1400px;
-  margin: 5rem auto 0 auto;
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:24px;
+  max-width:1400px;
+  margin:0 auto;               /* zentriert */
 }
 
 /* ———————————————————————————————————————————
    Produkt Karte
    ——————————————————————————————————————————— */
 .product-card{
-  background:#ffffff;
-  color:#333333;
+  background:#222;
+  color:#fff;
   border-radius:12px;
   padding:16px;
   transition:transform .15s ease, box-shadow .15s ease;
@@ -62,20 +57,15 @@
 /* Titel */
 mat-card-title{
   font-size:1.25rem;
-  font-family: 'Roboto', sans-serif;
   font-weight:700;
   margin-bottom:.25rem;
-  color: #508a62;
 }
 
 /* Inhalte */
-mat-card-content {
-  background-color: rgba(200, 200, 200, 0.2); /* sehr transparenter hellgrauer Hintergrund */
-  padding: 0.5rem 0.75rem;
-  font-family: 'Roboto', sans-serif;
-  border-radius: 12px;
-  backdrop-filter: blur(2px);
-} 
+mat-card-content p{
+  margin:.2rem 0;
+  font-size:.95rem;
+}
 
 /* Buttonleiste */
 mat-card-actions{
@@ -85,20 +75,17 @@ mat-card-actions{
 }
 
 /* Warenkorb Button */
-button {
-  background: #8e0721;
-  color: #333333;
-  padding: .55rem 1.2rem;
-  border-radius: 22px;
-  font-weight: 700;
-  font-family: 'Roboto', sans-serif;
-  text-transform: none;
-  border: 2px solid #508a62; /* <- grüne Umrandung */
+button{
+  background:#8e0721;
+  color:#fff;
+  padding:.55rem 1.2rem;
+  border-radius:22px;
+  font-weight:700;
+  text-transform:none;
+  transition: all 0.2s ease;
 }
-
 button:hover{
-  background:#508a62;
-  color: #ffffff
+  background:#ab1a34;
 }
 .product-card img {
   width: 100%;
