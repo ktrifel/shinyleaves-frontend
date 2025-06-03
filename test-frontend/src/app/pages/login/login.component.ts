@@ -11,6 +11,7 @@ import { MatInputModule     } from '@angular/material/input';
 import { MatButtonModule    } from '@angular/material/button';
 
 import { AuthService } from '../../core/auth.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -22,8 +23,10 @@ import { AuthService } from '../../core/auth.service';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    RouterModule
   ]
+
 })
 export class LoginComponent {
 
