@@ -24,4 +24,5 @@ import { MatButtonModule }              from '@angular/material/button';
 })
 export class AppComponent {
   @ViewChild('drawer') drawer!: MatSidenav;
+  title: any;
 }
