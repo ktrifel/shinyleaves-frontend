@@ -14,17 +14,9 @@
       <span class="brand">shinyleaves</span>
       <span class="spacer"></span>
 
-      <a mat-icon-button 
-         [routerLink]="['/cart']"
-         [matBadge]="cartItemCount" 
-         [matBadgeHidden]="cartItemCount === 0"
-         matBadgeColor="warn"
-         matBadgeSize="small">
-        <mat-icon>shopping_cart</mat-icon>
-      </a>
-      <a mat-icon-button [routerLink]="['/account']">
-        <mat-icon>account_circle</mat-icon>
-      </a>
+
+      <a mat-icon-button [routerLink]="['/cart']"><mat-icon>shopping_cart</mat-icon></a>
+      <button mat-button [routerLink]="['/login']">Login</button>
     </mat-toolbar>
 
     <!-- Dynamischer Content -->
@@ -34,6 +26,8 @@
 
     <!-- Fixierter Footer -->
     <footer>© shinyleaves</footer>
+
+
 
   </mat-sidenav-content>
 </mat-sidenav-container>
