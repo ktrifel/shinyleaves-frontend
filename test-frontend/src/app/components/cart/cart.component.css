@@ -144,16 +144,19 @@
 
 /* Spezielle Styling für den Checkout-Button */
 .checkout-btn {
-  background: #8e0721 !important;  /* Überschreibt das vorherige Styling */
+  background: #508a62 !important;          /* Grüner Hintergrund */
   color: #fff !important;
-  padding: 0.55rem 1.2rem !important;
-  border-radius: 22px !important;
-  font-weight: 700 !important;
-  text-transform: none !important;
+  padding: 0.55rem 1.2rem !important;      /* Gleiche Padding wie Produktkarten-Buttons */
+  border: none !important;
+  border-radius: 22px !important;          /* Gleiche Rundung wie Produktkarten-Buttons */
+  cursor: pointer !important;
+  font-weight: 700 !important;             /* Gleiche Schriftdicke */
+  text-transform: none !important;         /* Keine Großbuchstaben */
+  transition: background-color 0.3s ease !important;
 }
 
 .checkout-btn:hover {
-  background: #ab1a34 !important;
+  background: #3d6b4a !important;          /* Dunkleres Grün beim Hover */
 }
 
 h2 {
@@ -390,30 +393,41 @@ section {
 
 .continue-shopping {
   background: #fff;
-  border: 1px solid #8e0721;
-  color: #8e0721;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
+  border: 1px solid #508a62;    /* Grüne Umrandung */
+  color: #508a62;               /* Grüner Text */
+  padding: 0.55rem 1.2rem;      /* Gleiche Padding wie Produktkarten-Buttons */
+  border-radius: 22px;          /* Gleiche Rundung wie Produktkarten-Buttons */
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 700;             /* Gleiche Schriftdicke */
+  text-transform: none;         /* Keine Großbuchstaben */
+  transition: all 0.3s ease;
 }
 
-.continue-shopping:hover {
-  background: #f5f5f5;
+.continue-shopping:hover:not([disabled]) {
+  background: #f1f8e9;          /* Hellgrüner Hintergrund beim Hover */
+  border-color: #3d6b4a;        /* Dunkleres Grün beim Hover */
+  color: #3d6b4a;
+}
+
+.continue-shopping[disabled] {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .checkout-btn {
-  background: #8e0721;
-  color: #fff;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
+  background: #508a62 !important;          /* Grüner Hintergrund */
+  color: #fff !important;
+  padding: 0.55rem 1.2rem !important;      /* Gleiche Padding wie Produktkarten-Buttons */
+  border: none !important;
+  border-radius: 22px !important;          /* Gleiche Rundung wie Produktkarten-Buttons */
+  cursor: pointer !important;
+  font-weight: 700 !important;             /* Gleiche Schriftdicke */
+  text-transform: none !important;         /* Keine Großbuchstaben */
+  transition: background-color 0.3s ease !important;
 }
 
 .checkout-btn:hover {
-  background: #ab1a34;
+  background: #3d6b4a !important;          /* Dunkleres Grün beim Hover */
 }
 
 /* Responsive */

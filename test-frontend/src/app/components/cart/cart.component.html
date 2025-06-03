@@ -69,6 +69,9 @@
 
     <div class="checkout-actions">
       <button class="continue-shopping" (click)="continueShopping()">Weiter einkaufen</button>
+      <button class="continue-shopping" 
+              (click)="clearCart($event)"
+              #clearButton>Warenkorb leeren</button>
       <button class="checkout-btn" (click)="goCheckout()">Zur Kasse</button>
     </div>
   </div>
