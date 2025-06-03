@@ -6,6 +6,20 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
+.page-title {
+  position: sticky;
+  top: 56px; /* exakt unterhalb der mat-toolbar */
+  z-index: 99;
+  margin: 0;
+  padding: 1.5rem 0 0.5rem 0;
+  text-align: center;
+  font-size: 4rem;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  color: #508a62;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
 .cart-title {
   text-align: center;
   font-size: 2rem;
