@@ -90,6 +90,16 @@ footer {
   z-index: 100;
 }
 
+.footer-link {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
 /* ------------- Sonstiges (z.B. Overlay) ------------- */
 .cdk-overlay-container,
 .cdk-overlay-pane {
