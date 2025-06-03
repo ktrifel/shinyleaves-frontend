@@ -22,7 +22,6 @@
         <td>
           <div><strong>{{ i.name }}</strong></div>
           <div *ngIf="i.slug">Slug: {{i.slug}}</div>
-          <div *ngIf="i.w_id">W_ID: {{i.w_id}}</div>
         </td>
         <td>
           <button (click)="decrease(i)">‑</button>
@@ -46,8 +45,8 @@
   </div>
 
   <nav class="actions">
-    <button (click)="clear()">Warenkorb leeren</button>
-    <button (click)="goCheckout()">Zur Kasse</button>
+    <button class="clear-btn" (click)="clear()">Warenkorb leeren</button>
+    <button class="checkout-btn" (click)="goCheckout()">Zur Kasse</button>
   </nav>
 </section>
 

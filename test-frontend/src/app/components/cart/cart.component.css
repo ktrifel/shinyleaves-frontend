@@ -117,3 +117,41 @@
   margin-top: 1.5rem;
   font-size: 1.15rem;
 }
+
+/* Aktionen am Ende - nach rechts verschieben */
+.actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;  /* Buttons nach rechts */
+  gap: 1rem;                  /* Abstand zwischen den Buttons */
+}
+
+.actions button {
+  background: #8e0721;        /* Gleiche Farbe wie Produktkarten-Buttons */
+  color: #fff;
+  padding: 0.55rem 1.2rem;    /* Gleiche Padding wie Produktkarten-Buttons */
+  border: none;
+  border-radius: 22px;        /* Gleiche Rundung wie Produktkarten-Buttons */
+  font-weight: 700;           /* Gleiche Schriftdicke */
+  text-transform: none;       /* Keine Großbuchstaben */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.actions button:hover {
+  background: #ab1a34;        /* Gleicher Hover-Effekt */
+}
+
+/* Spezielle Styling für den Checkout-Button */
+.checkout-btn {
+  background: #8e0721 !important;  /* Überschreibt das vorherige Styling */
+  color: #fff !important;
+  padding: 0.55rem 1.2rem !important;
+  border-radius: 22px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+}
+
+.checkout-btn:hover {
+  background: #ab1a34 !important;
+}

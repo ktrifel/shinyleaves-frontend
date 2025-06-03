@@ -14,7 +14,6 @@ interface CartItem {
   quantity: number;
   image?:   string;   // Bild-URL
   slug?:    string;
-  w_id?:    string;
 }
 
 @Component({
