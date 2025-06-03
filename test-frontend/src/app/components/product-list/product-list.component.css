@@ -67,10 +67,12 @@ mat-card-title{
 }
 
 /* Inhalte */
-mat-card-content p{
-  margin:.2rem 0;
-  font-size:.95rem;
-}
+mat-card-content {
+  background-color: rgba(200, 200, 200, 0.1); /* sehr transparenter hellgrauer Hintergrund */
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  backdrop-filter: blur(2px);
+} 
 
 /* Buttonleiste */
 mat-card-actions{
