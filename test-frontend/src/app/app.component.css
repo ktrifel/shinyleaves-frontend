@@ -11,7 +11,7 @@
 
 .mat-toolbar {
   background-color: #2E7D32;
-  color: white;
+  color: #333333;
 }
 
 .spacer {
@@ -30,7 +30,7 @@ mat-list-item:hover {
 }
 
 mat-sidenav-content {
-  background-color: #111111;
+  /* background-color: #111111; */
   display: flex;
   justify-content: center;
   padding: 2rem;
