@@ -29,8 +29,22 @@ export class ProductListComponent implements OnInit {
   }
 
   addToCart(product: any) {
-    const cart = JSON.parse(localStorage.getItem('cart') ?? '[]');
-    cart.push(product);
+    // Nutze p_id als eindeutige ID
+    const cart: any[] = JSON.parse(localStorage.getItem('cart') ?? '[]');
+    const idx = cart.findIndex(item => item.id === product.p_id);
+
+    if (idx > -1) {
+      cart[idx].quantity += 1;
+    } else {
+      cart.push({
+        id:       product.p_id,
+        name:     product.name,
+        price:    product.price,
+        quantity: 1,
+        image:    `assets/images/${product.slug}.png`
+      });
+    }
+
     localStorage.setItem('cart', JSON.stringify(cart));
     alert(`${product.name} wurde dem Warenkorb hinzugefügt.`);
   }
