@@ -3,6 +3,7 @@
 ─────────────────────────────────── */
 import { Component, inject } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms'; // Für ngModel hinzufügen
 import { Router }            from '@angular/router';
 import { AuthService }       from '../../core/auth.service';
 
@@ -21,7 +22,7 @@ interface CartItem {
   standalone: true,
   templateUrl: './cart.component.html',
   styleUrls:  ['./cart.component.css'],
-  imports:    [CommonModule, CurrencyPipe]
+  imports:    [CommonModule, CurrencyPipe, FormsModule] // FormsModule hinzufügen
 })
 export class CartComponent {
 
@@ -75,5 +76,14 @@ export class CartComponent {
         ['/login'], { queryParams: { redirect: 'checkout' } }
       );
     }
+  }
+
+  continueShopping(): void {
+    this.router.navigate(['/products']);
+  }
+
+  onImgError(event: Event) {
+    const target = event.target as HTMLImageElement;
+    target.src = 'assets/images/placeholder.jpg';
   }
 }
