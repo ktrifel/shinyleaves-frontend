@@ -281,10 +281,29 @@ section {
 }
 
 .quantity-input input {
-  width: 50px;
+  width: 60px;                    /* Etwas breiter für 3-stellige Zahlen */
   text-align: center;
   border: none;
   padding: 0.5rem;
+  font-size: 1rem;
+  background: #fff;
+  outline: none;                  /* Entfernt Standard-Fokus-Rahmen */
+}
+
+.quantity-input input:focus {
+  background: #f8f9fa;           /* Leichte Hintergrundänderung bei Fokus */
+  box-shadow: inset 0 0 0 2px #007bff; /* Blauer Rahmen bei Fokus */
+}
+
+/* Pfeile bei number input entfernen (optional) */
+.quantity-input input::-webkit-outer-spin-button,
+.quantity-input input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantity-input input[type=number] {
+  -moz-appearance: textfield;    /* Firefox */
 }
 
 .item-total {

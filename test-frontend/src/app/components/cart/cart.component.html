@@ -26,7 +26,12 @@
           <label>Anzahl</label>
           <div class="quantity-input">
             <button (click)="decrease(i)">-</button>
-            <input type="number" [(ngModel)]="i.quantity" min="1" readonly>
+            <input type="number" 
+                   [(ngModel)]="i.quantity" 
+                   min="1" 
+                   max="999"
+                   (blur)="onQuantityChange(i)"
+                   (keyup.enter)="onQuantityChange(i)">
             <button (click)="increase(i)">+</button>
           </div>
         </div>

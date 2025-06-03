@@ -54,16 +54,43 @@ export class CartComponent {
   }
 
   /* ────────── Aktionen ────────── */
-  increase(i: CartItem): void { i.quantity++; this.save(); }
+  increase(i: CartItem): void { 
+    i.quantity++; 
+    this.save(); 
+  }
+  
   decrease(i: CartItem): void {
     i.quantity > 1 ? i.quantity-- : this.remove(i);
     this.save();
   }
+  
+  // Neue Methode für direkte Eingabe
+  onQuantityChange(i: CartItem): void {
+    // Sicherstellen, dass die Menge mindestens 1 ist
+    if (i.quantity < 1 || isNaN(i.quantity)) {
+      i.quantity = 1;
+    }
+    
+    // Maximale Menge begrenzen (optional)
+    if (i.quantity > 999) {
+      i.quantity = 999;
+    }
+    
+    // Dezimalstellen entfernen (falls eingegeben)
+    i.quantity = Math.floor(i.quantity);
+    
+    this.save();
+  }
+  
   remove(i: CartItem): void {
     this.cartItems = this.cartItems.filter(x => x !== i);
     this.save();
   }
-  clear(): void { this.cartItems = []; this.save(); }
+  
+  clear(): void { 
+    this.cartItems = []; 
+    this.save(); 
+  }
 
   /** Weiter → Checkout (nur wenn nicht leer) */
   goCheckout(): void {
