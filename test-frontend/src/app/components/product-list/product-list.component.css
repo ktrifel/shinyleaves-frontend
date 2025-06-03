@@ -27,7 +27,7 @@
   font-size: 4rem;
   font-weight: 700;
   font-family: 'Roboto', sans-serif;
-  color: rgb(80, 138, 98, 1);
+  color: #508a62;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
@@ -80,16 +80,19 @@ mat-card-actions{
 }
 
 /* Warenkorb Button */
-button{
-  background:#8e0721;
-  color:#333333;
-  padding:.55rem 1.2rem;
-  border-radius:22px;
-  font-weight:700;
-  text-transform:none;
+button {
+  background: #8e0721;
+  color: #333333;
+  padding: .55rem 1.2rem;
+  border-radius: 22px;
+  font-weight: 700;
+  text-transform: none;
+  border: 2px solid #508a62; /* <- grüne Umrandung */
 }
+
 button:hover{
-  background:rgb(80, 138, 98, 1);
+  background:#508a62;
+  color: #ffffff
 }
 .product-card img {
   width: 100%;
