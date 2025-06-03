@@ -3,7 +3,6 @@
 ─────────────────────────────────── */
 import { Component, inject } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Für ngModel hinzufügen
 import { Router }            from '@angular/router';
 import { AuthService }       from '../../core/auth.service';
 
@@ -15,6 +14,7 @@ interface CartItem {
   quantity: number;
   image?:   string;   // Bild-URL
   slug?:    string;
+  w_id?:    string;
 }
 
 @Component({
@@ -22,7 +22,7 @@ interface CartItem {
   standalone: true,
   templateUrl: './cart.component.html',
   styleUrls:  ['./cart.component.css'],
-  imports:    [CommonModule, CurrencyPipe, FormsModule] // FormsModule hinzufügen
+  imports:    [CommonModule, CurrencyPipe]
 })
 export class CartComponent {
 
@@ -54,43 +54,16 @@ export class CartComponent {
   }
 
   /* ────────── Aktionen ────────── */
-  increase(i: CartItem): void { 
-    i.quantity++; 
-    this.save(); 
-  }
-  
+  increase(i: CartItem): void { i.quantity++; this.save(); }
   decrease(i: CartItem): void {
     i.quantity > 1 ? i.quantity-- : this.remove(i);
     this.save();
   }
-  
-  // Neue Methode für direkte Eingabe
-  onQuantityChange(i: CartItem): void {
-    // Sicherstellen, dass die Menge mindestens 1 ist
-    if (i.quantity < 1 || isNaN(i.quantity)) {
-      i.quantity = 1;
-    }
-    
-    // Maximale Menge begrenzen (optional)
-    if (i.quantity > 999) {
-      i.quantity = 999;
-    }
-    
-    // Dezimalstellen entfernen (falls eingegeben)
-    i.quantity = Math.floor(i.quantity);
-    
-    this.save();
-  }
-  
   remove(i: CartItem): void {
     this.cartItems = this.cartItems.filter(x => x !== i);
     this.save();
   }
-  
-  clear(): void { 
-    this.cartItems = []; 
-    this.save(); 
-  }
+  clear(): void { this.cartItems = []; this.save(); }
 
   /** Weiter → Checkout (nur wenn nicht leer) */
   goCheckout(): void {
@@ -103,14 +76,5 @@ export class CartComponent {
         ['/login'], { queryParams: { redirect: 'checkout' } }
       );
     }
-  }
-
-  continueShopping(): void {
-    this.router.navigate(['/products']);
-  }
-
-  onImgError(event: Event) {
-    const target = event.target as HTMLImageElement;
-    target.src = 'assets/images/placeholder.jpg';
   }
 }

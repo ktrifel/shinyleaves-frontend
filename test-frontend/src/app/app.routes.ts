@@ -7,6 +7,7 @@ import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { AuthGuard } from './core/auth.guard';
 import { ApplicationConfig } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { ImpressumComponent } from './pages/impressum/impressum.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'products', pathMatch: 'full' },
@@ -15,6 +16,7 @@ export const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'impressum', component: ImpressumComponent },
   { path: '**', redirectTo: 'products' }
 ];
 
