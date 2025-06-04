@@ -191,12 +191,81 @@ section {
   border: 1px solid #ddd;
   border-radius: 8px;
   background: #fff;
-  transition: transform 0.15s ease, box-shadow 0.15s ease; /* Animation hinzugefügt */
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.3s ease, background-color 0.3s ease;
 }
 
 .cart-item:hover {
   transform: scale(1.03);
   box-shadow: 0 6px 30px rgba(0, 0, 0, 0.55);
+}
+
+/* Lösch-Animation */
+.cart-item.removing {
+  animation: slideOutLeft 0.5s ease-in-out forwards;
+  background-color: rgba(142, 7, 33, 0.1) !important;
+  border-color: rgba(142, 7, 33, 0.3) !important;
+}
+
+@keyframes slideOutLeft {
+  0% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+  70% {
+    transform: translateX(-50px) scale(0.95);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateX(-100%) scale(0.8);
+    opacity: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+/* Smooth nach oben Animation für verbleibende Items */
+.cart-item.moving-up {
+  animation: moveUp 0.3s ease-out;
+}
+
+@keyframes moveUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Preis-Update Animation */
+.item-total, .summary-line span, .total-price, .vat-info {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.price-updating {
+  transform: scale(1.1);
+  color: #508a62 !important;
+  font-weight: bold;
+}
+
+@keyframes priceUpdate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+    color: #508a62;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.price-changed {
+  animation: priceUpdate 0.4s ease-in-out;
 }
 
 .item-image {

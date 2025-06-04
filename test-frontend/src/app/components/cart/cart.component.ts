@@ -55,15 +55,49 @@ export class CartComponent {
 
   /* ────────── Aktionen ────────── */
   increase(i: CartItem): void { 
-    i.quantity++; 
+    i.quantity++;
+    this.triggerPriceAnimation();
     this.save(); 
   }
   
   decrease(i: CartItem): void {
-    i.quantity > 1 ? i.quantity-- : this.remove(i);
-    this.save();
+    if (i.quantity > 1) {
+      i.quantity--;
+      this.triggerPriceAnimation();
+      this.save();
+    } else {
+      this.remove(i);
+    }
   }
-  
+
+  remove(i: CartItem): void {
+    const itemElement = document.querySelector(`.cart-item:nth-child(${this.cartItems.indexOf(i) + 1})`);
+    
+    if (itemElement) {
+      // Lösch-Animation starten
+      itemElement.classList.add('removing');
+      
+      // Nach Animation ausführen
+      setTimeout(() => {
+        this.cartItems = this.cartItems.filter(x => x !== i);
+        this.save();
+        
+        // Verbleibende Items nach oben animieren
+        setTimeout(() => {
+          const remainingItems = document.querySelectorAll('.cart-item');
+          remainingItems.forEach(item => {
+            item.classList.add('moving-up');
+            setTimeout(() => item.classList.remove('moving-up'), 300);
+          });
+        }, 50);
+      }, 500);
+    } else {
+      // Fallback ohne Animation
+      this.cartItems = this.cartItems.filter(x => x !== i);
+      this.save();
+    }
+  }
+
   // Neue Methode für direkte Eingabe
   onQuantityChange(i: CartItem): void {
     // Sicherstellen, dass die Menge mindestens 1 ist
@@ -79,14 +113,36 @@ export class CartComponent {
     // Dezimalstellen entfernen (falls eingegeben)
     i.quantity = Math.floor(i.quantity);
     
+    this.triggerPriceAnimation();
     this.save();
   }
-  
-  remove(i: CartItem): void {
-    this.cartItems = this.cartItems.filter(x => x !== i);
-    this.save();
+
+  private triggerPriceAnimation(): void {
+    // Alle Preis-Elemente animieren
+    const priceElements = document.querySelectorAll('.item-total, .summary-line span, .total-price, .vat-info');
+    
+    priceElements.forEach(element => {
+      element.classList.add('price-changed');
+      setTimeout(() => element.classList.remove('price-changed'), 400);
+    });
   }
-  
+
+  clearCart(): void {
+    // Alle Items mit Animation entfernen
+    const items = document.querySelectorAll('.cart-item');
+    
+    items.forEach((item, index) => {
+      setTimeout(() => {
+        item.classList.add('removing');
+      }, index * 100); // Gestaffelte Animation
+    });
+
+    // Nach Animation leeren
+    setTimeout(() => {
+      this.clear();
+    }, items.length * 100 + 500);
+  }
+
   clear(): void { 
     this.cartItems = []; 
     this.save(); 
@@ -103,10 +159,6 @@ export class CartComponent {
         ['/login'], { queryParams: { redirect: 'checkout' } }
       );
     }
-  }
-
-  clearCart(): void {
-    this.clear();
   }
 
   continueShopping(): void {
