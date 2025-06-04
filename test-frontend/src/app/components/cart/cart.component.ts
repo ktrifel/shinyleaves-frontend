@@ -105,6 +105,10 @@ export class CartComponent {
     }
   }
 
+  clearCart(): void {
+    this.clear();
+  }
+
   continueShopping(): void {
     this.router.navigate(['/products']);
   }

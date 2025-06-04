@@ -147,9 +147,13 @@
   background: #8e0721 !important;  /* Überschreibt das vorherige Styling */
   color: #fff !important;
   padding: 0.55rem 1.2rem !important;
+  border: none !important;
   border-radius: 22px !important;
   font-weight: 700 !important;
   text-transform: none !important;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;             /* Volle Breite */
 }
 
 .checkout-btn:hover {
@@ -382,38 +386,67 @@ section {
 }
 
 .checkout-actions {
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-top: 2rem;
+  width: 100%;
 }
 
+/* Weiter einkaufen Button - weiß mit grünem Rand */
 .continue-shopping {
   background: #fff;
-  border: 1px solid #8e0721;
-  color: #8e0721;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
+  color: #508a62;
+  border: 2px solid #508a62;
+  padding: 0.55rem 1.2rem;
+  border-radius: 22px;
+  font-weight: 700;
+  text-transform: none;
   cursor: pointer;
-  font-weight: 500;
+  transition: all 0.2s ease;
+  width: 100%;
 }
 
 .continue-shopping:hover {
-  background: #f5f5f5;
+  background: #508a62;
+  color: #fff;
 }
 
-.checkout-btn {
+/* Warenkorb leeren Button - weiß mit rotem Rand */
+.clear-cart {
+  background: #fff;
+  color: #8e0721;
+  border: 2px solid #8e0721;
+  padding: 0.55rem 1.2rem;
+  border-radius: 22px;
+  font-weight: 700;
+  text-transform: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.clear-cart:hover {
   background: #8e0721;
   color: #fff;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 4px;
+}
+
+/* Zur Kasse Button - grün statt rot */
+.checkout-btn {
+  background: #508a62 !important;
+  color: #fff !important;
+  padding: 0.55rem 1.2rem !important;
+  border: none !important;
+  border-radius: 22px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
   cursor: pointer;
-  font-weight: bold;
+  transition: background-color 0.2s ease;
+  width: 100%;
 }
 
 .checkout-btn:hover {
-  background: #ab1a34;
+  background: #3f6b4f !important;
 }
 
 /* Responsive */
