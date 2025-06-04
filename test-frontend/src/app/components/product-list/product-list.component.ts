@@ -53,10 +53,10 @@ export class ProductListComponent implements OnInit {
 
     localStorage.setItem('cart', JSON.stringify(cart));
     
-    // Button-Feedback nach 1.5 Sekunden zurücksetzen
+    // Button-Feedback nach 800ms zurücksetzen (vorher 1500ms)
     setTimeout(() => {
       this.addingToCart[product.p_id] = false;
-    }, 1500);
+    }, 800);
   }
 
   onImgError(event: Event) {

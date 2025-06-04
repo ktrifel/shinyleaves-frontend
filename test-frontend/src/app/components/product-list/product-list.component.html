@@ -10,10 +10,11 @@
 
     <mat-card-title>{{ product.name }}</mat-card-title>
     <mat-card-content>
-      <p><strong>ID (p_id):</strong> {{ product.p_id }}</p>
-      <p><strong>Preis:</strong>     {{ product.price   | currency:'EUR' }}</p>
-      <p><strong>Slug:</strong>      {{ product.slug    }}</p>
-      <p><strong>W_ID:</strong>      {{ product.w_id    }}</p>
+      <p><strong>Preis:</strong> {{ product.price | currency:'EUR' }}</p>
+      <p *ngIf="product.genetic"><strong>Genetik:</strong> {{ product.genetic }}</p>
+      <p *ngIf="product.thc"><strong>THC:</strong> {{ product.thc }}%</p>
+      <p *ngIf="product.cbd"><strong>CBD:</strong> {{ product.cbd }}%</p>
+      <p *ngIf="product.effect"><strong>Effekt:</strong> {{ product.effect }}</p>
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button 

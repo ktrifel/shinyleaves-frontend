@@ -70,12 +70,22 @@ mat-card-title{
 
 /* Inhalte */
 mat-card-content {
-  background-color: rgba(200, 200, 200, 0.2); /* sehr transparenter hellgrauer Hintergrund */
-  padding: 0.5rem 0.75rem;
+  background-color: rgba(200, 200, 200, 0.2);
+  padding: 0.75rem 1rem; /* Etwas mehr Padding für die zusätzlichen Infos */
   font-family: 'Roboto', sans-serif;
   border-radius: 12px;
   backdrop-filter: blur(2px);
-} 
+  line-height: 1.4; /* Bessere Lesbarkeit */
+}
+
+mat-card-content p {
+  margin: 0.4rem 0; /* Gleichmäßige Abstände zwischen den Zeilen */
+  font-size: 0.95rem;
+}
+
+mat-card-content strong {
+  color: #2E4F38; /* Dunkles Grün für die Labels */
+}
 
 /* Buttonleiste */
 mat-card-actions{
@@ -111,7 +121,7 @@ button.added-to-cart {
 }
 
 button.added-to-cart span {
-  animation: successPulse 0.3s ease-out;
+  animation: successPulse 0.2s ease-out; /* Verkürzt von 0.3s auf 0.2s */
 }
 
 @keyframes successPulse {
