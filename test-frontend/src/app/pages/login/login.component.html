@@ -11,8 +11,12 @@
     <input matInput formControlName="password" type="password" />
   </mat-form-field>
 
-  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-    Login
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || isLoading">
+    {{ isLoading ? 'Wird angemeldet...' : 'Login' }}
   </button>
 </form>
 
@@ -20,5 +24,3 @@
   Noch kein Konto?
   <a routerLink="/register">Registrieren</a>
 </p>
-
-

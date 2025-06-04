@@ -3,3 +3,10 @@
 .switch { text-align:center;margin-top:1rem;color:#A3BFA8 }
 a { color:#8E0721;text-decoration:none;font-weight:bold }
 
+.error-message {
+  color: #f44336;
+  background-color: #ffebee;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
