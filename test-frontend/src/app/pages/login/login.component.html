@@ -1,6 +1,6 @@
 <h2 class="title">Anmelden</h2>
 
-<form [formGroup]="form" (ngSubmit)="login()"> class="auth-form">
+<form class="auth-form" [formGroup]="form" (ngSubmit)="login()">
   <mat-form-field appearance="fill">
     <mat-label>E-Mail</mat-label>
     <input matInput formControlName="email" type="email" />
@@ -20,3 +20,5 @@
   Noch kein Konto?
   <a routerLink="/register">Registrieren</a>
 </p>
+
+
