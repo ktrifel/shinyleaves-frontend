@@ -56,49 +56,20 @@ export class CartComponent {
   /* ────────── Aktionen ────────── */
   increase(i: CartItem): void { 
     i.quantity++;
-    this.triggerPriceAnimation();
+    this.triggerSpecificPriceAnimation(i);
     this.save(); 
   }
   
   decrease(i: CartItem): void {
     if (i.quantity > 1) {
       i.quantity--;
-      this.triggerPriceAnimation();
+      this.triggerSpecificPriceAnimation(i);
       this.save();
     } else {
       this.remove(i);
     }
   }
 
-  remove(i: CartItem): void {
-    const itemElement = document.querySelector(`.cart-item:nth-child(${this.cartItems.indexOf(i) + 1})`);
-    
-    if (itemElement) {
-      // Lösch-Animation starten
-      itemElement.classList.add('removing');
-      
-      // Nach Animation ausführen
-      setTimeout(() => {
-        this.cartItems = this.cartItems.filter(x => x !== i);
-        this.save();
-        
-        // Verbleibende Items nach oben animieren
-        setTimeout(() => {
-          const remainingItems = document.querySelectorAll('.cart-item');
-          remainingItems.forEach(item => {
-            item.classList.add('moving-up');
-            setTimeout(() => item.classList.remove('moving-up'), 300);
-          });
-        }, 50);
-      }, 500);
-    } else {
-      // Fallback ohne Animation
-      this.cartItems = this.cartItems.filter(x => x !== i);
-      this.save();
-    }
-  }
-
-  // Neue Methode für direkte Eingabe
   onQuantityChange(i: CartItem): void {
     // Sicherstellen, dass die Menge mindestens 1 ist
     if (i.quantity < 1 || isNaN(i.quantity)) {
@@ -113,18 +84,58 @@ export class CartComponent {
     // Dezimalstellen entfernen (falls eingegeben)
     i.quantity = Math.floor(i.quantity);
     
-    this.triggerPriceAnimation();
+    this.triggerSpecificPriceAnimation(i);
     this.save();
   }
 
-  private triggerPriceAnimation(): void {
-    // Alle Preis-Elemente animieren
-    const priceElements = document.querySelectorAll('.item-total, .summary-line span, .total-price, .vat-info');
+  private triggerSpecificPriceAnimation(item: CartItem): void {
+    // Nur den Preis des spezifischen Produkts animieren
+    const itemIndex = this.cartItems.indexOf(item);
+    const specificItemTotal = document.querySelector(`.cart-item:nth-child(${itemIndex + 1}) .item-total`);
     
-    priceElements.forEach(element => {
+    if (specificItemTotal) {
+      specificItemTotal.classList.add('price-changed');
+      setTimeout(() => specificItemTotal.classList.remove('price-changed'), 400);
+    }
+    
+    // Gesamtsummen in der Sidebar animieren
+    const summaryElements = document.querySelectorAll('.summary-line span, .total-price, .vat-info');
+    summaryElements.forEach(element => {
       element.classList.add('price-changed');
       setTimeout(() => element.classList.remove('price-changed'), 400);
     });
+  }
+
+  remove(i: CartItem): void {
+    const itemIndex = this.cartItems.indexOf(i);
+    const itemElement = document.querySelector(`.cart-item:nth-child(${itemIndex + 1})`);
+    
+    if (itemElement) {
+      // Lösch-Animation starten
+      itemElement.classList.add('removing');
+      
+      // Nach Animation ausführen
+      setTimeout(() => {
+        this.cartItems = this.cartItems.filter(x => x !== i);
+        this.save();
+        
+        // Verbesserte nach-oben Animation für verbleibende Items
+        setTimeout(() => {
+          const remainingItems = document.querySelectorAll('.cart-item:not(.removing)');
+          remainingItems.forEach((item, index) => {
+            // Gestaffelte Animation für smootheren Effekt
+            setTimeout(() => {
+              item.classList.add('moving-up');
+              setTimeout(() => item.classList.remove('moving-up'), 400);
+            }, index * 50);
+          });
+        }, 100);
+      }, 500);
+    } else {
+      // Fallback ohne Animation
+      this.cartItems = this.cartItems.filter(x => x !== i);
+      this.save();
+    }
   }
 
   clearCart(): void {
