@@ -185,12 +185,18 @@ section {
 
 .cart-item {
   display: grid;
-  grid-template-columns: 200px 1fr; /* Breitere Spalte für das Bild */
+  grid-template-columns: 200px 1fr;
   gap: 1.5rem;
   padding: 1.5rem;
   border: 1px solid #ddd;
   border-radius: 8px;
   background: #fff;
+  transition: transform 0.15s ease, box-shadow 0.15s ease; /* Animation hinzugefügt */
+}
+
+.cart-item:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.55);
 }
 
 .item-image {
