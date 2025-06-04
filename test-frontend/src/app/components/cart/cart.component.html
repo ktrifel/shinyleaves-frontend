@@ -1,4 +1,4 @@
-<h2>WARENKORB</h2>
+<h2>Warenkorb</h2>
 
 <section *ngIf="cartItems.length; else empty">
   
@@ -81,5 +81,5 @@
 </section>
 
 <ng-template #empty>
-  <p>Dein Warenkorb ist leer.</p>
+  <p class="empty-cart-message">Dein Warenkorb ist leer.</p>
 </ng-template>
