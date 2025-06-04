@@ -16,8 +16,12 @@
       <p><strong>W_ID:</strong>      {{ product.w_id    }}</p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="addToCart(product)">
-        In den Warenkorb
+      <button mat-raised-button 
+              color="primary" 
+              (click)="addToCart(product)"
+              [class.added-to-cart]="addingToCart[product.p_id]">
+        <span *ngIf="!addingToCart[product.p_id]">In den Warenkorb</span>
+        <span *ngIf="addingToCart[product.p_id]">✓ Hinzugefügt</span>
       </button>
     </mat-card-actions>
   </mat-card>

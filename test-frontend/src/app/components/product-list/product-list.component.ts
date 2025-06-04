@@ -19,6 +19,9 @@ export class ProductListComponent implements OnInit {
 
   /** hier landen die vom Backend geladenen Produkte */
   products: Product[] = [];
+  
+  /** Tracking für Button-Feedback */
+  addingToCart: { [key: number]: boolean } = {};
 
   ngOnInit(): void {
     this.productService.getProducts()
@@ -29,6 +32,9 @@ export class ProductListComponent implements OnInit {
   }
 
   addToCart(product: any) {
+    // Button-Feedback starten
+    this.addingToCart[product.p_id] = true;
+    
     // Nutze p_id als eindeutige ID
     const cart: any[] = JSON.parse(localStorage.getItem('cart') ?? '[]');
     const idx = cart.findIndex(item => item.id === product.p_id);
@@ -46,8 +52,13 @@ export class ProductListComponent implements OnInit {
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
-    alert(`${product.name} wurde dem Warenkorb hinzugefügt.`);
+    
+    // Button-Feedback nach 1.5 Sekunden zurücksetzen
+    setTimeout(() => {
+      this.addingToCart[product.p_id] = false;
+    }, 1500);
   }
+
   onImgError(event: Event) {
     const target = event.target as HTMLImageElement;
     target.src = 'assets/images/placeholder.jpg';  // Zeigt Ersatzbild an
