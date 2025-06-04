@@ -1,4 +1,4 @@
-<h2>WARENKORB</h2>
+<h2>Warenkorb</h2>
 
 <section *ngIf="cartItems.length; else empty">
   
@@ -36,7 +36,10 @@
           </div>
         </div>
         
-        <div class="item-total">{{ (i.price * i.quantity) | currency:'EUR' }}</div>
+        <div class="item-total" 
+             [attr.data-price]="(i.price * i.quantity)">
+          {{ (i.price * i.quantity) | currency:'EUR' }}
+        </div>
         <button class="wishlist-btn">Auf die Merkliste verschieben</button>
       </div>
     </div>
@@ -46,7 +49,7 @@
   <div class="cart-summary">
     <h3>Zwischensumme</h3>
     <div class="summary-line">
-      <span>{{ totalPrice | currency:'EUR' }}</span>
+      <span [attr.data-total]="totalPrice">{{ totalPrice | currency:'EUR' }}</span>
     </div>
     
     <div class="shipping-info">
@@ -54,21 +57,23 @@
         <span>zzgl. Versandkosten</span>
         <span>{{ 7.99 | currency:'EUR' }}</span>
       </div>
-      <div class="shipping-options">
-        <select>
-          <option>oder Abholung möglich (€ 0,00)</option>
-        </select>
-      </div>
     </div>
 
     <div class="total-section">
       <h3>Gesamtsumme</h3>
-      <div class="total-price">{{ (totalPrice + 7.99) | currency:'EUR' }}</div>
-      <div class="vat-info">Enthaltene MwSt. 19%: {{ vatAmount | currency:'EUR' }}</div>
+      <div class="total-price" 
+           [attr.data-total]="(totalPrice + 7.99)">
+        {{ (totalPrice + 7.99) | currency:'EUR' }}
+      </div>
+      <div class="vat-info" 
+           [attr.data-vat]="vatAmount">
+        Enthaltene MwSt. 19%: {{ vatAmount | currency:'EUR' }}
+      </div>
     </div>
 
     <div class="checkout-actions">
       <button class="continue-shopping" (click)="continueShopping()">Weiter einkaufen</button>
+      <button class="clear-cart" (click)="clearCart()">Warenkorb leeren</button>
       <button class="checkout-btn" (click)="goCheckout()">Zur Kasse</button>
     </div>
   </div>
@@ -76,5 +81,5 @@
 </section>
 
 <ng-template #empty>
-  <p>Dein Warenkorb ist leer.</p>
+  <p class="empty-cart-message">Dein Warenkorb ist leer.</p>
 </ng-template>
