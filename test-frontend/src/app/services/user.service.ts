@@ -22,4 +22,9 @@ export class UserService {
   updateUser(userData: Partial<User>): Observable<User> {
     return this.http.patch<User>(this.base, userData);
   }
+
+  /** Updates the user's email separately */
+  updateEmail(email: string): Observable<User> {
+    return this.http.patch<User>(`${this.base}/email`, { email });
+  }
 }

@@ -71,22 +71,65 @@ export class ProfileComponent implements OnInit {
     if (!this.editedUser) return;
 
     this.isLoading = true;
-    this.userService.updateUser(this.editedUser).subscribe({
-      next: (updatedUser) => {
-        this.user = updatedUser;
-        this.isEditing = false;
-        this.isLoading = false;
-        this.snackBar.open('Profile updated successfully!', 'Close', {
-          duration: 3000
-        });
-      },
-      error: (error) => {
-        console.error('Error updating profile', error);
-        this.isLoading = false;
-        this.snackBar.open('Failed to update profile. Please try again.', 'Close', {
-          duration: 5000
-        });
-      }
-    });
+
+    // Check if email has been changed
+    const emailChanged = this.user?.email !== this.editedUser.email && this.editedUser.email;
+
+    // If email has changed, update it separately
+    if (emailChanged) {
+      const emailToUpdate = this.editedUser.email as string;
+      const userData = { ...this.editedUser };
+      delete userData.email; // Remove email from the main update
+
+      // First update other fields
+      this.userService.updateUser(userData).subscribe({
+        next: (updatedUser) => {
+          // Then update email separately
+          this.userService.updateEmail(emailToUpdate).subscribe({
+            next: (userWithUpdatedEmail) => {
+              this.user = userWithUpdatedEmail;
+              this.isEditing = false;
+              this.isLoading = false;
+              this.snackBar.open('Profile updated successfully!', 'Close', {
+                duration: 3000
+              });
+            },
+            error: (error) => {
+              console.error('Error updating email', error);
+              this.isLoading = false;
+              this.snackBar.open('Failed to update email. Please try again.', 'Close', {
+                duration: 5000
+              });
+            }
+          });
+        },
+        error: (error) => {
+          console.error('Error updating profile', error);
+          this.isLoading = false;
+          this.snackBar.open('Failed to update profile. Please try again.', 'Close', {
+            duration: 5000
+          });
+        }
+      });
+    } else {
+      // No email change, update normally
+      this.userService.updateUser(this.editedUser).subscribe({
+        next: (updatedUser) => {
+          this.user = updatedUser;
+          this.isEditing = false;
+          this.isLoading = false;
+          this.snackBar.open('Profile updated successfully!', 'Close', {
+            duration: 3000
+          });
+        },
+        error: (error) => {
+          console.error('Error updating profile', error);
+          this.isLoading = false;
+          this.snackBar.open('Failed to update profile. Please try again.', 'Close', {
+            duration: 5000
+          });
+        }
+      });
+    }
   }
 }
