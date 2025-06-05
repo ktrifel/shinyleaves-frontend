@@ -171,6 +171,11 @@ button.added-to-cart span {
   border: 1px solid #e0e0e0;
 }
 
+/* Filter Controls UNTEN - anderer Abstand */
+.filter-controls-bottom {
+  margin: 3rem auto 1rem auto; /* Weniger Abstand nach unten */
+}
+
 .filter-section {
   display: flex;
   align-items: center;
@@ -221,17 +226,21 @@ button.added-to-cart span {
     margin: 3rem auto 2.5rem auto; /* GEÄNDERT: 3rem für mobile auch mehr Abstand */
     padding: 1.5rem;
   }
-
+  
+  .filter-controls-bottom {
+    margin: 2.5rem auto 1rem auto; /* Angepasst für mobile */
+  }
+  
   .filter-section {
     width: 100%;
     justify-content: space-between;
   }
-
+  
   .sort-controls {
     flex: 1;
     justify-content: flex-end;
   }
-
+  
   .filter-controls select {
     min-width: 100px;
   }
