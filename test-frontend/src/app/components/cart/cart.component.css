@@ -13,11 +13,12 @@
   margin-bottom: 2rem;
 }
 
-.empty-cart {
-  text-align: center;
-  font-size: 1.2rem;
-  color: #a3bfa8;
-  margin-top: 3rem;
+.empty-cart-wrapper {
+  min-height: calc(100vh - 56px - 48px); /* 56px Toolbar + 48px Footer */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .cart-card {
@@ -410,7 +411,8 @@ section {
 }
 
 .quantity-input input[type=number] {
-  -moz-appearance: textfield;    /* Firefox */
+  appearance: textfield;           /* Standard */
+  -moz-appearance: textfield;      /* Firefox */
 }
 
 .item-total {
