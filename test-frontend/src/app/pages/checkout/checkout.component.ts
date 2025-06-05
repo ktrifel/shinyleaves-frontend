@@ -125,6 +125,17 @@ export class CheckoutComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('Form validity:', this.checkoutForm.valid);
+    console.log('Form values:', this.checkoutForm.value);
+    console.log('Form errors:', this.checkoutForm.errors);
+
+    // Log individual field validity
+    Object.keys(this.checkoutForm.controls).forEach(key => {
+      const control = this.checkoutForm.get(key);
+      console.log(`${key} validity:`, control?.valid);
+      console.log(`${key} errors:`, control?.errors);
+    });
+
     if (this.checkoutForm.valid && !this.isProcessing) {
       this.isProcessing = true;
 
@@ -165,8 +176,11 @@ export class CheckoutComponent implements OnInit {
   }
 
   private markAllFieldsAsTouched(): void {
+    console.log('Marking all fields as touched');
     Object.keys(this.checkoutForm.controls).forEach(key => {
-      this.checkoutForm.get(key)?.markAsTouched();
+      const control = this.checkoutForm.get(key);
+      control?.markAsTouched();
+      console.log(`${key} touched:`, control?.touched);
     });
   }
 

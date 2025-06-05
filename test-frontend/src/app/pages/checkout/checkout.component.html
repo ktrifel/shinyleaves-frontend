@@ -107,7 +107,7 @@
         <button type="button" class="back-to-cart" (click)="backToCart()">
           Zurück zum Warenkorb
         </button>
-        <button type="submit" class="place-order-btn" [disabled]="checkoutForm.invalid || isProcessing">
+        <button type="submit" class="place-order-btn" [disabled]="isProcessing">
           <span *ngIf="!isProcessing">Jetzt kaufen</span>
           <span *ngIf="isProcessing">Verarbeitung...</span>
         </button>
