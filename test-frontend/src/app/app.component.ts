@@ -23,5 +23,6 @@ import { MatButtonModule }              from '@angular/material/button';
   ]
 })
 export class AppComponent {
+  title = 'test-frontend';
   @ViewChild('drawer') drawer!: MatSidenav;
 }
