@@ -174,10 +174,10 @@ export class CheckoutComponent implements OnInit {
 
     // Map cart items to order items
     const orderItems: OrderItem[] = data.items.map(item => ({
-      o_id: orderNumber
+      o_id: orderNumber,
       c_id: 1, // Using a fixed customer ID for demonstration
       p_id: item.id,
-      amount: item.quantity;
+      amount: item.quantity
     }));
 
     if (orderItems.length === 1) {
