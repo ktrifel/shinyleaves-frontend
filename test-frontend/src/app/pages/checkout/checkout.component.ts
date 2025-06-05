@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user';
 
 interface CartItem {
   id: number;
@@ -28,20 +30,31 @@ interface CheckoutData {
   styleUrl: './checkout.component.css'
 })
 export class CheckoutComponent implements OnInit {
-  
+
   checkoutForm!: FormGroup;
   cartItems: CartItem[] = [];
   shippingCost = 7.99;
   isProcessing = false;
+  currentUser: User | null = null;
 
   constructor(
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.loadCart();
-    this.initForm();
+    this.userService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.currentUser = user;
+        this.initForm();
+      },
+      error: (error) => {
+        console.error('Error fetching user data:', error);
+        this.initForm();
+      }
+    });
   }
 
   private loadCart(): void {
@@ -49,22 +62,57 @@ export class CheckoutComponent implements OnInit {
   }
 
   private initForm(): void {
+    // Parse user data if available
+    let firstName = '';
+    let lastName = '';
+    let email = '';
+    let street = '';
+    let zipCode = '';
+    let city = '';
+
+    if (this.currentUser) {
+      // Split name into first and last name
+      const nameParts = this.currentUser.name.split(' ');
+      firstName = nameParts[0] || '';
+      lastName = nameParts.slice(1).join(' ') || '';
+
+      // Use email from user data
+      email = this.currentUser.email || '';
+
+      // Try to parse address into components
+      if (this.currentUser.address) {
+        const addressParts = this.currentUser.address.split(',');
+        if (addressParts.length >= 1) {
+          street = addressParts[0].trim();
+        }
+        if (addressParts.length >= 2) {
+          const zipCityParts = addressParts[1].trim().split(' ');
+          if (zipCityParts.length >= 1) {
+            zipCode = zipCityParts[0].trim();
+          }
+          if (zipCityParts.length >= 2) {
+            city = zipCityParts.slice(1).join(' ').trim();
+          }
+        }
+      }
+    }
+
     this.checkoutForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
-      street: ['', [Validators.required]],
-      zipCode: ['', [Validators.required, Validators.pattern(/^\d{5}$/)]],
-      city: ['', [Validators.required]],
+      firstName: [firstName, [Validators.required, Validators.minLength(2)]],
+      lastName: [lastName, [Validators.required, Validators.minLength(2)]],
+      email: [email, [Validators.required, Validators.email]],
+      street: [street, [Validators.required]],
+      zipCode: [zipCode, [Validators.required, Validators.pattern(/^\d{5}$/)]],
+      city: [city, [Validators.required]],
       country: ['DE', [Validators.required]],
-      
+
       differentShipping: [false],
       shippingFirstName: [''],
       shippingLastName: [''],
       shippingStreet: [''],
       shippingZipCode: [''],
       shippingCity: [''],
-      
+
       paymentMethod: ['paypal', [Validators.required]],
       acceptTerms: [false, [Validators.requiredTrue]]
     });
@@ -72,7 +120,7 @@ export class CheckoutComponent implements OnInit {
     // Dynamische Validierung für Lieferadresse
     this.checkoutForm.get('differentShipping')?.valueChanges.subscribe(value => {
       const shippingFields = ['shippingFirstName', 'shippingLastName', 'shippingStreet', 'shippingZipCode', 'shippingCity'];
-      
+
       if (value) {
         shippingFields.forEach(field => {
           this.checkoutForm.get(field)?.setValidators([Validators.required]);
@@ -82,7 +130,7 @@ export class CheckoutComponent implements OnInit {
           this.checkoutForm.get(field)?.clearValidators();
         });
       }
-      
+
       shippingFields.forEach(field => {
         this.checkoutForm.get(field)?.updateValueAndValidity();
       });
@@ -105,7 +153,7 @@ export class CheckoutComponent implements OnInit {
   onSubmit(): void {
     if (this.checkoutForm.valid && !this.isProcessing) {
       this.isProcessing = true;
-      
+
       const checkoutData: CheckoutData = {
         items: this.cartItems,
         totalAmount: this.totalPrice + this.shippingCost,
@@ -143,12 +191,12 @@ export class CheckoutComponent implements OnInit {
 
   private processCheckout(data: CheckoutData): void {
     console.log('Checkout Data:', data);
-    
+
     // Hier würde normalerweise der API-Call erfolgen
     // Für Demo: Erfolgreich abschließen
     localStorage.removeItem('cart'); // Warenkorb leeren
-    this.router.navigate(['/order-success'], { 
-      state: { orderData: data } 
+    this.router.navigate(['/order-success'], {
+      state: { orderData: data }
     });
   }
 
