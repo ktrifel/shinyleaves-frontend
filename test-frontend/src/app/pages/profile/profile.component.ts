@@ -5,7 +5,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user';
 
@@ -18,7 +20,8 @@ import { User } from '../../models/user';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
@@ -29,6 +32,8 @@ export class ProfileComponent implements OnInit {
   isEditing = false;
   editedUser: Partial<User> = {};
 
+  wishlist: { name: string; imageUrl: string }[] = [];
+
   constructor(
     private userService: UserService,
     private snackBar: MatSnackBar
@@ -36,6 +41,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserProfile();
+    this.loadWishlist();
   }
 
   loadUserProfile(): void {
@@ -53,6 +59,16 @@ export class ProfileComponent implements OnInit {
         });
       }
     });
+  }
+
+  loadWishlist(): void {
+    const wishlistData: { id: number; name: string; slug: string }[] =
+      JSON.parse(localStorage.getItem('wishlist') ?? '[]');
+
+    this.wishlist = wishlistData.map(item => ({
+      name: item.name,
+      imageUrl: `assets/images/${item.slug}.png`
+    }));
   }
 
   startEditing(): void {

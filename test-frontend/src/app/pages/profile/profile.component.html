@@ -1,63 +1,56 @@
 <div class="profile-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>My Profile</mat-card-title>
-    </mat-card-header>
+  <h2 class="profile-title">Profil</h2>
 
-    <mat-card-content>
-      <!-- Loading state -->
-      <div *ngIf="isLoading" class="loading-indicator">
-        Loading profile...
-      </div>
-
-      <!-- Error state -->
-      <div *ngIf="!isLoading && !user" class="error-message">
-        Unable to load profile. Please try again later.
-      </div>
-
-      <!-- View mode -->
-      <div *ngIf="!isLoading && user && !isEditing" class="profile-details">
-        <div class="profile-field">
-          <strong>Name:</strong> {{ user.name }}
+  <div class="boxes-container">
+    <div class="profile-box user-profile-box">
+      <div class="user-info">
+        <div class="user-info-content">
+          <div class="avatar-circle">
+            <mat-icon>person</mat-icon>
+          </div>
+          <div class="user-details">
+            <p><strong>Name:</strong> {{ user?.name }}</p>
+            <p><strong>Adresse:</strong> {{ user?.address }}</p>
+            <p><strong>Email:</strong> {{ user?.email }}</p>
+          </div>
         </div>
-        <div class="profile-field">
-          <strong>Email:</strong> {{ user.email }}
-        </div>
-        <div class="profile-field">
-          <strong>Address:</strong> {{ user.address }}
-        </div>
-
-        <button mat-raised-button color="primary" (click)="startEditing()">
-          Edit Profile
+        <button mat-icon-button (click)="startEditing()" aria-label="Bearbeiten" class="edit-button">
+          <mat-icon>edit</mat-icon>
         </button>
       </div>
+    </div>
 
-      <!-- Edit mode -->
-      <div *ngIf="!isLoading && isEditing" class="profile-edit-form">
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Name</mat-label>
-          <input matInput [(ngModel)]="editedUser.name" required>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Email</mat-label>
-          <input matInput [(ngModel)]="editedUser.email" required type="email">
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Address</mat-label>
-          <input matInput [(ngModel)]="editedUser.address" required>
-        </mat-form-field>
-
-        <div class="button-row">
-          <button mat-raised-button (click)="cancelEditing()">
-            Cancel
-          </button>
-          <button mat-raised-button color="primary" (click)="saveProfile()">
-            Save Changes
-          </button>
+    <div class="profile-box wishlist-box">
+      <div class="wishlist">
+        <h3><mat-icon class="heart-icon">favorite</mat-icon> Merkzettel</h3>
+        <div *ngFor="let item of wishlist" class="wishlist-item">
+          <img [src]="item.imageUrl" alt="Produktbild" />
+          <span>{{ item.name }}</span>
+          <button mat-raised-button color="primary">Zum Warenkorb</button>
         </div>
       </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
+
+  <div *ngIf="isEditing" class="profile-edit-form">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="editedUser.name" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="editedUser.email" required type="email">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Adresse</mat-label>
+      <input matInput [(ngModel)]="editedUser.address" required>
+    </mat-form-field>
+
+    <div class="button-row">
+      <button mat-stroked-button (click)="cancelEditing()">Abbrechen</button>
+      <button mat-raised-button color="primary" (click)="saveProfile()">Speichern</button>
+    </div>
+  </div>
 </div>
