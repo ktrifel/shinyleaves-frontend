@@ -4,6 +4,7 @@ import { Observable, forkJoin } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface OrderItem {
+  o_id: string;
   c_id: number;
   p_id: number;
   amount: number;

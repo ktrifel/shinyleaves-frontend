@@ -169,11 +169,15 @@ export class CheckoutComponent implements OnInit {
   private processCheckout(data: CheckoutData): void {
     console.log('Checkout Data:', data);
 
+    // Generate a unique order number
+    const orderNumber = this.generateUniqueOrderNumber();
+
     // Map cart items to order items
     const orderItems: OrderItem[] = data.items.map(item => ({
+      o_id: orderNumber
       c_id: 1, // Using a fixed customer ID for demonstration
       p_id: item.id,
-      amount: item.quantity
+      amount: item.quantity;
     }));
 
     if (orderItems.length === 1) {
@@ -183,7 +187,7 @@ export class CheckoutComponent implements OnInit {
           console.log('Order created successfully:', response);
           localStorage.removeItem('cart'); // Clear cart
           this.router.navigate(['/order-success'], {
-            state: { orderData: data }
+            state: { orderData: data, orderNumber: orderNumber }
           });
         },
         error: (error) => {
@@ -200,7 +204,7 @@ export class CheckoutComponent implements OnInit {
           console.log('Orders created successfully:', responses);
           localStorage.removeItem('cart'); // Clear cart
           this.router.navigate(['/order-success'], {
-            state: { orderData: data }
+            state: { orderData: data, orderNumber: orderNumber }
           });
         },
         error: (error) => {
@@ -220,6 +224,20 @@ export class CheckoutComponent implements OnInit {
       control?.markAsTouched();
       console.log(`${key} touched:`, control?.touched);
     });
+  }
+
+  /**
+   * Generates a unique order number
+   * @returns A unique order number
+   */
+  private generateUniqueOrderNumber(): string {
+    // Generate a random alphanumeric string
+    const randomPart = Math.random().toString(36).substr(2, 9).toUpperCase();
+
+    // Add a timestamp to ensure uniqueness
+    const timestamp = Date.now().toString(36).toUpperCase();
+
+    return `${timestamp}-${randomPart}`;
   }
 
   backToCart(): void {

@@ -60,7 +60,16 @@ import { Router } from '@angular/router';
 export class OrderSuccessComponent {
   private router = inject(Router);
 
-  orderNumber = Math.random().toString(36).substr(2, 9).toUpperCase();
+  orderNumber: string;
+
+  constructor() {
+    // Get the order number from the router state if available
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as { orderNumber: string } || {};
+
+    // Use the order number from the state or generate a new one if not available
+    this.orderNumber = state.orderNumber || Math.random().toString(36).substr(2, 9).toUpperCase();
+  }
 
   continueShopping(): void {
     this.router.navigate(['/products']);
