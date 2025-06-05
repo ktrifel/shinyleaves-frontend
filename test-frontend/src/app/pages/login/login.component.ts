@@ -71,7 +71,7 @@ export class LoginComponent {
     this.auth.loginApi({ email, password }).subscribe({
       next: (response) => {
         console.log('Login successful:', response);
-        localStorage.setItem('token', response.token);
+        localStorage.setItem('token', response.access_token);
         this.isLoading = false;
         this.router.navigateByUrl('/checkout');
       },

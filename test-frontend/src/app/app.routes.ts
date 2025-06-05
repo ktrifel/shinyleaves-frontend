@@ -11,6 +11,7 @@ import { AuthGuard } from './core/auth.guard';
 import { ApplicationConfig } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { ImpressumComponent } from './pages/impressum/impressum.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'products', pathMatch: 'full' },
@@ -20,6 +21,7 @@ export const routes: Routes = [
   { path: 'order-success', component: OrderSuccessComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'impressum', component: ImpressumComponent },
   { path: 'agb', component: AgbComponent },
   { path: 'datenschutz', component: DatenschutzComponent },
