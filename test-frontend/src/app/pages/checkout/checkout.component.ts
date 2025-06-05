@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user';
+import { OrderService, OrderItem } from '../../services/order.service';
 
 interface CartItem {
   id: number;
@@ -39,7 +40,8 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private orderService: OrderService
   ) {}
 
   ngOnInit(): void {
@@ -167,11 +169,28 @@ export class CheckoutComponent implements OnInit {
   private processCheckout(data: CheckoutData): void {
     console.log('Checkout Data:', data);
 
-    // Hier würde normalerweise der API-Call erfolgen
-    // Für Demo: Erfolgreich abschließen
-    localStorage.removeItem('cart'); // Warenkorb leeren
-    this.router.navigate(['/order-success'], {
-      state: { orderData: data }
+    // Map cart items to order items
+    const orderItems: OrderItem[] = data.items.map(item => ({
+      c_id: 1, // Using a fixed customer ID for demonstration
+      p_id: item.id,
+      amount: item.quantity
+    }));
+
+    // Send order to backend
+    this.orderService.createOrder(orderItems).subscribe({
+      next: (response) => {
+        console.log('Order created successfully:', response);
+        localStorage.removeItem('cart'); // Clear cart
+        this.router.navigate(['/order-success'], {
+          state: { orderData: data }
+        });
+      },
+      error: (error) => {
+        console.error('Error creating order:', error);
+        this.isProcessing = false;
+        // Handle error (e.g., show error message to user)
+        alert('There was an error processing your order. Please try again.');
+      }
     });
   }
 
