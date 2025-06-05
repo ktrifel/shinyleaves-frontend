@@ -185,16 +185,11 @@ export class CheckoutComponent implements OnInit {
       this.orderService.createOrder(orderItems).subscribe({
         next: (response) => {
           console.log('Order created successfully:', response);
-          localStorage.removeItem('cart'); // Clear cart
-          this.router.navigate(['/order-success'], {
-            state: { orderData: data, orderNumber: orderNumber }
-          });
+          this.handleSuccessfulOrder(data, orderNumber);
         },
         error: (error) => {
           console.error('Error creating order:', error);
-          this.isProcessing = false;
-          // Handle error (e.g., show error message to user)
-          alert('There was an error processing your order. Please try again.');
+          this.handleOrderError(error, data, orderNumber);
         }
       });
     } else {
@@ -202,18 +197,80 @@ export class CheckoutComponent implements OnInit {
       this.orderService.createOrders(orderItems).subscribe({
         next: (responses) => {
           console.log('Orders created successfully:', responses);
-          localStorage.removeItem('cart'); // Clear cart
-          this.router.navigate(['/order-success'], {
-            state: { orderData: data, orderNumber: orderNumber }
-          });
+
+          // Check if any of the orders failed but were saved locally
+          const hasFailedOrders = responses.some(response => response.success === false);
+
+          if (hasFailedOrders) {
+            // Some orders failed but were saved locally
+            this.handlePartialSuccess(data, orderNumber);
+          } else {
+            // All orders were successful
+            this.handleSuccessfulOrder(data, orderNumber);
+          }
         },
         error: (error) => {
           console.error('Error creating orders:', error);
-          this.isProcessing = false;
-          // Handle error (e.g., show error message to user)
-          alert('There was an error processing your order. Please try again.');
+          this.handleOrderError(error, data, orderNumber);
         }
       });
+    }
+  }
+
+  /**
+   * Handles a successful order
+   * @param data The checkout data
+   * @param orderNumber The order number
+   */
+  private handleSuccessfulOrder(data: CheckoutData, orderNumber: string): void {
+    localStorage.removeItem('cart'); // Clear cart
+    this.router.navigate(['/order-success'], {
+      state: { orderData: data, orderNumber: orderNumber }
+    });
+  }
+
+  /**
+   * Handles a partially successful order (some items saved locally)
+   * @param data The checkout data
+   * @param orderNumber The order number
+   */
+  private handlePartialSuccess(data: CheckoutData, orderNumber: string): void {
+    localStorage.removeItem('cart'); // Clear cart
+    this.isProcessing = false;
+
+    // Show a message to the user
+    alert('Some items could not be processed due to a database connection issue. They have been saved locally and will be processed when the connection is restored.');
+
+    // Navigate to the success page
+    this.router.navigate(['/order-success'], {
+      state: { orderData: data, orderNumber: orderNumber }
+    });
+  }
+
+  /**
+   * Handles an order error
+   * @param error The error
+   * @param data The checkout data
+   * @param orderNumber The order number
+   */
+  private handleOrderError(error: any, data: CheckoutData, orderNumber: string): void {
+    this.isProcessing = false;
+
+    // Check if it's a database connection error
+    if (error.message && error.message.includes('database')) {
+      // Database connection error - order was saved locally
+      localStorage.removeItem('cart'); // Clear cart
+
+      // Show a message to the user
+      alert(error.message);
+
+      // Navigate to the success page
+      this.router.navigate(['/order-success'], {
+        state: { orderData: data, orderNumber: orderNumber }
+      });
+    } else {
+      // Other error
+      alert('There was an error processing your order. Please try again.');
     }
   }
 
