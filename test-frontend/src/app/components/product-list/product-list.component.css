@@ -2,12 +2,10 @@
 
 /* ———————————————————————————————————————————
    Grund Layout
-   • nimmt die komplette Breite ein
-   • füllt – abzüglich Werkzeugleiste – die ganze Höhe
    ——————————————————————————————————————————— */
 :host {
   display: block;
-  min-height: calc(100vh - 64px); /* 64 px = Toolbar-Höhe */
+  min-height: calc(100vh - 64px);
   box-sizing: border-box;
   padding: 0 2rem 4rem;
   color: #333333;
@@ -19,88 +17,82 @@
    ——————————————————————————————————————————— */
 .page-title {
   position: sticky;
-  top: 56px; /* exakt unterhalb der mat-toolbar */
+  top: 56px;
   z-index: 99;
   margin: 0;
-  padding: 3rem 0 3rem 0; /* Mehr Abstand nach oben */
+  padding: 3rem 0 3rem 0;
   text-align: center;
   font-size: 4rem;
   font-weight: 700;
   font-family: 'Roboto', sans-serif;
   color: #508a62;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  /* ENTFERNT: background und backdrop-filter */
 }
 
 /* ———————————————————————————————————————————
    Responsive Gitter Layout
-   • beliebig viele Spalten, min 280 px
-   • zentriert, mit Abständen
    ——————————————————————————————————————————— */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
   max-width: 1400px;
-  margin: 0 auto; /* Abstand entfernt, da Filter jetzt den Abstand regelt */
+  margin: 0 auto;
 }
 
 /* ———————————————————————————————————————————
    Produkt Karte
    ——————————————————————————————————————————— */
-.product-card{
-  background:#ffffff;
-  color:#333333;
-  border-radius:12px;
-  padding:16px;
-  transition:transform .15s ease, box-shadow .15s ease;
-  position: relative; /* Wichtig für z-index */
-  z-index: 1; /* Über andere Elemente */
-}
-.product-card:hover{
-  transform:scale(1.03);
-  box-shadow:0 6px 30px rgba(0,0,0,.55);
-  z-index: 2; /* Beim Hover noch höher */
+.product-card {
+  background: #ffffff;
+  color: #333333;
+  border-radius: 12px;
+  padding: 16px;
+  transition: transform .15s ease, box-shadow .15s ease;
+  position: relative;
+  z-index: 1;
 }
 
-/* Titel */
-mat-card-title{
-  font-size:1.25rem;
+.product-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 30px rgba(0,0,0,.55);
+  z-index: 2;
+}
+
+mat-card-title {
+  font-size: 1.25rem;
   font-family: 'Roboto', sans-serif;
-  font-weight:700;
-  margin-bottom:.25rem;
+  font-weight: 700;
+  margin-bottom: .25rem;
   color: #508a62;
 }
 
-/* Inhalte */
 mat-card-content {
   background-color: rgba(200, 200, 200, 0.2);
-  padding: 0.75rem 1rem; /* Etwas mehr Padding für die zusätzlichen Infos */
+  padding: 0.75rem 1rem;
   font-family: 'Roboto', sans-serif;
   border-radius: 12px;
   backdrop-filter: blur(2px);
-  line-height: 1.4; /* Bessere Lesbarkeit */
+  line-height: 1.4;
 }
 
 mat-card-content p {
-  margin: 0.4rem 0; /* Gleichmäßige Abstände zwischen den Zeilen */
+  margin: 0.4rem 0;
   font-size: 0.95rem;
 }
 
 mat-card-content strong {
-  color: #2E4F38; /* Dunkles Grün für die Labels */
+  color: #2E4F38;
 }
 
-/* Buttonleiste - höherer z-index */
-mat-card-actions{
-  margin-top:1rem;
-  display:flex;
-  justify-content:center;
+mat-card-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
   position: relative;
-  z-index: 3; /* Buttons immer klickbar */
+  z-index: 3;
 }
 
-/* Warenkorb Button - klickbar sicherstellen */
 button {
   background: #8e0721;
   color: #333333;
@@ -112,16 +104,15 @@ button {
   border: 2px solid #508a62;
   transition: all 0.3s ease;
   position: relative;
-  z-index: 4; /* Höchste Priorität für Klickbarkeit */
-  cursor: pointer; /* Sicherstellen dass Cursor pointer ist */
+  z-index: 4;
+  cursor: pointer;
 }
 
-button:hover{
-  background:#508a62;
-  color: #ffffff
+button:hover {
+  background: #508a62;
+  color: #ffffff;
 }
 
-/* Feedback-Animation für "Hinzugefügt" */
 button.added-to-cart {
   background: #508a62 !important;
   color: #ffffff !important;
@@ -130,7 +121,7 @@ button.added-to-cart {
 }
 
 button.added-to-cart span {
-  animation: successPulse 0.2s ease-out; /* Verkürzt von 0.3s auf 0.2s */
+  animation: successPulse 0.2s ease-out;
 }
 
 @keyframes successPulse {
@@ -150,14 +141,17 @@ button.added-to-cart span {
 
 .product-card img {
   width: 100%;
-  height: 200px;         /* Einheitliche Höhe */
-  object-fit: contain;     /* Zuschneiden, um Proportionen zu erhalten */
+  height: 200px;
+  object-fit: contain;
   border-radius: 4px;
-  background-color: white;/* Optional: leicht abgerundete Ecken */
+  background-color: white;
 }
 
-/* Filter Controls - redesigned mit passenden Farben und Animationen */
-.filter-controls {
+/* ———————————————————————————————————————————
+   Filter Controls - EINHEITLICH für BEIDE
+   ——————————————————————————————————————————— */
+.filter-controls,
+.filter-controls-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -174,15 +168,60 @@ button.added-to-cart span {
   overflow: hidden;
 }
 
-/* PERSISTENTER Hover-Effekt */
-.filter-controls:hover,
-.filter-controls.persistent-hover {
+/* Spezifische Anpassung für untere Filter-Controls */
+.filter-controls-bottom {
+  margin: 3rem auto 4rem auto;
+}
+
+/* Layout für untere Leiste */
+.filter-controls-bottom .filter-section {
+  order: 1;
+  flex: 0 0 auto;
+}
+
+.filter-controls-bottom .scroll-section {
+  order: 2;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 120px;
+}
+
+.filter-controls-bottom .products-per-page-section {
+  order: 3;
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+
+/* JavaScript-gesteuerte Hover-Effekte */
+.filter-controls.js-hover,
+.filter-controls-bottom.js-hover {
   transform: scale(1.03) translateY(-2px);
   box-shadow: 0 6px 30px rgba(80, 138, 98, 0.2);
   border-color: rgba(80, 138, 98, 0.4);
+  z-index: 5;
 }
 
-.filter-section {
+.filter-controls.dropdown-active,
+.filter-controls-bottom.dropdown-active {
+  transform: scale(1.03) translateY(-2px) !important;
+  box-shadow: 0 6px 30px rgba(80, 138, 98, 0.2) !important;
+  border-color: rgba(80, 138, 98, 0.4) !important;
+  z-index: 10 !important;
+}
+
+.filter-controls.force-reset,
+.filter-controls-bottom.force-reset {
+  transform: scale(1) translateY(0) !important;
+  box-shadow: 0 4px 20px rgba(80, 138, 98, 0.1) !important;
+  border-color: rgba(80, 138, 98, 0.15) !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  z-index: 1 !important;
+}
+
+/* Filter Section Styling */
+.filter-controls .filter-section,
+.filter-controls-bottom .filter-section {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -190,7 +229,8 @@ button.added-to-cart span {
   z-index: 2;
 }
 
-.filter-section label {
+.filter-controls .filter-section label,
+.filter-controls-bottom .filter-section label {
   font-weight: 700;
   color: #2E4F38;
   font-size: 1rem;
@@ -200,17 +240,21 @@ button.added-to-cart span {
   transition: color 0.2s ease;
 }
 
-.filter-section:hover label {
+.filter-controls .filter-section:hover label,
+.filter-controls-bottom .filter-section:hover label {
   color: #508a62;
 }
 
-.sort-controls {
+.filter-controls .sort-controls,
+.filter-controls-bottom .sort-controls {
   display: flex;
   gap: 0.75rem;
 }
 
-/* Select Styling - WEISSER HINTERGRUND mit grünem Hover */
-.filter-controls select {
+/* Select und Button Styling */
+.filter-controls select,
+.filter-controls-bottom select,
+.scroll-button {
   background: #ffffff;
   color: #333333;
   padding: 0.55rem 1.2rem;
@@ -227,46 +271,62 @@ button.added-to-cart span {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background: #ffffff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23333" d="M2 4l4 4 4-4z"/></svg>') no-repeat right 12px center;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23333" d="M2 4l4 4 4-4z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
   background-size: 12px;
   padding-right: 40px;
   position: relative;
   z-index: 4;
 }
 
-/* KOMPLETT NEUE Option-Behandlung */
-.filter-controls select option {
-  background-color: #ffffff !important;
-  color: #333333 !important;
-  padding: 8px 12px !important;
-  font-weight: 500 !important;
-  border: none !important;
+/* Scroll-Button spezifische Anpassungen - KORRIGIERT */
+.scroll-button {
+  background-image: none !important;
+  padding-right: 1.2rem !important;
+  min-width: 110px;
+  /* Entferne die Standardwerte für opacity und pointer-events */
 }
 
-.filter-controls select option:checked,
-.filter-controls select option[selected] {
-  background-color: #508a62 !important;
-  background: #508a62 !important;
-  color: #ffffff !important;
-  font-weight: 600 !important;
+.scroll-button.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
 }
 
-.filter-controls select option:hover {
-  background-color: #508a62 !important;
-  background: #508a62 !important;
-  color: #ffffff !important;
+/* Scroll-Button in unterer Leiste IMMER sichtbar und klickbar */
+.filter-controls-bottom .scroll-button {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  pointer-events: all !important;
+  /* Stelle sicher, dass er immer funktioniert */
 }
 
-/* Webkit Browser (Chrome, Safari) */
-.filter-controls select option:checked {
-  background: linear-gradient(#508a62, #508a62);
-  background-color: #508a62;
+/* Hover-Effekte */
+.filter-controls select:hover,
+.filter-controls-bottom select:hover,
+.scroll-button:hover {
+  background: #508a62;
   color: #ffffff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(80, 138, 98, 0.3);
+}
+
+/* Focus-Effekte */
+.filter-controls select:focus,
+.filter-controls-bottom select:focus,
+.scroll-button:focus {
+  outline: none;
+  border-color: #508a62;
+  box-shadow: 0 0 0 3px rgba(80, 138, 98, 0.3);
+  transform: scale(1.05);
+  z-index: 10;
 }
 
 /* Disabled State */
-.filter-controls select:disabled {
-  background: #f5f5f5 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23999" d="M2 4l4 4 4-4z"/></svg>') no-repeat right 12px center;
+.filter-controls select:disabled,
+.filter-controls-bottom select:disabled {
+  background: #f5f5f5;
   color: #999999;
   cursor: not-allowed;
   border-color: #cccccc;
@@ -274,93 +334,58 @@ button.added-to-cart span {
   box-shadow: none;
 }
 
-.filter-controls select:disabled:hover {
+.filter-controls select:disabled:hover,
+.filter-controls-bottom select:disabled:hover {
+  background: #f5f5f5 !important;
+  color: #999999 !important;
   transform: none;
   box-shadow: none;
-  background-color: #f5f5f5 !important;
-  color: #999999 !important;
 }
 
-/* INDIVIDUELLE Button-Animation - bleibt grün */
-.filter-controls select.updating {
+/* Individual Button Animation */
+.filter-controls select.updating,
+.filter-controls-bottom select.updating {
   animation: individualButtonPulse 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 6;
-  background-color: #508a62 !important;
-  color: #ffffff !important;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="white" d="M2 4l4 4 4-4z"/></svg>') !important;
 }
 
 @keyframes individualButtonPulse {
   0% {
-    transform: scale(1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  30% {
-    transform: scale(1.08);
-    box-shadow: 0 8px 25px rgba(80, 138, 98, 0.5);
-  }
-  70% {
     transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(80, 138, 98, 0.4);
+    box-shadow: 0 4px 15px rgba(80, 138, 98, 0.3);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(80, 138, 98, 0.4);
   }
   100% {
-    transform: scale(1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(80, 138, 98, 0.3);
   }
 }
 
-/* Scroll-to-Top Button */
-.scroll-to-top {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  background: #508a62;
-  color: #ffffff;
-  border: 2px solid #3f6b4f;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 1.5rem;
-  font-weight: 700;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(20px);
-}
-
-.scroll-to-top.visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.scroll-to-top:hover {
-  background: #3f6b4f;
-  color: #ffffff;
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(80, 138, 98, 0.4);
+/* Option Styling */
+.filter-controls select option,
+.filter-controls-bottom select option {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+  padding: 8px 12px !important;
+  font-weight: 500 !important;
+  border: none !important;
 }
 
 /* Mobile Anpassungen */
 @media (max-width: 768px) {
-  .filter-controls {
+  .filter-controls,
+  .filter-controls-bottom {
     flex-direction: column;
     gap: 1.5rem;
     margin: 3rem auto 2.5rem auto;
     padding: 2rem 1.5rem;
   }
 
-  .filter-controls:hover {
-    transform: none;
-  }
-
-  .filter-controls select {
+  .filter-controls select,
+  .filter-controls-bottom select {
     min-width: 110px;
     font-size: 0.85rem;
     padding: 0.5rem 1rem;
@@ -368,20 +393,25 @@ button.added-to-cart span {
     background-size: 14px;
   }
 
-  .filter-controls select:hover {
+  .filter-controls select:hover,
+  .filter-controls-bottom select:hover {
     transform: scale(1.02);
   }
 
-  .scroll-to-top {
-    width: 50px;
-    height: 50px;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    font-size: 1.2rem;
+  .filter-controls.bottom .scroll-section {
+    position: static;
+    transform: none;
+    order: 2;
+  }
+  
+  .filter-controls.bottom .filter-section,
+  .filter-controls.bottom .products-per-page-section {
+    order: unset;
+    margin-left: unset;
   }
 }
 
-/* Loading Animation für Filter-Änderungen */
+/* Loading Animation */
 .filter-controls.loading {
   pointer-events: none;
   opacity: 0.7;
@@ -406,10 +436,11 @@ button.added-to-cart span {
   100% { transform: rotate(360deg); }
 }
 
-/* Browser-spezifische Korrekturen ENTFERNT */
+/* Browser-spezifische Korrekturen */
 .filter-controls select::-ms-expand {
   display: none;
 }
 
-/* Firefox spezifische Korrekturen ENTFERNT - jetzt funktioniert überall */
-/* @-moz-document url-prefix() wurde entfernt */
+.filter-controls.dropdown-active select {
+  z-index: 15 !important;
+}

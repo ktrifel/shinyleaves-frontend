@@ -1,9 +1,8 @@
 <!-- src/app/components/product-list/product-list.component.html -->
 <h2 class="page-title">Produkte</h2>
 
-<!-- Filter Controls OBEN mit persistentem Hover -->
+<!-- Filter Controls OBEN -->
 <div class="filter-controls" 
-     [class.persistent-hover]="filterRowHovered"
      (mouseenter)="onFilterRowMouseEnter()"
      (mouseleave)="onFilterRowMouseLeave()">
   <div class="filter-section">
@@ -71,11 +70,12 @@
   </mat-card>
 </div>
 
-<!-- Filter Controls UNTEN mit persistentem Hover -->
+<!-- Filter Controls UNTEN -->
 <div class="filter-controls filter-controls-bottom"
-     [class.persistent-hover]="filterRowHovered"
      (mouseenter)="onFilterRowMouseEnter()"
      (mouseleave)="onFilterRowMouseLeave()">
+  
+  <!-- Sortierung LINKS -->
   <div class="filter-section">
     <label>Sortieren nach:</label>
     <div class="sort-controls">
@@ -99,8 +99,19 @@
       </select>
     </div>
   </div>
+
+  <!-- Scroll-Button MITTE -->
+  <div class="scroll-section">
+    <button class="scroll-button" 
+            [class.visible]="showScrollButton" 
+            (click)="scrollToTop()"
+            title="Nach oben">
+      ↑ Nach oben
+    </button>
+  </div>
   
-  <div class="filter-section">
+  <!-- Produkte pro Seite RECHTS -->
+  <div class="filter-section products-per-page-section">
     <label>Produkte pro Seite:</label>
     <select [(ngModel)]="productsPerPage" 
             (change)="onProductsPerPageChange()"
@@ -113,12 +124,4 @@
     </select>
   </div>
 </div>
-
-<!-- Scroll-to-Top Button -->
-<button class="scroll-to-top" 
-        [class.visible]="showScrollButton" 
-        (click)="scrollToTop()"
-        title="Nach oben">
-  ↑
-</button>
 
