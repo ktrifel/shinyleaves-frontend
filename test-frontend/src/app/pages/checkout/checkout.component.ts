@@ -284,17 +284,21 @@ export class CheckoutComponent implements OnInit {
   }
 
   /**
-   * Generates a unique order number
+   * Generates a unique order number with 8 characters
    * @returns A unique order number
    */
   private generateUniqueOrderNumber(): string {
-    // Generate a random alphanumeric string
-    const randomPart = Math.random().toString(36).substr(2, 9).toUpperCase();
-
-    // Add a timestamp to ensure uniqueness
+    // Get current timestamp in milliseconds and convert to base 36
     const timestamp = Date.now().toString(36).toUpperCase();
 
-    return `${timestamp}-${randomPart}`;
+    // Take the last 4 characters of the timestamp
+    const timestampPart = timestamp.slice(-4);
+
+    // Generate a random alphanumeric string and take 4 characters
+    const randomPart = Math.random().toString(36).substr(2, 4).toUpperCase();
+
+    // Combine to create an 8-character order number
+    return `${timestampPart}${randomPart}`;
   }
 
   backToCart(): void {

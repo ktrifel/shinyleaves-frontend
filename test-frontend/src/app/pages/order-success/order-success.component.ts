@@ -68,7 +68,15 @@ export class OrderSuccessComponent {
     const state = navigation?.extras.state as { orderNumber: string } || {};
 
     // Use the order number from the state or generate a new one if not available
-    this.orderNumber = state.orderNumber || Math.random().toString(36).substr(2, 9).toUpperCase();
+    if (state.orderNumber) {
+      this.orderNumber = state.orderNumber;
+    } else {
+      // Generate an 8-character order number (4 chars from timestamp + 4 random chars)
+      const timestamp = Date.now().toString(36).toUpperCase();
+      const timestampPart = timestamp.slice(-4);
+      const randomPart = Math.random().toString(36).substr(2, 4).toUpperCase();
+      this.orderNumber = `${timestampPart}${randomPart}`;
+    }
   }
 
   continueShopping(): void {
