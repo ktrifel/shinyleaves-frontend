@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 export interface OrderItem {
   order_nr: string;
   p_id: number;
+  c_id: number;
   amount: number;
 }
 
