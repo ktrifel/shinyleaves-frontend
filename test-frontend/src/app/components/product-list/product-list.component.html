@@ -1,8 +1,38 @@
 <!-- src/app/components/product-list/product-list.component.html -->
 <h2 class="page-title">Produkte</h2>
 
+<!-- Filter Controls -->
+<div class="filter-controls">
+  <div class="filter-section">
+    <label>Sortieren nach:</label>
+    <div class="sort-controls">
+      <select [(ngModel)]="sortField" (change)="applySorting()">
+        <option value="">-- Auswählen --</option>
+        <option value="price">Preis</option>
+        <option value="genetic">Genetik</option>
+        <option value="thc">THC</option>
+        <option value="cbd">CBD</option>
+      </select>
+      <select [(ngModel)]="sortDirection" (change)="applySorting()" [disabled]="!sortField">
+        <option value="asc">Aufsteigend</option>
+        <option value="desc">Absteigend</option>
+      </select>
+    </div>
+  </div>
+  
+  <div class="filter-section">
+    <label>Produkte pro Seite:</label>
+    <select [(ngModel)]="productsPerPage" (change)="onProductsPerPageChange()">
+      <option [value]="8">8</option>
+      <option [value]="16">16</option>
+      <option [value]="32">32</option>
+      <option [value]="64">64</option>
+    </select>
+  </div>
+</div>
+
 <div class="product-grid">
-  <mat-card class="product-card" *ngFor="let product of products">
+  <mat-card class="product-card" *ngFor="let product of displayedProducts">
     <img mat-card-image
          [src]="'assets/images/' + product.slug + '.png'"
          alt="{{ product.name }}"

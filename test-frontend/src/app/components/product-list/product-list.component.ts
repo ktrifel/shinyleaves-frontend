@@ -1,16 +1,17 @@
 // src/app/components/product-list/product-list.component.ts
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule }               from '@angular/common';
-import { MatCardModule }              from '@angular/material/card';
-import { MatButtonModule }            from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { FormsModule } from '@angular/forms';
 
-import { Product }                    from '../../models/product';
-import { ProductService }             from '../../services/product.service';
+import { Product } from '../../models/product';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, FormsModule],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
@@ -20,15 +21,80 @@ export class ProductListComponent implements OnInit {
   /** hier landen die vom Backend geladenen Produkte */
   products: Product[] = [];
   
+  /** Gefilterte und sortierte Produkte */
+  filteredProducts: Product[] = [];
+  
+  /** Aktuell angezeigte Produkte basierend auf productsPerPage */
+  displayedProducts: Product[] = [];
+  
   /** Tracking für Button-Feedback */
   addingToCart: { [key: number]: boolean } = {};
+
+  // Filter und Sortierung
+  sortField: string = '';
+  sortDirection: 'asc' | 'desc' = 'asc';
+  productsPerPage: number = 16;
 
   ngOnInit(): void {
     this.productService.getProducts()
       .subscribe({
-        next: prods => this.products = prods,
+        next: prods => {
+          this.products = prods;
+          this.filteredProducts = [...prods];
+          this.updateDisplayedProducts();
+        },
         error: err => console.error('Fehler beim Laden der Produkte', err)
       });
+  }
+
+  applySorting(): void {
+    if (!this.sortField) {
+      this.filteredProducts = [...this.products];
+    } else {
+      this.filteredProducts = [...this.products].sort((a, b) => {
+        let valueA: any;
+        let valueB: any;
+
+        switch (this.sortField) {
+          case 'price':
+            valueA = a.price || 0;
+            valueB = b.price || 0;
+            break;
+          case 'genetic':
+            valueA = (a.genetic || '').toLowerCase();
+            valueB = (b.genetic || '').toLowerCase();
+            break;
+          case 'thc':
+            valueA = a.thc || 0;
+            valueB = b.thc || 0;
+            break;
+          case 'cbd':
+            valueA = a.cbd || 0;
+            valueB = b.cbd || 0;
+            break;
+          default:
+            return 0;
+        }
+
+        if (valueA < valueB) {
+          return this.sortDirection === 'asc' ? -1 : 1;
+        }
+        if (valueA > valueB) {
+          return this.sortDirection === 'asc' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    
+    this.updateDisplayedProducts();
+  }
+
+  onProductsPerPageChange(): void {
+    this.updateDisplayedProducts();
+  }
+
+  private updateDisplayedProducts(): void {
+    this.displayedProducts = this.filteredProducts.slice(0, this.productsPerPage);
   }
 
   addToCart(product: any) {
