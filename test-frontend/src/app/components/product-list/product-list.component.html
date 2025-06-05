@@ -2,9 +2,11 @@
 <h2 class="page-title">Produkte</h2>
 
 <!-- Filter Controls OBEN -->
-<div class="filter-controls" 
+<div class="filter-controls"
      (mouseenter)="onFilterRowMouseEnter()"
      (mouseleave)="onFilterRowMouseLeave()">
+  
+  <!-- Sortierung LINKS -->
   <div class="filter-section">
     <label>Sortieren nach:</label>
     <div class="sort-controls">
@@ -28,8 +30,55 @@
       </select>
     </div>
   </div>
+
+  <!-- Pagination MITTE -->
+  <div class="pagination-section">
+    <div class="pagination-controls">
+      <!-- Erste Seite -->
+      <button class="page-nav-button" 
+              (click)="goToFirstPage()" 
+              [disabled]="currentPage === 1"
+              title="Erste Seite">
+        ⏮
+      </button>
+      
+      <!-- Vorherige Seite -->
+      <button class="page-nav-button" 
+              (click)="goToPreviousPage()" 
+              [disabled]="currentPage === 1"
+              title="Vorherige Seite">
+        ◀
+      </button>
+      
+      <!-- Seiten Dropdown -->
+      <select [(ngModel)]="currentPage" 
+              (change)="onPageChange()"
+              class="page-select">
+        <option *ngFor="let page of pageNumbers" [value]="page">
+          Seite {{page}}
+        </option>
+      </select>
+      
+      <!-- Nächste Seite -->
+      <button class="page-nav-button" 
+              (click)="goToNextPage()" 
+              [disabled]="currentPage === totalPages"
+              title="Nächste Seite">
+        ▶
+      </button>
+      
+      <!-- Letzte Seite -->
+      <button class="page-nav-button" 
+              (click)="goToLastPage()" 
+              [disabled]="currentPage === totalPages"
+              title="Letzte Seite">
+        ⏭
+      </button>
+    </div>
+  </div>
   
-  <div class="filter-section">
+  <!-- Produkte pro Seite RECHTS -->
+  <div class="filter-section products-per-page-section">
     <label>Produkte pro Seite:</label>
     <select [(ngModel)]="productsPerPage" 
             (change)="onProductsPerPageChange()"
@@ -100,14 +149,50 @@
     </div>
   </div>
 
-  <!-- Scroll-Button MITTE -->
-  <div class="scroll-section">
-    <button class="scroll-button" 
-            [class.visible]="showScrollButton" 
-            (click)="scrollToTop()"
-            title="Nach oben">
-      ↑ Nach oben
-    </button>
+  <!-- Pagination MITTE -->
+  <div class="pagination-section">
+    <div class="pagination-controls">
+      <!-- Erste Seite -->
+      <button class="page-nav-button" 
+              (click)="goToFirstPage()" 
+              [disabled]="currentPage === 1"
+              title="Erste Seite">
+        ⏮
+      </button>
+      
+      <!-- Vorherige Seite -->
+      <button class="page-nav-button" 
+              (click)="goToPreviousPage()" 
+              [disabled]="currentPage === 1"
+              title="Vorherige Seite">
+        ◀
+      </button>
+      
+      <!-- Seiten Dropdown -->
+      <select [(ngModel)]="currentPage" 
+              (change)="onPageChange()"
+              class="page-select">
+        <option *ngFor="let page of pageNumbers" [value]="page">
+          Seite {{page}}
+        </option>
+      </select>
+      
+      <!-- Nächste Seite -->
+      <button class="page-nav-button" 
+              (click)="goToNextPage()" 
+              [disabled]="currentPage === totalPages"
+              title="Nächste Seite">
+        ▶
+      </button>
+      
+      <!-- Letzte Seite -->
+      <button class="page-nav-button" 
+              (click)="goToLastPage()" 
+              [disabled]="currentPage === totalPages"
+              title="Letzte Seite">
+        ⏭
+      </button>
+    </div>
   </div>
   
   <!-- Produkte pro Seite RECHTS -->

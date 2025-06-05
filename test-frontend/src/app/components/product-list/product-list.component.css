@@ -173,20 +173,25 @@ button.added-to-cart span {
   margin: 3rem auto 4rem auto;
 }
 
-/* Layout für untere Leiste */
-.filter-controls-bottom .filter-section {
-  order: 1;
-  flex: 0 0 auto;
-}
-
-.filter-controls-bottom .scroll-section {
+/* Layout für beide Leisten - Pagination in die Mitte */
+.filter-controls .pagination-section,
+.filter-controls-bottom .pagination-section {
   order: 2;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  min-width: 120px;
+  flex: 0 0 auto;
 }
 
+/* Sortierung links */
+.filter-controls .filter-section:first-child,
+.filter-controls-bottom .filter-section:first-child {
+  order: 1;
+  flex: 0 0 auto;
+}
+
+/* Produkte pro Seite rechts */
+.filter-controls .products-per-page-section,
 .filter-controls-bottom .products-per-page-section {
   order: 3;
   margin-left: auto;
@@ -374,7 +379,114 @@ button.added-to-cart span {
   border: none !important;
 }
 
-/* Mobile Anpassungen */
+/* Pagination Section */
+.pagination-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Page Navigation Buttons - GLEICHE GRÖSSE WIE ANDERE ELEMENTE */
+.page-nav-button {
+  background: #ffffff;
+  color: #333333;
+  padding: 0.55rem 1.2rem;
+  border: 2px solid #508a62;
+  border-radius: 22px; /* Gleicher Radius wie andere Selects */
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 50px; /* Angepasst für Symbole */
+  height: auto; /* Gleiche Höhe wie Selects */
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.page-nav-button:hover:not(:disabled) {
+  background: #508a62;
+  color: #ffffff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(80, 138, 98, 0.3);
+}
+
+.page-nav-button:disabled {
+  background: #f5f5f5;
+  color: #999999;
+  cursor: not-allowed;
+  border-color: #cccccc;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Page Select Dropdown - GLEICHE GRÖSSE WIE ANDERE SELECTS */
+.page-select {
+  background: #ffffff;
+  color: #333333;
+  padding: 0.55rem 1.2rem;
+  border: 2px solid #508a62;
+  border-radius: 22px; /* Gleicher Radius wie andere Selects */
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 130px; /* Gleiche Breite wie andere Selects */
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  text-transform: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23333" d="M2 4l4 4 4-4z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  padding-right: 40px;
+  text-align: center;
+  line-height: 1;
+}
+
+.page-select:hover {
+  background: #508a62;
+  color: #ffffff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(80, 138, 98, 0.3);
+}
+
+.page-select:focus {
+  outline: none;
+  border-color: #508a62;
+  box-shadow: 0 0 0 3px rgba(80, 138, 98, 0.3);
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+.page-select option {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+  padding: 8px 12px !important;
+  font-weight: 500 !important;
+  border: none !important;
+}
+
+/* Individual Button Animation für Pagination */
+.page-nav-button.updating,
+.page-select.updating {
+  animation: individualButtonPulse 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 6;
+}
+
+/* Mobile Anpassungen - angepasst an neue Größen */
 @media (max-width: 768px) {
   .filter-controls,
   .filter-controls-bottom {
@@ -384,30 +496,41 @@ button.added-to-cart span {
     padding: 2rem 1.5rem;
   }
 
-  .filter-controls select,
-  .filter-controls-bottom select {
-    min-width: 110px;
-    font-size: 0.85rem;
-    padding: 0.5rem 1rem;
-    padding-right: 35px;
-    background-size: 14px;
-  }
-
-  .filter-controls select:hover,
-  .filter-controls-bottom select:hover {
-    transform: scale(1.02);
-  }
-
-  .filter-controls.bottom .scroll-section {
+  /* Mobile: Pagination nicht absolut positioniert */
+  .filter-controls .pagination-section,
+  .filter-controls-bottom .pagination-section {
     position: static;
     transform: none;
     order: 2;
   }
-  
-  .filter-controls.bottom .filter-section,
-  .filter-controls.bottom .products-per-page-section {
+
+  /* Mobile: Alle Elemente gestapelt */
+  .filter-controls .filter-section:first-child,
+  .filter-controls-bottom .filter-section:first-child,
+  .filter-controls .products-per-page-section,
+  .filter-controls-bottom .products-per-page-section {
     order: unset;
     margin-left: unset;
+  }
+
+  .pagination-controls {
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .page-nav-button {
+    min-width: 40px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .page-select {
+    min-width: 100px;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+    padding-right: 30px;
+    background-size: 10px;
   }
 }
 

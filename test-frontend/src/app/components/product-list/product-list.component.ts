@@ -47,12 +47,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
   private hoverResetTimeout: any = null;
   private dropdownResetTimeout: any = null;
 
+  // Pagination Properties
+  currentPage: number = 1;
+  totalPages: number = 1;
+
   ngOnInit(): void {
     this.productService.getProducts()
       .subscribe({
         next: prods => {
           this.products = prods;
           this.filteredProducts = [...prods];
+          this.calculateTotalPages();
           this.updateDisplayedProducts();
         },
         error: err => console.error('Fehler beim Laden der Produkte', err)
@@ -80,10 +85,57 @@ export class ProductListComponent implements OnInit, OnDestroy {
     console.log('Scrolled to top');
   }
 
-  // FEHLENDE METHODE hinzufügen
+  // Pagination Methods
+  calculateTotalPages(): void {
+    this.totalPages = Math.ceil(this.filteredProducts.length / this.productsPerPage);
+    // Sicherstellen dass currentPage nicht größer als totalPages ist
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = 1;
+    }
+  }
+
   updateDisplayedProducts(): void {
-    // Zeige nur die ersten X Produkte basierend auf productsPerPage
-    this.displayedProducts = this.filteredProducts.slice(0, this.productsPerPage);
+    const startIndex = (this.currentPage - 1) * this.productsPerPage;
+    const endIndex = startIndex + this.productsPerPage;
+    this.displayedProducts = this.filteredProducts.slice(startIndex, endIndex);
+  }
+
+  // Navigation Methods
+  goToFirstPage(): void {
+    this.currentPage = 1;
+    this.updateDisplayedProducts();
+  }
+
+  goToPreviousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updateDisplayedProducts();
+    }
+  }
+
+  goToNextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updateDisplayedProducts();
+    }
+  }
+
+  goToLastPage(): void {
+    this.currentPage = this.totalPages;
+    this.updateDisplayedProducts();
+  }
+
+  onPageChange(): void {
+    const clickedSelect = event?.target as HTMLSelectElement;
+    if (clickedSelect) {
+      this.addIndividualSelectAnimation(clickedSelect);
+    }
+    this.updateDisplayedProducts();
+  }
+
+  // Page Array für Dropdown
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   // ORIGINAL Methoden wiederherstellen
@@ -133,6 +185,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
       });
     }
     
+    this.currentPage = 1; // Reset auf Seite 1 bei neuer Sortierung
+    this.calculateTotalPages();
     this.updateDisplayedProducts();
     
     // Verzögerter Reset nach Auswahl
@@ -148,6 +202,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this.addIndividualSelectAnimation(clickedSelect);
     }
     
+    this.currentPage = 1; // Reset auf Seite 1 bei Änderung der Anzahl
+    this.calculateTotalPages();
     this.updateDisplayedProducts();
     
     // Verzögerter Reset nach Auswahl
