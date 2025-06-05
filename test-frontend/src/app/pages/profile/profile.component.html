@@ -1,0 +1,95 @@
+<div class="profile-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>My Profile</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Loading state -->
+      <div *ngIf="isLoading" class="loading-indicator">
+        Loading profile...
+      </div>
+
+      <!-- Error state -->
+      <div *ngIf="!isLoading && !user" class="error-message">
+        Unable to load profile. Please try again later.
+      </div>
+
+      <!-- View mode -->
+      <div *ngIf="!isLoading && user && !isEditing" class="profile-details">
+        <div class="profile-field">
+          <strong>Name:</strong> {{ user.name }}
+        </div>
+        <div class="profile-field">
+          <strong>Email:</strong> {{ user.email }}
+        </div>
+        <div *ngIf="user.address" class="profile-field">
+          <strong>Address:</strong> {{ user.address }}
+        </div>
+        <div *ngIf="user.city" class="profile-field">
+          <strong>City:</strong> {{ user.city }}
+        </div>
+        <div *ngIf="user.postal_code" class="profile-field">
+          <strong>Postal Code:</strong> {{ user.postal_code }}
+        </div>
+        <div *ngIf="user.country" class="profile-field">
+          <strong>Country:</strong> {{ user.country }}
+        </div>
+        <div *ngIf="user.phone" class="profile-field">
+          <strong>Phone:</strong> {{ user.phone }}
+        </div>
+
+        <button mat-raised-button color="primary" (click)="startEditing()">
+          Edit Profile
+        </button>
+      </div>
+
+      <!-- Edit mode -->
+      <div *ngIf="!isLoading && isEditing" class="profile-edit-form">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="editedUser.name" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Email</mat-label>
+          <input matInput [(ngModel)]="editedUser.email" required type="email">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Address</mat-label>
+          <input matInput [(ngModel)]="editedUser.address">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>City</mat-label>
+          <input matInput [(ngModel)]="editedUser.city">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Postal Code</mat-label>
+          <input matInput [(ngModel)]="editedUser.postal_code">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Country</mat-label>
+          <input matInput [(ngModel)]="editedUser.country">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Phone</mat-label>
+          <input matInput [(ngModel)]="editedUser.phone">
+        </mat-form-field>
+
+        <div class="button-row">
+          <button mat-raised-button (click)="cancelEditing()">
+            Cancel
+          </button>
+          <button mat-raised-button color="primary" (click)="saveProfile()">
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
