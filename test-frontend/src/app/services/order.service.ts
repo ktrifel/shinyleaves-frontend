@@ -5,8 +5,7 @@ import { catchError, retry, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 export interface OrderItem {
-  o_id: string;
-  c_id: number;
+  order_nr: string;
   p_id: number;
   amount: number;
 }
