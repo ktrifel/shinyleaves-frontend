@@ -1,6 +1,6 @@
 // src/app/components/product-list/product-list.component.ts
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, HostListener } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
@@ -35,6 +35,14 @@ export class ProductListComponent implements OnInit {
   sortDirection: 'asc' | 'desc' = 'asc';
   productsPerPage: number = 16;
 
+  // Scroll-to-Top Button
+  showScrollButton: boolean = false;
+
+  // Neue Properties für persistenten Hover
+  filterRowHovered: boolean = false;
+  sortSelectActive: boolean = false;
+  productsPerPageSelectActive: boolean = false;
+
   ngOnInit(): void {
     this.productService.getProducts()
       .subscribe({
@@ -47,7 +55,41 @@ export class ProductListComponent implements OnInit {
       });
   }
 
+  // Scroll-Event Listener
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    this.showScrollButton = scrollPosition > 300;
+  }
+
+  // Scroll-to-Top Funktion
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+
+  // FEHLENDE METHODE hinzufügen
+  updateDisplayedProducts(): void {
+    // Zeige nur die ersten X Produkte basierend auf productsPerPage
+    this.displayedProducts = this.filteredProducts.slice(0, this.productsPerPage);
+  }
+
+  // Individuelle Select-Animation - nur der geklickte Button
   applySorting(): void {
+    // Finde das geklickte Select-Element
+    const clickedSelect = event?.target as HTMLSelectElement;
+    if (clickedSelect) {
+      this.addIndividualSelectAnimation(clickedSelect);
+    }
+    
+    // Hover-State nach Auswahl entfernen
+    setTimeout(() => {
+      this.filterRowHovered = false;
+      this.sortSelectActive = false;
+    }, 300);
+    
     if (!this.sortField) {
       this.filteredProducts = [...this.products];
     } else {
@@ -90,11 +132,25 @@ export class ProductListComponent implements OnInit {
   }
 
   onProductsPerPageChange(): void {
+    // Finde das geklickte Select-Element
+    const clickedSelect = event?.target as HTMLSelectElement;
+    if (clickedSelect) {
+      this.addIndividualSelectAnimation(clickedSelect);
+    }
+    
+    // Hover-State nach Auswahl entfernen
+    setTimeout(() => {
+      this.filterRowHovered = false;
+      this.productsPerPageSelectActive = false;
+    }, 300);
+    
     this.updateDisplayedProducts();
   }
 
-  private updateDisplayedProducts(): void {
-    this.displayedProducts = this.filteredProducts.slice(0, this.productsPerPage);
+  // NEUE Methode für individuelle Select-Animation
+  private addIndividualSelectAnimation(selectElement: HTMLSelectElement): void {
+    selectElement.classList.add('updating');
+    setTimeout(() => selectElement.classList.remove('updating'), 400);
   }
 
   addToCart(product: any) {
@@ -119,7 +175,7 @@ export class ProductListComponent implements OnInit {
 
     localStorage.setItem('cart', JSON.stringify(cart));
     
-    // Button-Feedback nach 800ms zurücksetzen (vorher 1500ms)
+    // Button-Feedback nach 800ms zurücksetzen
     setTimeout(() => {
       this.addingToCart[product.p_id] = false;
     }, 800);
@@ -127,6 +183,49 @@ export class ProductListComponent implements OnInit {
 
   onImgError(event: Event) {
     const target = event.target as HTMLImageElement;
-    target.src = 'assets/images/placeholder.jpg';  // Zeigt Ersatzbild an
+    target.src = 'assets/images/placeholder.jpg';
+  }
+
+  // Filter Row Hover Management
+  onFilterRowMouseEnter(): void {
+    this.filterRowHovered = true;
+  }
+
+  onFilterRowMouseLeave(): void {
+    // Nur entfernen wenn kein Select aktiv ist
+    if (!this.sortSelectActive && !this.productsPerPageSelectActive) {
+      this.filterRowHovered = false;
+    }
+  }
+
+  // Select-spezifische Hover-Events
+  onSortSelectFocus(): void {
+    this.sortSelectActive = true;
+    this.filterRowHovered = true;
+  }
+
+  onSortSelectBlur(): void {
+    this.sortSelectActive = false;
+    // Kurze Verzögerung für bessere UX
+    setTimeout(() => {
+      if (!this.productsPerPageSelectActive) {
+        this.filterRowHovered = false;
+      }
+    }, 100);
+  }
+
+  onProductsPerPageSelectFocus(): void {
+    this.productsPerPageSelectActive = true;
+    this.filterRowHovered = true;
+  }
+
+  onProductsPerPageSelectBlur(): void {
+    this.productsPerPageSelectActive = false;
+    // Kurze Verzögerung für bessere UX
+    setTimeout(() => {
+      if (!this.sortSelectActive) {
+        this.filterRowHovered = false;
+      }
+    }, 100);
   }
 }

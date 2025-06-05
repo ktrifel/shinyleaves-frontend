@@ -156,92 +156,260 @@ button.added-to-cart span {
   background-color: white;/* Optional: leicht abgerundete Ecken */
 }
 
-/* Filter Controls - weiter nach unten verschieben */
+/* Filter Controls - redesigned mit passenden Farben und Animationen */
 .filter-controls {
   display: flex;
-  justify-content: space-between; /* Gleichmäßige Verteilung */
+  justify-content: space-between;
   align-items: center;
   gap: 2rem;
-  max-width: 1400px; /* Gleiche Breite wie product-grid */
-  margin: 4rem auto 3rem auto; /* GEÄNDERT: 4rem statt 2rem für mehr Abstand nach oben */
+  max-width: 1400px;
+  margin: 4rem auto 3rem auto;
   padding: 1.5rem 2rem;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e0e0e0;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fdf9 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(80, 138, 98, 0.1);
+  border: 2px solid rgba(80, 138, 98, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Filter Controls UNTEN - anderer Abstand */
-.filter-controls-bottom {
-  margin: 3rem auto 1rem auto; /* Weniger Abstand nach unten */
+/* PERSISTENTER Hover-Effekt */
+.filter-controls:hover,
+.filter-controls.persistent-hover {
+  transform: scale(1.03) translateY(-2px);
+  box-shadow: 0 6px 30px rgba(80, 138, 98, 0.2);
+  border-color: rgba(80, 138, 98, 0.4);
 }
 
 .filter-section {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  position: relative;
+  z-index: 2;
 }
 
 .filter-section label {
-  font-weight: 600;
-  color: #508a62;
-  font-size: 0.95rem;
+  font-weight: 700;
+  color: #2E4F38;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
   white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  transition: color 0.2s ease;
+}
+
+.filter-section:hover label {
+  color: #508a62;
 }
 
 .sort-controls {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
+/* Select Styling - WEISSER HINTERGRUND mit grünem Hover */
 .filter-controls select {
-  padding: 0.5rem 0.75rem;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  background: #fff;
+  background: #ffffff;
+  color: #333333;
+  padding: 0.55rem 1.2rem;
+  border: 2px solid #508a62;
+  border-radius: 22px;
   font-size: 0.9rem;
-  color: #333;
   cursor: pointer;
-  transition: border-color 0.2s ease;
-  min-width: 120px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 130px;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  text-transform: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: #ffffff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23333" d="M2 4l4 4 4-4z"/></svg>') no-repeat right 12px center;
+  background-size: 12px;
+  padding-right: 40px;
+  position: relative;
+  z-index: 4;
 }
 
-.filter-controls select:focus {
-  outline: none;
-  border-color: #508a62;
-  box-shadow: 0 0 0 3px rgba(80, 138, 98, 0.1);
+/* KOMPLETT NEUE Option-Behandlung */
+.filter-controls select option {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+  padding: 8px 12px !important;
+  font-weight: 500 !important;
+  border: none !important;
 }
 
+.filter-controls select option:checked,
+.filter-controls select option[selected] {
+  background-color: #508a62 !important;
+  background: #508a62 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.filter-controls select option:hover {
+  background-color: #508a62 !important;
+  background: #508a62 !important;
+  color: #ffffff !important;
+}
+
+/* Webkit Browser (Chrome, Safari) */
+.filter-controls select option:checked {
+  background: linear-gradient(#508a62, #508a62);
+  background-color: #508a62;
+  color: #ffffff;
+}
+
+/* Disabled State */
 .filter-controls select:disabled {
-  background: #f5f5f5;
-  color: #999;
+  background: #f5f5f5 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23999" d="M2 4l4 4 4-4z"/></svg>') no-repeat right 12px center;
+  color: #999999;
   cursor: not-allowed;
+  border-color: #cccccc;
+  transform: none;
+  box-shadow: none;
 }
 
-/* Responsive Design für Filter */
+.filter-controls select:disabled:hover {
+  transform: none;
+  box-shadow: none;
+  background-color: #f5f5f5 !important;
+  color: #999999 !important;
+}
+
+/* INDIVIDUELLE Button-Animation - bleibt grün */
+.filter-controls select.updating {
+  animation: individualButtonPulse 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 6;
+  background-color: #508a62 !important;
+  color: #ffffff !important;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="white" d="M2 4l4 4 4-4z"/></svg>') !important;
+}
+
+@keyframes individualButtonPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  30% {
+    transform: scale(1.08);
+    box-shadow: 0 8px 25px rgba(80, 138, 98, 0.5);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(80, 138, 98, 0.4);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Scroll-to-Top Button */
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #508a62;
+  color: #ffffff;
+  border: 2px solid #3f6b4f;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+  background: #3f6b4f;
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(80, 138, 98, 0.4);
+}
+
+/* Mobile Anpassungen */
 @media (max-width: 768px) {
   .filter-controls {
     flex-direction: column;
     gap: 1.5rem;
-    margin: 3rem auto 2.5rem auto; /* GEÄNDERT: 3rem für mobile auch mehr Abstand */
-    padding: 1.5rem;
+    margin: 3rem auto 2.5rem auto;
+    padding: 2rem 1.5rem;
   }
-  
-  .filter-controls-bottom {
-    margin: 2.5rem auto 1rem auto; /* Angepasst für mobile */
+
+  .filter-controls:hover {
+    transform: none;
   }
-  
-  .filter-section {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .sort-controls {
-    flex: 1;
-    justify-content: flex-end;
-  }
-  
+
   .filter-controls select {
-    min-width: 100px;
+    min-width: 110px;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    padding-right: 35px;
+    background-size: 14px;
+  }
+
+  .filter-controls select:hover {
+    transform: scale(1.02);
+  }
+
+  .scroll-to-top {
+    width: 50px;
+    height: 50px;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.2rem;
   }
 }
+
+/* Loading Animation für Filter-Änderungen */
+.filter-controls.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.filter-controls.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #508a62;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Browser-spezifische Korrekturen ENTFERNT */
+.filter-controls select::-ms-expand {
+  display: none;
+}
+
+/* Firefox spezifische Korrekturen ENTFERNT - jetzt funktioniert überall */
+/* @-moz-document url-prefix() wurde entfernt */
