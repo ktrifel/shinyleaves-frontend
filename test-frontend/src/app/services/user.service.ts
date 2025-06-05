@@ -9,7 +9,7 @@ import { User } from '../models/user';
   providedIn: 'root',
 })
 export class UserService {
-  private readonly base = `${environment.apiUrl}/api/customer/me`;
+  private readonly base = `${environment.apiUrl}/api/customers/me`;
 
   constructor(private readonly http: HttpClient) {}
 
