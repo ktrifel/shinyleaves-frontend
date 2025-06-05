@@ -9,7 +9,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { UserService } from '../../services/user.service';
+import { WishlistService } from '../../services/wishlist.service';
+import { ProductService } from '../../services/product.service';
 import { User } from '../../models/user';
+import { Product } from '../../models/product';
 
 @Component({
   selector: 'app-profile',
@@ -32,10 +35,16 @@ export class ProfileComponent implements OnInit {
   isEditing = false;
   editedUser: Partial<User> = {};
 
-  wishlist: { name: string; imageUrl: string }[] = [];
+  wishlist: Product[] = [];
+  wishlistLoading = true;
+
+  /** Tracking für Button-Feedback */
+  addingToCart: { [key: number]: boolean } = {};
 
   constructor(
     private userService: UserService,
+    private wishlistService: WishlistService,
+    private productService: ProductService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -62,13 +71,61 @@ export class ProfileComponent implements OnInit {
   }
 
   loadWishlist(): void {
-    const wishlistData: { id: number; name: string; slug: string }[] =
-      JSON.parse(localStorage.getItem('wishlist') ?? '[]');
+    this.wishlistLoading = true;
+    this.wishlistService.getWishlist().subscribe({
+      next: (products) => {
+        this.wishlist = products;
+        this.wishlistLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading wishlist', error);
+        this.wishlistLoading = false;
+        this.snackBar.open('Failed to load wishlist. Please try again later.', 'Close', {
+          duration: 5000
+        });
+      }
+    });
+  }
 
-    this.wishlist = wishlistData.map(item => ({
-      name: item.name,
-      imageUrl: `assets/images/${item.slug}.png`
-    }));
+  removeFromWishlist(productId: number): void {
+    this.wishlistService.removeFromWishlist(productId);
+    // The wishlist will be updated automatically through the subscription
+  }
+
+  addToCart(product: Product): void {
+    // Button-Feedback starten
+    this.addingToCart[product.p_id] = true;
+
+    // Implement add to cart functionality similar to product-list component
+    const cart: any[] = JSON.parse(localStorage.getItem('cart') ?? '[]');
+    const idx = cart.findIndex(item => item.id === product.p_id);
+
+    if (idx > -1) {
+      cart[idx].quantity += 1;
+    } else {
+      cart.push({
+        id:       product.p_id,
+        name:     product.name,
+        price:    product.price,
+        quantity: 1,
+        image:    `assets/images/${product.slug}.png`,
+        slug:     product.slug
+      });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    this.snackBar.open('Product added to cart!', 'Close', {
+      duration: 3000
+    });
+
+    // Button-Feedback nach 800ms zurücksetzen
+    setTimeout(() => {
+      this.addingToCart[product.p_id] = false;
+
+      // Remove the product from the wishlist after animation completes
+      this.removeFromWishlist(product.p_id);
+    }, 800);
   }
 
   startEditing(): void {
@@ -104,5 +161,10 @@ export class ProfileComponent implements OnInit {
         });
       }
     });
+  }
+
+  onImgError(event: Event): void {
+    const target = event.target as HTMLImageElement;
+    target.src = 'assets/images/placeholder.jpg';  // Zeigt Ersatzbild an
   }
 }

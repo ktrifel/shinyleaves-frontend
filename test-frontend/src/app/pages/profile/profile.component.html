@@ -23,10 +23,41 @@
     <div class="profile-box wishlist-box">
       <div class="wishlist">
         <h3><mat-icon class="heart-icon">favorite</mat-icon> Merkzettel</h3>
-        <div *ngFor="let item of wishlist" class="wishlist-item">
-          <img [src]="item.imageUrl" alt="Produktbild" />
-          <span>{{ item.name }}</span>
-          <button mat-raised-button color="primary">Zum Warenkorb</button>
+
+        <div *ngIf="wishlistLoading" class="loading-indicator">
+          <p>Lade Merkzettel...</p>
+        </div>
+
+        <div *ngIf="!wishlistLoading && wishlist.length === 0" class="empty-wishlist">
+          <p>Dein Merkzettel ist leer.</p>
+          <p>Füge Produkte hinzu, indem du auf das Herz-Symbol klickst.</p>
+        </div>
+
+        <div *ngFor="let product of wishlist" class="wishlist-item">
+          <img [src]="'assets/images/' + product.slug + '.png'"
+               alt="{{ product.name }}"
+               (error)="onImgError($event)" />
+          <div class="wishlist-item-details">
+            <span class="product-name">{{ product.name }}</span>
+            <span class="product-price">{{ product.price | currency:'EUR' }}</span>
+          </div>
+          <div class="wishlist-item-actions">
+            <div class="button-container">
+              <button mat-raised-button
+                      color="primary"
+                      (click)="addToCart(product)"
+                      [class.added-to-cart]="addingToCart[product.p_id]">
+                <span *ngIf="!addingToCart[product.p_id]">In den Warenkorb</span>
+                <span *ngIf="addingToCart[product.p_id]">✓ Hinzugefügt</span>
+              </button>
+              <button mat-icon-button
+                      color="warn"
+                      (click)="removeFromWishlist(product.p_id)"
+                      aria-label="Vom Merkzettel entfernen">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

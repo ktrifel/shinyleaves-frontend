@@ -40,7 +40,14 @@
              [attr.data-price]="(i.price * i.quantity)">
           {{ (i.price * i.quantity) | currency:'EUR' }}
         </div>
-        <button class="wishlist-btn">Auf die Merkliste verschieben</button>
+        <button class="wishlist-btn"
+                (click)="moveToWishlist(i)"
+                [class.in-wishlist]="isInWishlist(i.id)"
+                [disabled]="isInWishlist(i.id)">
+          <mat-icon>favorite</mat-icon>
+          <span *ngIf="!isInWishlist(i.id)">Auf die Merkliste verschieben</span>
+          <span *ngIf="isInWishlist(i.id)">Bereits auf der Merkliste</span>
+        </button>
       </div>
     </div>
   </div>
