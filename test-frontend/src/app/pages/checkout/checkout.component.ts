@@ -18,7 +18,6 @@ interface CheckoutData {
   items: CartItem[];
   totalAmount: number;
   billingAddress: any;
-  shippingAddress?: any;
   paymentMethod: string;
 }
 
@@ -106,35 +105,10 @@ export class CheckoutComponent implements OnInit {
       city: [city, [Validators.required]],
       country: ['DE', [Validators.required]],
 
-      differentShipping: [false],
-      shippingFirstName: [''],
-      shippingLastName: [''],
-      shippingStreet: [''],
-      shippingZipCode: [''],
-      shippingCity: [''],
-
       paymentMethod: ['paypal', [Validators.required]],
       acceptTerms: [false, [Validators.requiredTrue]]
     });
 
-    // Dynamische Validierung für Lieferadresse
-    this.checkoutForm.get('differentShipping')?.valueChanges.subscribe(value => {
-      const shippingFields = ['shippingFirstName', 'shippingLastName', 'shippingStreet', 'shippingZipCode', 'shippingCity'];
-
-      if (value) {
-        shippingFields.forEach(field => {
-          this.checkoutForm.get(field)?.setValidators([Validators.required]);
-        });
-      } else {
-        shippingFields.forEach(field => {
-          this.checkoutForm.get(field)?.clearValidators();
-        });
-      }
-
-      shippingFields.forEach(field => {
-        this.checkoutForm.get(field)?.updateValueAndValidity();
-      });
-    });
   }
 
   get totalPrice(): number {
@@ -169,16 +143,6 @@ export class CheckoutComponent implements OnInit {
         paymentMethod: this.checkoutForm.value.paymentMethod
       };
 
-      if (this.checkoutForm.value.differentShipping) {
-        checkoutData.shippingAddress = {
-          firstName: this.checkoutForm.value.shippingFirstName,
-          lastName: this.checkoutForm.value.shippingLastName,
-          street: this.checkoutForm.value.shippingStreet,
-          zipCode: this.checkoutForm.value.shippingZipCode,
-          city: this.checkoutForm.value.shippingCity,
-          country: this.checkoutForm.value.country
-        };
-      }
 
       // Simuliere Checkout-Prozess
       setTimeout(() => {

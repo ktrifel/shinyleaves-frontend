@@ -66,41 +66,6 @@
         </div>
       </div>
 
-      <!-- Lieferadresse -->
-      <div class="form-section">
-        <div class="checkbox-group">
-          <input type="checkbox" id="differentShipping" formControlName="differentShipping">
-          <label for="differentShipping">Abweichende Lieferadresse</label>
-        </div>
-
-        <div *ngIf="checkoutForm.get('differentShipping')?.value" class="shipping-address">
-          <h4>Lieferadresse</h4>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="shippingFirstName">Vorname *</label>
-              <input type="text" id="shippingFirstName" formControlName="shippingFirstName">
-            </div>
-            <div class="form-group">
-              <label for="shippingLastName">Nachname *</label>
-              <input type="text" id="shippingLastName" formControlName="shippingLastName">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="shippingStreet">Straße und Hausnummer *</label>
-            <input type="text" id="shippingStreet" formControlName="shippingStreet">
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="shippingZipCode">PLZ *</label>
-              <input type="text" id="shippingZipCode" formControlName="shippingZipCode">
-            </div>
-            <div class="form-group">
-              <label for="shippingCity">Stadt *</label>
-              <input type="text" id="shippingCity" formControlName="shippingCity">
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- Zahlungsmethode -->
       <div class="form-section">
