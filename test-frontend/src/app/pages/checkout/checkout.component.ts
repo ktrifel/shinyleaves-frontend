@@ -97,13 +97,13 @@ export class CheckoutComponent implements OnInit {
     }
 
     this.checkoutForm = this.fb.group({
-      firstName: [firstName, [Validators.required, Validators.minLength(2)]],
-      lastName: [lastName, [Validators.required, Validators.minLength(2)]],
-      email: [email, [Validators.required, Validators.email]],
-      street: [street, [Validators.required]],
-      zipCode: [zipCode, [Validators.required, Validators.pattern(/^\d{5}$/)]],
-      city: [city, [Validators.required]],
-      country: ['DE', [Validators.required]],
+      firstName: [firstName, []],
+      lastName: [lastName, []],
+      email: [email, []],
+      street: [street, []],
+      zipCode: [zipCode, []],
+      city: [city, []],
+      country: ['DE', []],
 
       paymentMethod: ['paypal', [Validators.required]],
       acceptTerms: [false, [Validators.requiredTrue]]

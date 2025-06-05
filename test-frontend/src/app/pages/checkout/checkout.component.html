@@ -111,9 +111,6 @@
           <span *ngIf="!isProcessing">Jetzt kaufen</span>
           <span *ngIf="isProcessing">Verarbeitung...</span>
         </button>
-        <div *ngIf="checkoutForm.invalid && checkoutForm.get('acceptTerms')?.invalid" class="button-hint">
-          Bitte akzeptieren Sie die AGB und Datenschutzerklärung, um fortzufahren.
-        </div>
       </div>
     </form>
   </div>
