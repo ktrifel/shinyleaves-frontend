@@ -22,7 +22,7 @@
   top: 56px; /* exakt unterhalb der mat-toolbar */
   z-index: 99;
   margin: 0;
-  padding: 2rem 0 1rem 0; /* Mehr Abstand nach oben */
+  padding: 3rem 0 3rem 0; /* Mehr Abstand nach oben */
   text-align: center;
   font-size: 4rem;
   font-weight: 700;
@@ -221,17 +221,17 @@ button.added-to-cart span {
     margin: 3rem auto 2.5rem auto; /* GEÄNDERT: 3rem für mobile auch mehr Abstand */
     padding: 1.5rem;
   }
-  
+
   .filter-section {
     width: 100%;
     justify-content: space-between;
   }
-  
+
   .sort-controls {
     flex: 1;
     justify-content: flex-end;
   }
-  
+
   .filter-controls select {
     min-width: 100px;
   }
