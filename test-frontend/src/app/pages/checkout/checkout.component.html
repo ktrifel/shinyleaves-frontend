@@ -88,16 +88,17 @@
 
       <!-- AGB und Datenschutz -->
       <div class="form-section">
-        <div class="checkbox-group">
+        <h3>Bestätigung</h3>
+        <div class="checkbox-group required-checkbox">
           <input type="checkbox" id="acceptTerms" formControlName="acceptTerms"
                  [class.error]="isFieldInvalid('acceptTerms')">
           <label for="acceptTerms">
             Ich akzeptiere die <a href="/agb" target="_blank">AGB</a> und
             <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> *
           </label>
-          <div class="error-message" *ngIf="isFieldInvalid('acceptTerms')">
-            Sie müssen die AGB akzeptieren
-          </div>
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('acceptTerms')">
+          Sie müssen die AGB akzeptieren, um fortzufahren
         </div>
       </div>
 
@@ -110,6 +111,9 @@
           <span *ngIf="!isProcessing">Jetzt kaufen</span>
           <span *ngIf="isProcessing">Verarbeitung...</span>
         </button>
+        <div *ngIf="checkoutForm.invalid && checkoutForm.get('acceptTerms')?.invalid" class="button-hint">
+          Bitte akzeptieren Sie die AGB und Datenschutzerklärung, um fortzufahren.
+        </div>
       </div>
     </form>
   </div>

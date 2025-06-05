@@ -106,7 +106,7 @@ export class CheckoutComponent implements OnInit {
       country: ['DE', [Validators.required]],
 
       paymentMethod: ['paypal', [Validators.required]],
-      acceptTerms: [false, [Validators.requiredTrue]]
+      acceptTerms: [true, [Validators.requiredTrue]]
     });
 
   }
