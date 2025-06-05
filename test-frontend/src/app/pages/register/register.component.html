@@ -22,10 +22,14 @@
     <input matInput type="password" formControlName="password" />
   </mat-form-field>
 
-  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-    Registrieren
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || isLoading">
+    {{ isLoading ? 'Wird registriert...' : 'Registrieren' }}
   </button>
 
-  <button mat-button (click)="goToLogin()">Zurück zum Login</button>
+  <button mat-button (click)="goToLogin()" [disabled]="isLoading">Zurück zum Login</button>
 
 </form>

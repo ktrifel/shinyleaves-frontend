@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule     } from '@angular/material/input';
 import { MatButtonModule    } from '@angular/material/button';
+import { NgIf } from '@angular/common';
 
 import { AuthService } from '../../core/auth.service';
 import { RouterModule } from '@angular/router';
@@ -24,7 +25,8 @@ import { RouterModule } from '@angular/router';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    RouterModule
+    RouterModule,
+    NgIf
   ]
 
 })
@@ -38,16 +40,19 @@ export class LoginComponent {
   private readonly auth   = inject(AuthService);
   private readonly router = inject(Router);
 
-  /** Reactive form with validation */
+  /** Reactive form with validation */
   form = this.fb.nonNullable.group({
     email:    ['', [Validators.required, Validators.email]],
     password: ['', Validators.required]
   });
 
-  /** Error message for the template */
+  /** Error message for the template */
   error = '';
 
-  /** Login‑Button */
+  /** Loading state */
+  isLoading = false;
+
+  /** Login‑Button */
   login(): void {
 
     /* Is the form completely filled out? */
@@ -59,12 +64,22 @@ export class LoginComponent {
     /* Retrieve secure values from the form */
     const { email, password } = this.form.getRawValue();
 
-    /* Call Auth‑Service (returns a Promise) */
-    // login.component.ts
-this.auth.login({ email, password }).pipe().subscribe({
-  next: () => this.router.navigateByUrl('/checkout'),
-  error: () => this.error = 'Incorrect login credentials'
-});
+    this.isLoading = true;
+    this.error = '';
 
+    /* Call Auth‑Service API endpoint */
+    this.auth.loginApi({ email, password }).subscribe({
+      next: (response) => {
+        console.log('Login successful:', response);
+        localStorage.setItem('token', response.token);
+        this.isLoading = false;
+        this.router.navigateByUrl('/checkout');
+      },
+      error: (error) => {
+        console.error('Login failed:', error);
+        this.error = error.message || 'Incorrect login credentials';
+        this.isLoading = false;
+      }
+    });
   }
 }

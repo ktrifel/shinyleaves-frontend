@@ -10,3 +10,11 @@
   text-align: center;
   margin-bottom: 1rem;
 }
+
+.error-message {
+  color: #f44336;
+  background-color: #ffebee;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}

@@ -14,7 +14,7 @@ export class AuthService {
 
   isLogged(): boolean {
     // Replace with actual logic to check if the user is logged in
-    return !!localStorage.getItem('userToken');
+    return !!localStorage.getItem('token');
   }
   /* ==== Abhängigkeiten ==================================================== */
   private readonly http   = inject(HttpClient);
@@ -30,15 +30,15 @@ export class AuthService {
   }
 
   /* ==== REST‑API Aufrufe (falls Backend vorhanden) ======================= */
-  private readonly base = '/api/auth';
+  private readonly apiUrl = 'http://localhost:8000/api';
 
   register(data: any) {
-    return this.http.post(`${this.base}/register`, data);
+    return this.http.post(`${this.apiUrl}/register`, data);
   }
 
   /** Beispiel‑API‑Login (würde echtes Token liefern) */
   loginApi(data: Credentials) {
-    return this.http.post<{ token: string }>(`${this.base}/login`, data);
+    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, data);
   }
 
   /* ==== Demo‑Login ohne Backend ========================================== */
