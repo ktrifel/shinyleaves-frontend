@@ -176,22 +176,41 @@ export class CheckoutComponent implements OnInit {
       amount: item.quantity
     }));
 
-    // Send order to backend
-    this.orderService.createOrder(orderItems).subscribe({
-      next: (response) => {
-        console.log('Order created successfully:', response);
-        localStorage.removeItem('cart'); // Clear cart
-        this.router.navigate(['/order-success'], {
-          state: { orderData: data }
-        });
-      },
-      error: (error) => {
-        console.error('Error creating order:', error);
-        this.isProcessing = false;
-        // Handle error (e.g., show error message to user)
-        alert('There was an error processing your order. Please try again.');
-      }
-    });
+    if (orderItems.length === 1) {
+      // If there's only one item, use createOrder
+      this.orderService.createOrder(orderItems).subscribe({
+        next: (response) => {
+          console.log('Order created successfully:', response);
+          localStorage.removeItem('cart'); // Clear cart
+          this.router.navigate(['/order-success'], {
+            state: { orderData: data }
+          });
+        },
+        error: (error) => {
+          console.error('Error creating order:', error);
+          this.isProcessing = false;
+          // Handle error (e.g., show error message to user)
+          alert('There was an error processing your order. Please try again.');
+        }
+      });
+    } else {
+      // If there are multiple items, use createOrders
+      this.orderService.createOrders(orderItems).subscribe({
+        next: (responses) => {
+          console.log('Orders created successfully:', responses);
+          localStorage.removeItem('cart'); // Clear cart
+          this.router.navigate(['/order-success'], {
+            state: { orderData: data }
+          });
+        },
+        error: (error) => {
+          console.error('Error creating orders:', error);
+          this.isProcessing = false;
+          // Handle error (e.g., show error message to user)
+          alert('There was an error processing your order. Please try again.');
+        }
+      });
+    }
   }
 
   private markAllFieldsAsTouched(): void {
