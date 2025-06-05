@@ -161,12 +161,30 @@
 }
 
 h2 {
-  margin: 2.5rem 0 1.75rem;
+  /* KEIN position: sticky - damit sie mitscrollt */
+  margin: 0;
+  padding: 1.5rem 0 0.5rem 0;
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 4rem;
   font-weight: 700;
   font-family: 'Roboto', sans-serif;
-  color: rgb(80, 138, 98, 1);  /* Gleiche Farbe wie "Produkte" */
+  color: rgb(80, 138, 98); /* Gleiche Farbe wie "Produkte" */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Überschrift - gleich wie product-list aber OHNE sticky */
+.page-title {
+  /* ENTFERNT: position: sticky; */
+  /* ENTFERNT: top: 56px; */
+  /* ENTFERNT: z-index: 99; */
+  margin: 0;
+  padding: 3rem 0 2rem 0;
+  text-align: center;
+  font-size: 4rem;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  color: rgb(80, 138, 98); /* Gleiche Farbe wie "Produkte" */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 section {
@@ -174,7 +192,7 @@ section {
   grid-template-columns: 2fr 1fr;
   gap: 2rem;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto; /* GEÄNDERT: Kein 5rem Top-Margin mehr */
 }
 
 /* Produktliste */
@@ -539,11 +557,11 @@ section {
   section {
     grid-template-columns: 1fr;
   }
-  
+
   .cart-item {
     grid-template-columns: 120px 1fr; /* Kleinere Bildspalte auf mobil */
   }
-  
+
   .item-image img {
     height: 100px; /* Kleinere Höhe auf mobil */
   }

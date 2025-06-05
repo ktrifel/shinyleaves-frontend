@@ -1,7 +1,7 @@
-<h2>Warenkorb</h2>
+<h2 class="page-title">Warenkorb</h2>
 
 <section *ngIf="cartItems.length; else empty">
-  
+
   <!-- Produktliste -->
   <div class="cart-items">
     <div class="cart-item" *ngFor="let i of cartItems">
@@ -10,33 +10,33 @@
              alt="{{i.name}}"
              (error)="onImgError($event)">
       </div>
-      
+
       <div class="item-details">
         <div class="item-header">
           <span class="item-number">Pos. {{ cartItems.indexOf(i) + 1 }}</span>
           <button class="remove-btn" (click)="remove(i)">✕</button>
         </div>
-        
+
         <h3 class="item-name">{{ i.name }}</h3>
         <div class="item-id">Art-Nr: {{ i.id }}</div>
         <div class="item-price">{{ i.price | currency:'EUR' }}</div>
         <div class="item-status">Auf Lager</div>
-        
+
         <div class="quantity-controls">
           <label>Anzahl</label>
           <div class="quantity-input">
             <button (click)="decrease(i)">-</button>
-            <input type="number" 
-                   [(ngModel)]="i.quantity" 
-                   min="1" 
+            <input type="number"
+                   [(ngModel)]="i.quantity"
+                   min="1"
                    max="999"
                    (blur)="onQuantityChange(i)"
                    (keyup.enter)="onQuantityChange(i)">
             <button (click)="increase(i)">+</button>
           </div>
         </div>
-        
-        <div class="item-total" 
+
+        <div class="item-total"
              [attr.data-price]="(i.price * i.quantity)">
           {{ (i.price * i.quantity) | currency:'EUR' }}
         </div>
@@ -51,7 +51,7 @@
     <div class="summary-line">
       <span [attr.data-total]="totalPrice">{{ totalPrice | currency:'EUR' }}</span>
     </div>
-    
+
     <div class="shipping-info">
       <div class="shipping-line">
         <span>zzgl. Versandkosten</span>
@@ -61,11 +61,11 @@
 
     <div class="total-section">
       <h3>Gesamtsumme</h3>
-      <div class="total-price" 
+      <div class="total-price"
            [attr.data-total]="(totalPrice + 7.99)">
         {{ (totalPrice + 7.99) | currency:'EUR' }}
       </div>
-      <div class="vat-info" 
+      <div class="vat-info"
            [attr.data-vat]="vatAmount">
         Enthaltene MwSt. 19%: {{ vatAmount | currency:'EUR' }}
       </div>
