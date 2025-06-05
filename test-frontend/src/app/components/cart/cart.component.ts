@@ -159,17 +159,12 @@ export class CartComponent {
     this.save(); 
   }
 
-  /** Weiter → Checkout (nur wenn nicht leer) */
+  /** Weiter → Checkout (nur wenn nicht leer) */
   goCheckout(): void {
     if (!this.cartItems.length) { return; }
 
-    if (this.auth.isLogged()) {
-      this.router.navigate(['/checkout']);
-    } else {
-      this.router.navigate(
-        ['/login'], { queryParams: { redirect: 'checkout' } }
-      );
-    }
+    // Direkt zur Checkout-Seite ohne Anmeldepflicht
+    this.router.navigate(['/checkout']);
   }
 
   continueShopping(): void {
