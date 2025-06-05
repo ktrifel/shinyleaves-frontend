@@ -20,6 +20,6 @@ export class UserService {
 
   /** Updates the current user's profile */
   updateUser(userData: Partial<User>): Observable<User> {
-    return this.http.put<User>(this.base, userData);
+    return this.http.patch<User>(this.base, userData);
   }
 }
