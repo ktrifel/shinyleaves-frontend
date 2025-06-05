@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-success',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe],
+  imports: [CommonModule],
   template: `
     <div class="success-container">
       <div class="success-icon">✓</div>
@@ -26,18 +26,18 @@ import { Router } from '@angular/router';
       max-width: 600px;
       margin: 0 auto;
     }
-    
+
     .success-icon {
       font-size: 4rem;
       color: #508a62;
       margin-bottom: 2rem;
     }
-    
+
     h1 {
       color: #508a62;
       margin-bottom: 1rem;
     }
-    
+
     .order-number {
       background: #f8f9fa;
       padding: 1rem;
@@ -45,7 +45,7 @@ import { Router } from '@angular/router';
       margin: 2rem 0;
       font-weight: 600;
     }
-    
+
     .continue-btn {
       background: #508a62;
       color: white;
@@ -59,9 +59,9 @@ import { Router } from '@angular/router';
 })
 export class OrderSuccessComponent {
   private router = inject(Router);
-  
+
   orderNumber = Math.random().toString(36).substr(2, 9).toUpperCase();
-  
+
   continueShopping(): void {
     this.router.navigate(['/products']);
   }
