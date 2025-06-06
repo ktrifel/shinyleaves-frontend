@@ -176,7 +176,7 @@ export class CheckoutComponent implements OnInit {
     const orderItems: OrderItem[] = data.items.map(item => ({
       order_nr: orderNumber,
       p_id: item.id,
-      c_id: 1, // Using a fixed customer ID for demonstration
+      c_id: this.currentUser?.id || 1, // Use customer ID from backend or fallback to 1
       amount: item.quantity
     }));
 
