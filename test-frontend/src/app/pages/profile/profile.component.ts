@@ -33,7 +33,11 @@ export class ProfileComponent implements OnInit {
   user: User | null = null;
   isLoading = true;
   isEditing = false;
-  editedUser: Partial<User> = {};
+  editedUser: Partial<User> & {
+    zipCode?: string;
+    city?: string;
+    streetAndNumber?: string;
+  } = {};
 
   wishlist: Product[] = [];
   wishlistLoading = true;
@@ -130,7 +134,50 @@ export class ProfileComponent implements OnInit {
 
   startEditing(): void {
     if (this.user) {
+      // Copy basic user properties
       this.editedUser = { ...this.user };
+
+      // Parse address into components if it exists
+      if (this.user.address) {
+        try {
+          // Expected format: "{zip} {city}, {street and number}"
+          const commaIndex = this.user.address.indexOf(',');
+
+          if (commaIndex !== -1) {
+            // Split by comma to separate zip+city from street+number
+            const zipCity = this.user.address.substring(0, commaIndex).trim();
+            this.editedUser.streetAndNumber = this.user.address.substring(commaIndex + 1).trim();
+
+            // Find the first space to separate zip from city
+            const firstSpaceIndex = zipCity.indexOf(' ');
+            if (firstSpaceIndex !== -1) {
+              this.editedUser.zipCode = zipCity.substring(0, firstSpaceIndex).trim();
+              this.editedUser.city = zipCity.substring(firstSpaceIndex + 1).trim();
+            } else {
+              // If no space found, assume the whole string is the city
+              this.editedUser.zipCode = '';
+              this.editedUser.city = zipCity;
+            }
+          } else {
+            // If no comma found, just put the whole address in streetAndNumber
+            this.editedUser.zipCode = '';
+            this.editedUser.city = '';
+            this.editedUser.streetAndNumber = this.user.address;
+          }
+        } catch (error) {
+          console.error('Error parsing address:', error);
+          // Set default values if parsing fails
+          this.editedUser.zipCode = '';
+          this.editedUser.city = '';
+          this.editedUser.streetAndNumber = this.user.address || '';
+        }
+      } else {
+        // Initialize with empty strings if no address
+        this.editedUser.zipCode = '';
+        this.editedUser.city = '';
+        this.editedUser.streetAndNumber = '';
+      }
+
       this.isEditing = true;
     }
   }
@@ -143,8 +190,40 @@ export class ProfileComponent implements OnInit {
   saveProfile(): void {
     if (!this.editedUser) return;
 
+    // Combine address fields into a single string
+    if (this.editedUser.zipCode !== undefined ||
+        this.editedUser.city !== undefined ||
+        this.editedUser.streetAndNumber !== undefined) {
+
+      const zipCode = this.editedUser.zipCode || '';
+      const city = this.editedUser.city || '';
+      const streetAndNumber = this.editedUser.streetAndNumber || '';
+
+      // Format: "{zip} {city}, {street and number}"
+      this.editedUser.address = `${zipCode} ${city}, ${streetAndNumber}`.trim();
+
+      // Remove leading/trailing commas and spaces
+      this.editedUser.address = this.editedUser.address
+        .replace(/^\s*,\s*/, '')  // Remove leading comma
+        .replace(/\s*,\s*$/, '')  // Remove trailing comma
+        .replace(/\s+,\s+/, ', ') // Normalize spaces around comma
+        .trim();
+
+      // If address is just a comma or empty, set it to empty string
+      if (this.editedUser.address === ',' || this.editedUser.address === '') {
+        this.editedUser.address = '';
+      }
+    }
+
+    // Create a clean user object without the extra fields
+    const userToUpdate: Partial<User> = {
+      name: this.editedUser.name,
+      email: this.editedUser.email,
+      address: this.editedUser.address
+    };
+
     this.isLoading = true;
-    this.userService.updateUser(this.editedUser).subscribe({
+    this.userService.updateUser(userToUpdate).subscribe({
       next: (updatedUser) => {
         this.user = updatedUser;
         this.isEditing = false;

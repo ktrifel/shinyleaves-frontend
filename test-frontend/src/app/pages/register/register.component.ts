@@ -30,7 +30,9 @@ export class RegisterComponent {
 
   form = this.fb.nonNullable.group({
     name: ['', Validators.required],
-    address: ['', Validators.required],
+    zipCode: ['', Validators.required],
+    city: ['', Validators.required],
+    streetAndNumber: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required]
   });
@@ -41,7 +43,18 @@ export class RegisterComponent {
 
     this.isLoading = true;
     this.errorMessage = '';
-    const userData = this.form.getRawValue();
+    const formData = this.form.getRawValue();
+
+    // Combine the address fields into a single string
+    const combinedAddress = `${formData.zipCode} ${formData.city}, ${formData.streetAndNumber}`;
+
+    // Create the user data object with the combined address
+    const userData = {
+      name: formData.name,
+      address: combinedAddress,
+      email: formData.email,
+      password: formData.password
+    };
 
     this.authService.register(userData).subscribe({
       next: (response) => {
