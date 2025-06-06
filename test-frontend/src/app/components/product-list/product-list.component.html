@@ -108,16 +108,33 @@
       <p *ngIf="product.effect"><strong>Effekt:</strong> {{ product.effect }}</p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button
-              color="primary"
-              (click)="addToCart(product)"
-              [class.added-to-cart]="addingToCart[product.p_id]">
-        <span *ngIf="!addingToCart[product.p_id]">In den Warenkorb</span>
-        <span *ngIf="addingToCart[product.p_id]">✓ Hinzugefügt</span>
-      </button>
+      <div class="button-container">
+        <button mat-raised-button
+                color="primary"
+                (click)="addToCart(product)"
+                [class.added-to-cart]="addingToCart[product.p_id]">
+          <span *ngIf="!addingToCart[product.p_id]">In den Warenkorb</span>
+          <span *ngIf="addingToCart[product.p_id]">? Hinzugefügt</span>
+        </button>
+
+        <button mat-button
+                class="wishlist-button"
+                color="accent"
+                (click)="addToWishlist(product)"
+                [class.in-wishlist]="isInWishlist(product.p_id)"
+                [class.adding-to-wishlist]="addingToWishlist[product.p_id]"
+                aria-label="Zum Merkzettel hinzufügen"
+                matTooltip="Zum Merkzettel hinzufügen"
+                matTooltipPosition="above"
+        >
+          Merkzettel
+        </button>
+      </div>
     </mat-card-actions>
   </mat-card>
 </div>
+
+
 
 <!-- Filter Controls UNTEN -->
 <div class="filter-controls filter-controls-bottom"
