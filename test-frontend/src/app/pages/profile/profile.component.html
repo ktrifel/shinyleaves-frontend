@@ -4,18 +4,39 @@
   <div class="boxes-container">
     <div class="profile-box user-profile-box">
       <div class="user-info">
-        <div class="user-info-content">
+        <div class="user-info-header">
           <div class="avatar-circle">
             <mat-icon>person</mat-icon>
           </div>
-          <div class="user-details">
-            <p><strong>Name:</strong> {{ user?.name }}</p>
-            <p><strong>Adresse:</strong> {{ user?.address }}</p>
-            <p><strong>Email:</strong> {{ user?.email }}</p>
+          <h3>Persönliche Informationen</h3>
+        </div>
+
+        <div class="user-info-items">
+          <div class="user-info-item">
+            <div class="user-info-item-details">
+              <span class="info-label">Name</span>
+              <span class="info-value">{{ user?.name }}</span>
+            </div>
+          </div>
+
+          <div class="user-info-item">
+            <div class="user-info-item-details">
+              <span class="info-label">Adresse</span>
+              <span class="info-value">{{ user?.address }}</span>
+            </div>
+          </div>
+
+          <div class="user-info-item">
+            <div class="user-info-item-details">
+              <span class="info-label">Email</span>
+              <span class="info-value">{{ user?.email }}</span>
+            </div>
           </div>
         </div>
-        <button mat-icon-button (click)="startEditing()" aria-label="Bearbeiten" class="edit-button">
+
+        <button mat-raised-button color="primary" (click)="startEditing()" aria-label="Bearbeiten" class="edit-button">
           <mat-icon>edit</mat-icon>
+          <span>Profil bearbeiten</span>
         </button>
       </div>
     </div>
