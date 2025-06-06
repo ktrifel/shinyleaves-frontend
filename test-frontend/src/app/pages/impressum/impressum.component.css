@@ -1,15 +1,29 @@
-/* Impressum-Titel */
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 56px);
+}
+
+.impressum-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 1.5rem 2rem 1.5rem;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
 .impressum-title {
   font-size: 2.2rem;
   font-weight: 700;
   font-family: 'Roboto', sans-serif;
   text-align: center;
-  margin-top: 2.5rem;
   margin-bottom: 1.5rem;
-  color: rgb(80, 138, 98); /* dein ShinyLeaves-Grün */
+  color: #508a62;
 }
 
-/* Firmen-Infos optisch hervorheben */
 .company-info {
   line-height: 1.8;
   font-family: 'Roboto', sans-serif;
@@ -17,7 +31,6 @@
   color: #333;
 }
 
-/* E-Mail-Link */
 .email-link {
   color: #2E4F38;
   font-weight: 600;
@@ -27,15 +40,4 @@
 
 .email-link:hover {
   text-decoration: underline;
-}
-
-/* Allgemeines Layout für Impressum */
-:host {
-  display: block;
-  padding: 2rem;
-  background-color: rgba(255, 255, 255, 0.85);
-  border-radius: 12px;
-  max-width: 600px;
-  margin: 3rem auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
