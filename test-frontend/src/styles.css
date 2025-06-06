@@ -75,8 +75,7 @@ button[mat-icon-button] mat-icon {
 
 /* ------------- Hauptbereich (main) ------------- */
 main {
-  flex: 1 0 auto;
-  padding-top: 56px;
+  flex: 1;
   padding: 56px 24px 24px;
 }
 
