@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-success',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe],
+  imports: [CommonModule],
   template: `
     <div class="success-container">
       <div class="success-icon">✓</div>
@@ -26,18 +26,18 @@ import { Router } from '@angular/router';
       max-width: 600px;
       margin: 0 auto;
     }
-    
+
     .success-icon {
       font-size: 4rem;
       color: #508a62;
       margin-bottom: 2rem;
     }
-    
+
     h1 {
       color: #508a62;
       margin-bottom: 1rem;
     }
-    
+
     .order-number {
       background: #f8f9fa;
       padding: 1rem;
@@ -45,7 +45,7 @@ import { Router } from '@angular/router';
       margin: 2rem 0;
       font-weight: 600;
     }
-    
+
     .continue-btn {
       background: #508a62;
       color: white;
@@ -59,9 +59,26 @@ import { Router } from '@angular/router';
 })
 export class OrderSuccessComponent {
   private router = inject(Router);
-  
-  orderNumber = Math.random().toString(36).substr(2, 9).toUpperCase();
-  
+
+  orderNumber: string;
+
+  constructor() {
+    // Get the order number from the router state if available
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as { orderNumber: string } || {};
+
+    // Use the order number from the state or generate a new one if not available
+    if (state.orderNumber) {
+      this.orderNumber = state.orderNumber;
+    } else {
+      // Generate an 8-character order number (4 chars from timestamp + 4 random chars)
+      const timestamp = Date.now().toString(36).toUpperCase();
+      const timestampPart = timestamp.slice(-4);
+      const randomPart = Math.random().toString(36).substr(2, 4).toUpperCase();
+      this.orderNumber = `${timestampPart}${randomPart}`;
+    }
+  }
+
   continueShopping(): void {
     this.router.navigate(['/products']);
   }

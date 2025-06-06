@@ -1,7 +1,7 @@
 <h2>Kasse</h2>
 
 <section *ngIf="cartItems.length; else empty" class="checkout-container">
-  
+
   <!-- Bestellübersicht -->
   <div class="order-summary">
     <h3>Ihre Bestellung</h3>
@@ -19,7 +19,7 @@
         <div class="item-total">{{ (item.price * item.quantity) | currency:'EUR' }}</div>
       </div>
     </div>
-    
+
     <!-- Preisübersicht -->
     <div class="price-summary">
       <div class="price-line">
@@ -43,116 +43,29 @@
   <!-- Checkout Formular -->
   <div class="checkout-form">
     <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
-      
+
       <!-- Rechnungsadresse -->
       <div class="form-section">
         <h3>Rechnungsadresse</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="firstName">Vorname *</label>
-            <input type="text" id="firstName" formControlName="firstName" 
-                   [class.error]="isFieldInvalid('firstName')">
-            <div class="error-message" *ngIf="isFieldInvalid('firstName')">
-              Vorname ist erforderlich
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="lastName">Nachname *</label>
-            <input type="text" id="lastName" formControlName="lastName"
-                   [class.error]="isFieldInvalid('lastName')">
-            <div class="error-message" *ngIf="isFieldInvalid('lastName')">
-              Nachname ist erforderlich
-            </div>
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="email">E-Mail-Adresse *</label>
-          <input type="email" id="email" formControlName="email"
-                 [class.error]="isFieldInvalid('email')">
-          <div class="error-message" *ngIf="isFieldInvalid('email')">
-            Gültige E-Mail-Adresse ist erforderlich
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="street">Straße und Hausnummer *</label>
-          <input type="text" id="street" formControlName="street"
-                 [class.error]="isFieldInvalid('street')">
-          <div class="error-message" *ngIf="isFieldInvalid('street')">
-            Straße ist erforderlich
-          </div>
-        </div>
-        
-        <div class="form-row">
-          <div class="form-group">
-            <label for="zipCode">PLZ *</label>
-            <input type="text" id="zipCode" formControlName="zipCode"
-                   [class.error]="isFieldInvalid('zipCode')">
-            <div class="error-message" *ngIf="isFieldInvalid('zipCode')">
-              PLZ ist erforderlich
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="city">Stadt *</label>
-            <input type="text" id="city" formControlName="city"
-                   [class.error]="isFieldInvalid('city')">
-            <div class="error-message" *ngIf="isFieldInvalid('city')">
-              Stadt ist erforderlich
-            </div>
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="country">Land *</label>
-          <select id="country" formControlName="country"
-                  [class.error]="isFieldInvalid('country')">
-            <option value="">Bitte wählen</option>
-            <option value="DE">Deutschland</option>
-            <option value="AT">Österreich</option>
-            <option value="CH">Schweiz</option>
-          </select>
-          <div class="error-message" *ngIf="isFieldInvalid('country')">
-            Land ist erforderlich
-          </div>
+        <p>Die Rechnungsadresse wird aus Ihrem Benutzerprofil übernommen.</p>
+
+        <!-- Hidden form fields to store the user data -->
+        <input type="hidden" formControlName="firstName">
+        <input type="hidden" formControlName="lastName">
+        <input type="hidden" formControlName="email">
+        <input type="hidden" formControlName="street">
+        <input type="hidden" formControlName="zipCode">
+        <input type="hidden" formControlName="city">
+        <input type="hidden" formControlName="country">
+
+        <!-- Display the user's address information -->
+        <div class="user-address-info" *ngIf="currentUser">
+          <p><strong>Name:</strong> {{currentUser.name}}</p>
+          <p><strong>E-Mail:</strong> {{currentUser.email}}</p>
+          <p><strong>Adresse:</strong> {{currentUser.address}}</p>
         </div>
       </div>
 
-      <!-- Lieferadresse -->
-      <div class="form-section">
-        <div class="checkbox-group">
-          <input type="checkbox" id="differentShipping" formControlName="differentShipping">
-          <label for="differentShipping">Abweichende Lieferadresse</label>
-        </div>
-        
-        <div *ngIf="checkoutForm.get('differentShipping')?.value" class="shipping-address">
-          <h4>Lieferadresse</h4>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="shippingFirstName">Vorname *</label>
-              <input type="text" id="shippingFirstName" formControlName="shippingFirstName">
-            </div>
-            <div class="form-group">
-              <label for="shippingLastName">Nachname *</label>
-              <input type="text" id="shippingLastName" formControlName="shippingLastName">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="shippingStreet">Straße und Hausnummer *</label>
-            <input type="text" id="shippingStreet" formControlName="shippingStreet">
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="shippingZipCode">PLZ *</label>
-              <input type="text" id="shippingZipCode" formControlName="shippingZipCode">
-            </div>
-            <div class="form-group">
-              <label for="shippingCity">Stadt *</label>
-              <input type="text" id="shippingCity" formControlName="shippingCity">
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- Zahlungsmethode -->
       <div class="form-section">
@@ -175,16 +88,17 @@
 
       <!-- AGB und Datenschutz -->
       <div class="form-section">
-        <div class="checkbox-group">
+        <h3>Bestätigung</h3>
+        <div class="checkbox-group required-checkbox">
           <input type="checkbox" id="acceptTerms" formControlName="acceptTerms"
                  [class.error]="isFieldInvalid('acceptTerms')">
           <label for="acceptTerms">
-            Ich akzeptiere die <a href="/agb" target="_blank">AGB</a> und 
+            Ich akzeptiere die <a href="/agb" target="_blank">AGB</a> und
             <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> *
           </label>
-          <div class="error-message" *ngIf="isFieldInvalid('acceptTerms')">
-            Sie müssen die AGB akzeptieren
-          </div>
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('acceptTerms')">
+          Sie müssen die AGB akzeptieren, um fortzufahren
         </div>
       </div>
 
@@ -193,7 +107,7 @@
         <button type="button" class="back-to-cart" (click)="backToCart()">
           Zurück zum Warenkorb
         </button>
-        <button type="submit" class="place-order-btn" [disabled]="checkoutForm.invalid || isProcessing">
+        <button type="submit" class="place-order-btn" [disabled]="isProcessing">
           <span *ngIf="!isProcessing">Jetzt kaufen</span>
           <span *ngIf="isProcessing">Verarbeitung...</span>
         </button>

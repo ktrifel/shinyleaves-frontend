@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user';
+import { OrderService, OrderItem } from '../../services/order.service';
 
 interface CartItem {
   id: number;
@@ -16,7 +19,6 @@ interface CheckoutData {
   items: CartItem[];
   totalAmount: number;
   billingAddress: any;
-  shippingAddress?: any;
   paymentMethod: string;
 }
 
@@ -28,20 +30,32 @@ interface CheckoutData {
   styleUrl: './checkout.component.css'
 })
 export class CheckoutComponent implements OnInit {
-  
+
   checkoutForm!: FormGroup;
   cartItems: CartItem[] = [];
   shippingCost = 7.99;
   isProcessing = false;
+  currentUser: User | null = null;
 
   constructor(
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private userService: UserService,
+    private orderService: OrderService
   ) {}
 
   ngOnInit(): void {
     this.loadCart();
-    this.initForm();
+    this.userService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.currentUser = user;
+        this.initForm();
+      },
+      error: (error) => {
+        console.error('Error fetching user data:', error);
+        this.initForm();
+      }
+    });
   }
 
   private loadCart(): void {
@@ -49,44 +63,54 @@ export class CheckoutComponent implements OnInit {
   }
 
   private initForm(): void {
+    // Parse user data if available
+    let firstName = '';
+    let lastName = '';
+    let email = '';
+    let street = '';
+    let zipCode = '';
+    let city = '';
+
+    if (this.currentUser) {
+      // Split name into first and last name
+      const nameParts = this.currentUser.name.split(' ');
+      firstName = nameParts[0] || '';
+      lastName = nameParts.slice(1).join(' ') || '';
+
+      // Use email from user data
+      email = this.currentUser.email || '';
+
+      // Try to parse address into components
+      if (this.currentUser.address) {
+        const addressParts = this.currentUser.address.split(',');
+        if (addressParts.length >= 1) {
+          street = addressParts[0].trim();
+        }
+        if (addressParts.length >= 2) {
+          const zipCityParts = addressParts[1].trim().split(' ');
+          if (zipCityParts.length >= 1) {
+            zipCode = zipCityParts[0].trim();
+          }
+          if (zipCityParts.length >= 2) {
+            city = zipCityParts.slice(1).join(' ').trim();
+          }
+        }
+      }
+    }
+
     this.checkoutForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
-      street: ['', [Validators.required]],
-      zipCode: ['', [Validators.required, Validators.pattern(/^\d{5}$/)]],
-      city: ['', [Validators.required]],
-      country: ['DE', [Validators.required]],
-      
-      differentShipping: [false],
-      shippingFirstName: [''],
-      shippingLastName: [''],
-      shippingStreet: [''],
-      shippingZipCode: [''],
-      shippingCity: [''],
-      
+      firstName: [firstName, []],
+      lastName: [lastName, []],
+      email: [email, []],
+      street: [street, []],
+      zipCode: [zipCode, []],
+      city: [city, []],
+      country: ['DE', []],
+
       paymentMethod: ['paypal', [Validators.required]],
       acceptTerms: [false, [Validators.requiredTrue]]
     });
 
-    // Dynamische Validierung für Lieferadresse
-    this.checkoutForm.get('differentShipping')?.valueChanges.subscribe(value => {
-      const shippingFields = ['shippingFirstName', 'shippingLastName', 'shippingStreet', 'shippingZipCode', 'shippingCity'];
-      
-      if (value) {
-        shippingFields.forEach(field => {
-          this.checkoutForm.get(field)?.setValidators([Validators.required]);
-        });
-      } else {
-        shippingFields.forEach(field => {
-          this.checkoutForm.get(field)?.clearValidators();
-        });
-      }
-      
-      shippingFields.forEach(field => {
-        this.checkoutForm.get(field)?.updateValueAndValidity();
-      });
-    });
   }
 
   get totalPrice(): number {
@@ -103,9 +127,20 @@ export class CheckoutComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('Form validity:', this.checkoutForm.valid);
+    console.log('Form values:', this.checkoutForm.value);
+    console.log('Form errors:', this.checkoutForm.errors);
+
+    // Log individual field validity
+    Object.keys(this.checkoutForm.controls).forEach(key => {
+      const control = this.checkoutForm.get(key);
+      console.log(`${key} validity:`, control?.valid);
+      console.log(`${key} errors:`, control?.errors);
+    });
+
     if (this.checkoutForm.valid && !this.isProcessing) {
       this.isProcessing = true;
-      
+
       const checkoutData: CheckoutData = {
         items: this.cartItems,
         totalAmount: this.totalPrice + this.shippingCost,
@@ -121,16 +156,6 @@ export class CheckoutComponent implements OnInit {
         paymentMethod: this.checkoutForm.value.paymentMethod
       };
 
-      if (this.checkoutForm.value.differentShipping) {
-        checkoutData.shippingAddress = {
-          firstName: this.checkoutForm.value.shippingFirstName,
-          lastName: this.checkoutForm.value.shippingLastName,
-          street: this.checkoutForm.value.shippingStreet,
-          zipCode: this.checkoutForm.value.shippingZipCode,
-          city: this.checkoutForm.value.shippingCity,
-          country: this.checkoutForm.value.country
-        };
-      }
 
       // Simuliere Checkout-Prozess
       setTimeout(() => {
@@ -143,19 +168,137 @@ export class CheckoutComponent implements OnInit {
 
   private processCheckout(data: CheckoutData): void {
     console.log('Checkout Data:', data);
-    
-    // Hier würde normalerweise der API-Call erfolgen
-    // Für Demo: Erfolgreich abschließen
-    localStorage.removeItem('cart'); // Warenkorb leeren
-    this.router.navigate(['/order-success'], { 
-      state: { orderData: data } 
+
+    // Generate a unique order number
+    const orderNumber = this.generateUniqueOrderNumber();
+
+    // Map cart items to order items
+    const orderItems: OrderItem[] = data.items.map(item => ({
+      order_nr: orderNumber,
+      p_id: item.id,
+      c_id: 1, // Using a fixed customer ID for demonstration
+      amount: item.quantity
+    }));
+
+    if (orderItems.length === 1) {
+      // If there's only one item, use createOrder
+      this.orderService.createOrder(orderItems).subscribe({
+        next: (response) => {
+          console.log('Order created successfully:', response);
+          this.handleSuccessfulOrder(data, orderNumber);
+        },
+        error: (error) => {
+          console.error('Error creating order:', error);
+          this.handleOrderError(error, data, orderNumber);
+        }
+      });
+    } else {
+      // If there are multiple items, use createOrders
+      this.orderService.createOrders(orderItems).subscribe({
+        next: (responses) => {
+          console.log('Orders created successfully:', responses);
+
+          // Check if any of the orders failed but were saved locally
+          const hasFailedOrders = responses.some(response => response.success === false);
+
+          if (hasFailedOrders) {
+            // Some orders failed but were saved locally
+            this.handlePartialSuccess(data, orderNumber);
+          } else {
+            // All orders were successful
+            this.handleSuccessfulOrder(data, orderNumber);
+          }
+        },
+        error: (error) => {
+          console.error('Error creating orders:', error);
+          this.handleOrderError(error, data, orderNumber);
+        }
+      });
+    }
+  }
+
+  /**
+   * Handles a successful order
+   * @param data The checkout data
+   * @param orderNumber The order number
+   */
+  private handleSuccessfulOrder(data: CheckoutData, orderNumber: string): void {
+    localStorage.removeItem('cart'); // Clear cart
+    this.router.navigate(['/order-success'], {
+      state: { orderData: data, orderNumber: orderNumber }
     });
   }
 
-  private markAllFieldsAsTouched(): void {
-    Object.keys(this.checkoutForm.controls).forEach(key => {
-      this.checkoutForm.get(key)?.markAsTouched();
+  /**
+   * Handles a partially successful order (some items saved locally)
+   * @param data The checkout data
+   * @param orderNumber The order number
+   */
+  private handlePartialSuccess(data: CheckoutData, orderNumber: string): void {
+    localStorage.removeItem('cart'); // Clear cart
+    this.isProcessing = false;
+
+    // Show a message to the user
+    alert('Some items could not be processed due to a database connection issue. They have been saved locally and will be processed when the connection is restored.');
+
+    // Navigate to the success page
+    this.router.navigate(['/order-success'], {
+      state: { orderData: data, orderNumber: orderNumber }
     });
+  }
+
+  /**
+   * Handles an order error
+   * @param error The error
+   * @param data The checkout data
+   * @param orderNumber The order number
+   */
+  private handleOrderError(error: any, data: CheckoutData, orderNumber: string): void {
+    this.isProcessing = false;
+
+    // Check if it's a database connection error
+    if (error.message && error.message.includes('database')) {
+      // Database connection error - order was saved locally
+      localStorage.removeItem('cart'); // Clear cart
+
+      // Show a message to the user
+      alert(error.message);
+
+      // Navigate to the success page
+      this.router.navigate(['/order-success'], {
+        state: { orderData: data, orderNumber: orderNumber }
+      });
+    } else {
+      // Other error
+      alert('There was an error processing your order. Please try again.');
+    }
+  }
+
+  private markAllFieldsAsTouched(): void {
+    console.log('Marking all fields as touched');
+    Object.keys(this.checkoutForm.controls).forEach(key => {
+      const control = this.checkoutForm.get(key);
+      control?.markAsTouched();
+      console.log(`${key} touched:`, control?.touched);
+    });
+  }
+
+  /**
+   * Generates a unique order number with 8 characters
+   * @returns A unique order number
+   */
+  private generateUniqueOrderNumber(): string {
+    // Get current timestamp in milliseconds and convert to base 36
+    const timestamp = Date.now().toString(36).toUpperCase();
+
+    // Take the last 4 characters of the timestamp
+    const timestampPart = timestamp.slice(-4);
+
+    // Generate a random alphanumeric string and take 4 characters
+    const randomPart = Math.random().toString(36).substr(2, 4).toUpperCase();
+
+    // Combine to create an 8-character order number
+    return `${timestampPart}${randomPart}`;
   }
 
   backToCart(): void {
