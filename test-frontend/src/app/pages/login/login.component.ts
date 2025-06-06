@@ -73,7 +73,7 @@ export class LoginComponent {
         console.log('Login successful:', response);
         localStorage.setItem('token', response.access_token);
         this.isLoading = false;
-        this.router.navigateByUrl('/checkout');
+        this.router.navigateByUrl('/products');
       },
       error: (error) => {
         console.error('Login failed:', error);
