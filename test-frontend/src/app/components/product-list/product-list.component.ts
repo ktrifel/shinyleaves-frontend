@@ -93,6 +93,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   // Pagination Methods
   calculateTotalPages(): void {
+    // Ensure productsPerPage is a number
+    this.productsPerPage = Number(this.productsPerPage);
     this.totalPages = Math.ceil(this.filteredProducts.length / this.productsPerPage);
     // Ensure currentPage is a number and not greater than totalPages
     this.currentPage = Number(this.currentPage);
@@ -102,10 +104,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   updateDisplayedProducts(): void {
-    // Ensure currentPage is treated as a number
+    // Ensure currentPage and productsPerPage are treated as numbers
     const currentPage = Number(this.currentPage);
-    const startIndex = (currentPage - 1) * this.productsPerPage;
-    const endIndex = startIndex + this.productsPerPage;
+    const productsPerPage = Number(this.productsPerPage);
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = startIndex + productsPerPage;
     this.displayedProducts = this.filteredProducts.slice(startIndex, endIndex);
   }
 
@@ -213,6 +216,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this.addIndividualSelectAnimation(clickedSelect);
     }
 
+    // Ensure productsPerPage is a number
+    this.productsPerPage = Number(this.productsPerPage);
     this.currentPage = 1; // Reset auf Seite 1 bei Änderung der Anzahl
     this.calculateTotalPages();
     this.updateDisplayedProducts();
