@@ -1,8 +1,99 @@
 <!-- src/app/components/product-list/product-list.component.html -->
 <h2 class="page-title">Produkte</h2>
 
+<!-- Filter Controls OBEN -->
+<div class="filter-controls"
+     (mouseenter)="onFilterRowMouseEnter()"
+     (mouseleave)="onFilterRowMouseLeave()">
+
+  <!-- Sortierung LINKS -->
+  <div class="filter-section">
+    <label>Sortieren nach:</label>
+    <div class="sort-controls">
+      <select [(ngModel)]="sortField"
+              (change)="applySorting()"
+              (focus)="onSortSelectFocus()"
+              (blur)="onSortSelectBlur()">
+        <option value="">-- Auswählen --</option>
+        <option value="price">Preis</option>
+        <option value="genetic">Genetik</option>
+        <option value="thc">THC</option>
+        <option value="cbd">CBD</option>
+      </select>
+      <select [(ngModel)]="sortDirection"
+              (change)="applySorting()"
+              [disabled]="!sortField"
+              (focus)="onSortSelectFocus()"
+              (blur)="onSortSelectBlur()">
+        <option value="asc">Aufsteigend</option>
+        <option value="desc">Absteigend</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Pagination MITTE -->
+  <div class="pagination-section">
+    <div class="pagination-controls">
+      <!-- Erste Seite -->
+      <button class="page-nav-button"
+              (click)="goToFirstPage()"
+              [disabled]="currentPage === 1"
+              title="Erste Seite">
+        ⏮
+      </button>
+
+      <!-- Vorherige Seite -->
+      <button class="page-nav-button"
+              (click)="goToPreviousPage()"
+              [disabled]="currentPage === 1"
+              title="Vorherige Seite">
+        ◀
+      </button>
+
+      <!-- Seiten Dropdown -->
+      <select [(ngModel)]="currentPage"
+              (change)="onPageChange()"
+              class="page-select">
+        <option *ngFor="let page of pageNumbers" [value]="page">
+          Seite {{page}}
+        </option>
+      </select>
+
+      <!-- Nächste Seite -->
+      <button class="page-nav-button"
+              (click)="goToNextPage()"
+              [disabled]="currentPage === totalPages"
+              title="Nächste Seite">
+        ▶
+      </button>
+
+      <!-- Letzte Seite -->
+      <button class="page-nav-button"
+              (click)="goToLastPage()"
+              [disabled]="currentPage === totalPages"
+              title="Letzte Seite">
+        ⏭
+      </button>
+    </div>
+  </div>
+
+  <!-- Produkte pro Seite RECHTS -->
+  <div class="filter-section products-per-page-section">
+    <label>Produkte pro Seite:</label>
+    <select [(ngModel)]="productsPerPage"
+            (change)="onProductsPerPageChange()"
+            (focus)="onProductsPerPageSelectFocus()"
+            (blur)="onProductsPerPageSelectBlur()">
+      <option [value]="8">8</option>
+      <option [value]="16">16</option>
+      <option [value]="32">32</option>
+      <option [value]="64">64</option>
+    </select>
+  </div>
+</div>
+
 <div class="product-grid">
-  <mat-card class="product-card" *ngFor="let product of products">
+  <mat-card class="product-card" *ngFor="let product of displayedProducts">
     <img mat-card-image
          [src]="'assets/images/' + product.slug + '.png'"
          alt="{{ product.name }}"
@@ -17,28 +108,104 @@
       <p *ngIf="product.effect"><strong>Effekt:</strong> {{ product.effect }}</p>
     </mat-card-content>
     <mat-card-actions>
-      <div class="button-container">
-        <button mat-raised-button
-                color="primary"
-                (click)="addToCart(product)"
-                [class.added-to-cart]="addingToCart[product.p_id]">
-          <span *ngIf="!addingToCart[product.p_id]">In den Warenkorb</span>
-          <span *ngIf="addingToCart[product.p_id]">✓ Hinzugefügt</span>
-        </button>
-
-        <button mat-button
-                class="wishlist-button"
-                color="accent"
-                (click)="addToWishlist(product)"
-                [class.in-wishlist]="isInWishlist(product.p_id)"
-                [class.adding-to-wishlist]="addingToWishlist[product.p_id]"
-                aria-label="Zum Merkzettel hinzufügen"
-                matTooltip="Zum Merkzettel hinzufügen"
-                matTooltipPosition="above"
-        >
-          Merkzettel
-        </button>
-      </div>
+      <button mat-raised-button
+              color="primary"
+              (click)="addToCart(product)"
+              [class.added-to-cart]="addingToCart[product.p_id]">
+        <span *ngIf="!addingToCart[product.p_id]">In den Warenkorb</span>
+        <span *ngIf="addingToCart[product.p_id]">✓ Hinzugefügt</span>
+      </button>
     </mat-card-actions>
   </mat-card>
+</div>
+
+<!-- Filter Controls UNTEN -->
+<div class="filter-controls filter-controls-bottom"
+     (mouseenter)="onFilterRowMouseEnter()"
+     (mouseleave)="onFilterRowMouseLeave()">
+
+  <!-- Sortierung LINKS -->
+  <div class="filter-section">
+    <label>Sortieren nach:</label>
+    <div class="sort-controls">
+      <select [(ngModel)]="sortField"
+              (change)="applySorting()"
+              (focus)="onSortSelectFocus()"
+              (blur)="onSortSelectBlur()">
+        <option value="">-- Auswählen --</option>
+        <option value="price">Preis</option>
+        <option value="genetic">Genetik</option>
+        <option value="thc">THC</option>
+        <option value="cbd">CBD</option>
+      </select>
+      <select [(ngModel)]="sortDirection"
+              (change)="applySorting()"
+              [disabled]="!sortField"
+              (focus)="onSortSelectFocus()"
+              (blur)="onSortSelectBlur()">
+        <option value="asc">Aufsteigend</option>
+        <option value="desc">Absteigend</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Pagination MITTE -->
+  <div class="pagination-section">
+    <div class="pagination-controls">
+      <!-- Erste Seite -->
+      <button class="page-nav-button"
+              (click)="goToFirstPage()"
+              [disabled]="currentPage === 1"
+              title="Erste Seite">
+        ⏮
+      </button>
+
+      <!-- Vorherige Seite -->
+      <button class="page-nav-button"
+              (click)="goToPreviousPage()"
+              [disabled]="currentPage === 1"
+              title="Vorherige Seite">
+        ◀
+      </button>
+
+      <!-- Seiten Dropdown -->
+      <select [(ngModel)]="currentPage"
+              (change)="onPageChange()"
+              class="page-select">
+        <option *ngFor="let page of pageNumbers" [value]="page">
+          Seite {{page}}
+        </option>
+      </select>
+
+      <!-- Nächste Seite -->
+      <button class="page-nav-button"
+              (click)="goToNextPage()"
+              [disabled]="currentPage === totalPages"
+              title="Nächste Seite">
+        ▶
+      </button>
+
+      <!-- Letzte Seite -->
+      <button class="page-nav-button"
+              (click)="goToLastPage()"
+              [disabled]="currentPage === totalPages"
+              title="Letzte Seite">
+        ⏭
+      </button>
+    </div>
+  </div>
+
+  <!-- Produkte pro Seite RECHTS -->
+  <div class="filter-section products-per-page-section">
+    <label>Produkte pro Seite:</label>
+    <select [(ngModel)]="productsPerPage"
+            (change)="onProductsPerPageChange()"
+            (focus)="onProductsPerPageSelectFocus()"
+            (blur)="onProductsPerPageSelectBlur()">
+      <option [value]="8">8</option>
+      <option [value]="16">16</option>
+      <option [value]="32">32</option>
+      <option [value]="64">64</option>
+    </select>
+  </div>
 </div>
