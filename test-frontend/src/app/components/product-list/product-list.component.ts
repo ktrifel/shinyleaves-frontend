@@ -25,13 +25,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   /** hier landen die vom Backend geladenen Produkte */
   products: Product[] = [];
-  
+
   /** Gefilterte und sortierte Produkte */
   filteredProducts: Product[] = [];
-  
+
   /** Aktuell angezeigte Produkte basierend auf productsPerPage */
   displayedProducts: Product[] = [];
-  
+
   /** Tracking für Button-Feedback */
   addingToCart: { [key: number]: boolean } = {};
   addingToWishlist: { [key: number]: boolean } = {};
@@ -84,25 +84,31 @@ export class ProductListComponent implements OnInit, OnDestroy {
   // Scroll-to-Top Funktion - EINFACH UND FUNKTIONAL
   scrollToTop(): void {
     console.log('Scroll button clicked!');
-    
+
     // Direkter Scroll an den Anfang
     window.scrollTo(0, 0);
-    
+
     console.log('Scrolled to top');
   }
 
   // Pagination Methods
   calculateTotalPages(): void {
+    // Ensure productsPerPage is a number
+    this.productsPerPage = Number(this.productsPerPage);
     this.totalPages = Math.ceil(this.filteredProducts.length / this.productsPerPage);
-    // Sicherstellen dass currentPage nicht größer als totalPages ist
+    // Ensure currentPage is a number and not greater than totalPages
+    this.currentPage = Number(this.currentPage);
     if (this.currentPage > this.totalPages) {
       this.currentPage = 1;
     }
   }
 
   updateDisplayedProducts(): void {
-    const startIndex = (this.currentPage - 1) * this.productsPerPage;
-    const endIndex = startIndex + this.productsPerPage;
+    // Ensure currentPage and productsPerPage are treated as numbers
+    const currentPage = Number(this.currentPage);
+    const productsPerPage = Number(this.productsPerPage);
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = startIndex + productsPerPage;
     this.displayedProducts = this.filteredProducts.slice(startIndex, endIndex);
   }
 
@@ -136,6 +142,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
     if (clickedSelect) {
       this.addIndividualSelectAnimation(clickedSelect);
     }
+    // Ensure currentPage is a number
+    this.currentPage = Number(this.currentPage);
     this.updateDisplayedProducts();
   }
 
@@ -151,7 +159,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     if (clickedSelect) {
       this.addIndividualSelectAnimation(clickedSelect);
     }
-    
+
     // Sortier-Logik...
     if (!this.sortField) {
       this.filteredProducts = [...this.products];
@@ -190,11 +198,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
         return 0;
       });
     }
-    
+
     this.currentPage = 1; // Reset auf Seite 1 bei neuer Sortierung
     this.calculateTotalPages();
     this.updateDisplayedProducts();
-    
+
     // Verzögerter Reset nach Auswahl
     setTimeout(() => {
       this.scheduleHoverReset(300);
@@ -207,11 +215,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
     if (clickedSelect) {
       this.addIndividualSelectAnimation(clickedSelect);
     }
-    
+
+    // Ensure productsPerPage is a number
+    this.productsPerPage = Number(this.productsPerPage);
     this.currentPage = 1; // Reset auf Seite 1 bei Änderung der Anzahl
     this.calculateTotalPages();
     this.updateDisplayedProducts();
-    
+
     // Verzögerter Reset nach Auswahl
     setTimeout(() => {
       this.scheduleHoverReset(300);
@@ -238,7 +248,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       });
     }
 
-    localStorage.setItem('cart', JSON.stringify(cart));    
+    localStorage.setItem('cart', JSON.stringify(cart));
     // Button-Feedback nach 800ms zurücksetzen
     setTimeout(() => {
       this.addingToCart[product.p_id] = false;
@@ -255,10 +265,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
     console.log('Mouse Enter - Filter Controls');
     this.clearAllTimeouts();
     this.filterRowHovered = true;
-    
+
     const filterControls = document.querySelector('.filter-controls') as HTMLElement;
     const filterControlsBottom = document.querySelector('.filter-controls-bottom') as HTMLElement;
-    
+
     // Beide Filter-Bereiche behandeln
     [filterControls, filterControlsBottom].forEach(element => {
       if (element) {
@@ -282,14 +292,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.clearAllTimeouts();
     this.sortSelectActive = true;
     this.filterRowHovered = true;
-    
+
     this.applyActiveState();
   }
 
   onSortSelectBlur(): void {
     console.log('Sort Select Blur');
     this.sortSelectActive = false;
-    
+
     // Verzögerter Reset um Zeit für andere Interaktionen zu geben
     this.scheduleDropdownReset(200);
   }
@@ -299,14 +309,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.clearAllTimeouts();
     this.productsPerPageSelectActive = true;
     this.filterRowHovered = true;
-    
+
     this.applyActiveState();
   }
 
   onProductsPerPageSelectBlur(): void {
     console.log('Products Per Page Select Blur');
     this.productsPerPageSelectActive = false;
-    
+
     // Verzögerter Reset um Zeit für andere Interaktionen zu geben
     this.scheduleDropdownReset(200);
   }
@@ -315,7 +325,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   private applyActiveState(): void {
     const filterControls = document.querySelector('.filter-controls') as HTMLElement;
     const filterControlsBottom = document.querySelector('.filter-controls-bottom') as HTMLElement;
-    
+
     [filterControls, filterControlsBottom].forEach(element => {
       if (element) {
         element.classList.remove('force-reset');
@@ -338,7 +348,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   private scheduleHoverReset(delay: number): void {
     this.clearAllTimeouts();
-    
+
     this.hoverResetTimeout = setTimeout(() => {
       this.checkAndReset();
     }, delay);
@@ -346,7 +356,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   private scheduleDropdownReset(delay: number): void {
     this.clearAllTimeouts();
-    
+
     this.dropdownResetTimeout = setTimeout(() => {
       this.checkAndReset();
     }, delay);
@@ -357,18 +367,18 @@ export class ProductListComponent implements OnInit, OnDestroy {
     // Prüfe aktuelle DOM-Zustände
     const activeSelects = document.querySelectorAll('.filter-controls select:focus, .filter-controls-bottom select:focus');
     const isMouseOverFilter = document.querySelector('.filter-controls:hover, .filter-controls-bottom:hover');
-    
+
     console.log('Check and Reset:', {
       activeSelects: activeSelects.length,
       sortSelectActive: this.sortSelectActive,
       productsPerPageSelectActive: this.productsPerPageSelectActive,
       isMouseOverFilter: !!isMouseOverFilter
     });
-    
+
     // Reset nur wenn WIRKLICH nichts aktiv ist
-    if (activeSelects.length === 0 && 
-        !this.sortSelectActive && 
-        !this.productsPerPageSelectActive && 
+    if (activeSelects.length === 0 &&
+        !this.sortSelectActive &&
+        !this.productsPerPageSelectActive &&
         !isMouseOverFilter) {
       this.resetHoverState();
     }
@@ -379,16 +389,16 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.filterRowHovered = false;
     this.sortSelectActive = false;
     this.productsPerPageSelectActive = false;
-    
+
     const filterControls = document.querySelector('.filter-controls') as HTMLElement;
     const filterControlsBottom = document.querySelector('.filter-controls-bottom') as HTMLElement;
-    
+
     [filterControls, filterControlsBottom].forEach(element => {
       if (element) {
         // ALLE Klassen entfernen
         element.classList.remove('js-hover', 'dropdown-active', 'persistent-hover');
         element.classList.add('force-reset');
-        
+
         // Force Reset nach kurzer Zeit entfernen
         setTimeout(() => {
           element.classList.remove('force-reset');
