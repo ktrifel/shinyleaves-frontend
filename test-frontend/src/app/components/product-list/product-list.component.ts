@@ -94,14 +94,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
   // Pagination Methods
   calculateTotalPages(): void {
     this.totalPages = Math.ceil(this.filteredProducts.length / this.productsPerPage);
-    // Sicherstellen dass currentPage nicht größer als totalPages ist
+    // Ensure currentPage is a number and not greater than totalPages
+    this.currentPage = Number(this.currentPage);
     if (this.currentPage > this.totalPages) {
       this.currentPage = 1;
     }
   }
 
   updateDisplayedProducts(): void {
-    const startIndex = (this.currentPage - 1) * this.productsPerPage;
+    // Ensure currentPage is treated as a number
+    const currentPage = Number(this.currentPage);
+    const startIndex = (currentPage - 1) * this.productsPerPage;
     const endIndex = startIndex + this.productsPerPage;
     this.displayedProducts = this.filteredProducts.slice(startIndex, endIndex);
   }
