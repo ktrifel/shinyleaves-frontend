@@ -7,9 +7,11 @@ ShinyLeaves is an e-commerce application for cannabis/CBD products built with An
 ShinyLeaves Frontend is a modern Angular application with the following features:
 - Product browsing and filtering
 - Shopping cart functionality
+- Wishlist functionality for saving favorite products
 - User authentication (login/register)
 - User profile management
 - Checkout process
+- Offline order processing capability
 - Legal pages (Impressum, AGB, Datenschutz)
 
 The application is designed to work with a backend API but also includes a demo mode that works without a backend.
@@ -56,15 +58,17 @@ For testing purposes, a demo user is automatically created:
 ## Project Structure
 
 ### Main Components
-- **Product List**: Displays all available products
+- **Product List**: Displays all available products with advanced features including pagination, sorting, filtering, and a scroll-to-top button for better user experience
 - **Product Detail**: Shows detailed information about a specific product
 - **Cart**: Manages the shopping cart
-- **Checkout**: Handles the checkout process
+- **Checkout**: Handles the checkout process with form validation, unique order number generation, and resilient order processing (including partial success handling)
 - **Header/Footer**: Navigation and site information
 
 ### Core Services
 - **ProductService**: Fetches product data from the API
 - **CartService**: Manages the shopping cart state using Angular signals
+- **WishlistService**: Manages the user's wishlist of favorite products
+- **OrderService**: Handles order creation with offline resilience (saves orders locally when the database is unavailable)
 - **AuthService**: Handles user authentication and session management
 - **UserService**: Manages user data and profile information
 
