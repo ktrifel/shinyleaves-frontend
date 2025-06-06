@@ -227,6 +227,18 @@ h2 {
   text-decoration: underline;
 }
 
+.required-checkbox {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #508a62;
+  margin-bottom: 0.5rem;
+}
+
+.required-checkbox label {
+  font-weight: 600;
+}
+
 /* Lieferadresse */
 .shipping-address {
   background: #f8f9fa;
@@ -328,6 +340,18 @@ h2 {
   box-shadow: none;
 }
 
+.button-hint {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #fff8e1;
+  border-left: 4px solid #ffc107;
+  color: #856404;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  text-align: center;
+}
+
 /* Leerer Checkout */
 .empty-checkout {
   text-align: center;
@@ -362,28 +386,28 @@ h2 {
     gap: 2rem;
     padding: 0 1rem;
   }
-  
+
   .order-summary {
     position: static;
     order: 2;
   }
-  
+
   .checkout-form {
     order: 1;
   }
-  
+
   .form-row {
     grid-template-columns: 1fr;
   }
-  
+
   .checkout-actions {
     flex-direction: column;
   }
-  
+
   .payment-methods {
     gap: 0.75rem;
   }
-  
+
   .payment-option {
     padding: 0.75rem;
   }
@@ -393,12 +417,12 @@ h2 {
   h2 {
     font-size: 2rem;
   }
-  
+
   .checkout-form,
   .order-summary {
     padding: 1.5rem;
   }
-  
+
   .form-section h3 {
     font-size: 1.2rem;
   }

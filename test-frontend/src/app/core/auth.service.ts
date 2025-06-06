@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient }         from '@angular/common/http';
 import { Router }             from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
+import { environment }        from '../../environments/environment';
 
 export interface Credentials {
   email: string;
@@ -30,7 +31,7 @@ export class AuthService {
   }
 
   /* ==== REST‑API Aufrufe (falls Backend vorhanden) ======================= */
-  private readonly apiUrl = 'http://localhost:8000/api';
+  private readonly apiUrl = `${environment.apiUrl}/api`;
 
   register(data: any) {
     return this.http.post(`${this.apiUrl}/register`, data);
@@ -38,7 +39,7 @@ export class AuthService {
 
   /** Beispiel‑API‑Login (würde echtes Token liefern) */
   loginApi(data: Credentials) {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, data);
+    return this.http.post<{ access_token: string, token_type: string }>(`${this.apiUrl}/login`, data);
   }
 
   /* ==== Demo‑Login ohne Backend ========================================== */

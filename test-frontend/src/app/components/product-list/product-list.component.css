@@ -93,6 +93,20 @@ mat-card-actions {
   z-index: 3;
 }
 
+/* Button Container für Warenkorb und Merkzettel */
+.button-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Initial attention animation for wishlist button */
+@keyframes initialAttention {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); box-shadow: 0 4px 8px rgba(233, 30, 99, 0.5); }
+}
+
+/* Warenkorb Button */
 button {
   background: #8e0721;
   color: #333333;
@@ -136,6 +150,59 @@ button.added-to-cart span {
   100% {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+/* Merkzettel Button */
+.wishlist-button {
+  background: #fff;
+  color: #e91e63;
+  border: 2px solid #e91e63;
+  padding: 0.5rem 1rem;
+  border-radius: 22px;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(233, 30, 99, 0.3);
+  margin-left: 10px;
+  animation: initialAttention 1.5s ease-in-out 1s;
+  text-transform: none;
+  font-size: 0.9rem;
+}
+
+.wishlist-button:hover {
+  background: #e91e63;
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(233, 30, 99, 0.5);
+}
+
+.wishlist-button.in-wishlist {
+  background: #e91e63;
+  color: #fff;
+  opacity: 1;
+  box-shadow: 0 4px 8px rgba(233, 30, 99, 0.5);
+}
+
+.wishlist-button.adding-to-wishlist {
+  animation: heartBeat 0.8s ease-in-out;
+}
+
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.1);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.1);
+  }
+  70% {
+    transform: scale(1);
   }
 }
 
