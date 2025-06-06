@@ -96,8 +96,18 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Adresse</mat-label>
-      <input matInput [(ngModel)]="editedUser.address" required>
+      <mat-label>PLZ</mat-label>
+      <input matInput [(ngModel)]="editedUser.zipCode" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Stadt</mat-label>
+      <input matInput [(ngModel)]="editedUser.city" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Straße und Hausnummer</mat-label>
+      <input matInput [(ngModel)]="editedUser.streetAndNumber" required>
     </mat-form-field>
 
     <div class="button-row">
