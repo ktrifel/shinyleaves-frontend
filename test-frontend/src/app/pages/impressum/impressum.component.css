@@ -1,4 +1,10 @@
 /* Impressum-Titel */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 56px);
+}
+
 .impressum-title {
   font-size: 2.2rem;
   font-weight: 700;

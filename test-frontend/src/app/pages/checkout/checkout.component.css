@@ -1,4 +1,9 @@
 /* Checkout Seite - orientiert sich am Warenkorb Design */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 56px);
+}
 
 h2 {
   margin: 2.5rem 0 1.75rem;

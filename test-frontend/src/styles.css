@@ -86,7 +86,7 @@ footer {
   color: white;
   padding: 8px 0;
   text-align: center;
-  margin-top: 3rem; /* Abstand zum Inhalt */
+  margin-top: auto; /* Wichtig für flexibles Layout */
 }
 
 .footer-link {
